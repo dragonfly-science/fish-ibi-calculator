@@ -2,7 +2,7 @@
 title: "Welcome"
 ---
 
-### Welcome to te Fish IBI Calculator.
+### Welcome to the Fish IBI Calculator.
 
 ### Please upload a csv with data of fish observations (count per species per site). Please ensure the data is left aligned, with headers in the first row.
 

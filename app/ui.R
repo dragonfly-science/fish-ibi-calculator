@@ -45,8 +45,23 @@ shinyUI(fluidPage(
 
     ),
     tabPanel("2. Match headers",
-             column(12,  DT::dataTableOutput("sample_table"))
+             fluidRow(
+               br(),
+               column(3,includeMarkdown('./text/matching.rmd'))),
+             br(),
+             hr(),
+             br(),
+             fluidRow(
+               br(),
+               column(3,includeMarkdown('./text/matching.rmd')),
+             ),
+               fluidRow(
+               column(12,  DT::dataTableOutput("sample_table"))
+)
+             ),
+tabPanel("3. Check input data"),
+tabPanel("4. Calculate IBI score")
+
     )
   )
-)
 )

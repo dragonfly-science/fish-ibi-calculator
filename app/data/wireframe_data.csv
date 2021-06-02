@@ -1,0 +1,15 @@
+Date,Day,Month,Year,Site_Name,Site_ID ,Rec#,Catchment vegetation (%),Riparian vegetation (%),Easting ,Northing ,Elevation (m ASL) ,Distance to Sea (km) ,Species Found,Species_Code,Number
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Shortfin eel,angaus,88
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Longfin eel ,angdie,4
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Unidentified eel ,anguil,184
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Inanga ,galmac,21
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Mosquito fish ,gamaff,14
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Redfin bully ,gobhut,9
+2019-01-22,22,1,2019,Kopureo Drain,BOP_0094 ,180123,15,25,1890841,5816757,5,11,Smelt ,retret,38
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Banded kokopu,galfas,4
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Rainbow trout,oncmyk,1
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Giant kokopu,galarg,3
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Inanga,galmac,2
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Brown trout,saltru,1
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Giant Bully,gobgob,4
+2019-02-15,15,2,2019,Tributary into Whataroa at Road Bridge,BOP_0097,193434,25,50,1885234,5806050,169,28,Unidentified eel,anguil,2
