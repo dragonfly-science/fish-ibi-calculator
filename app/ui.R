@@ -8,15 +8,44 @@
 #
 
 library(shiny)
+library(shinydashboard)
+
+## this is not quite working re the data and field
+
+js <- "
+Shiny.addCustomMessageHandler('anim',
+ function(x){
+
+    var $icon = $('div.small-box i.fa');
+    if(x == NULL && $icon.hasClass('fa-check-circle')){
+      $icon.removeClass('fa-check-circle').addClass('fas fa-exclamation-triangle');
+    }
+    if(x != NULL && $icon.hasClass('fas fa-exclamation-triangle')){
+      $icon.removeClass('fas fa-exclamation-triangle').addClass('fa-check-circle');
+    }
+
+    var $s = $('div.small-box div.inner h3');
+    var o = {value: 0};
+    $.Animation( o, {
+        value: x
+      }, {
+        duration: 1500
+        //easing: 'easeOutCubic'
+      }).progress(function(e) {
+          $s.text('$' + (e.tweens[0].now).toFixed(1));
+    });
+
+  }
+);"
 
 shinyUI(fluidPage(
 
   # Header
   headerPanel(
     title=tags$a(tags$img(src='topimg.png'), target="_blank")),
+    tags$head(tags$script(HTML(js))),
 
-
-  # Input widgets
+    # Input widgets
   tabsetPanel(
     tabPanel("1. Upload your file",
              fluidRow(
@@ -52,15 +81,20 @@ shinyUI(fluidPage(
              hr(),
              br(),
              fluidRow(
-               br(),
-               column(3,includeMarkdown('./text/matching.rmd')),
+               column(12, strong("Mandatory fields:"))),
+             fluidRow(
+               valueBox("", subtitle = strong("Date (YYYY-MM-DD)"),
+                        icon = icon("check-circle")
+               )
              ),
+             br(),
+             #actionButton("btn", "Change value"),
                fluidRow(
                column(12,  DT::dataTableOutput("sample_table"))
 )
              ),
-tabPanel("3. Check input data"),
-tabPanel("4. Calculate IBI score")
+  tabPanel("3. Check input data"),
+  tabPanel("4. Calculate IBI score")
 
     )
   )

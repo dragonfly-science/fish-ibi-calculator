@@ -9,19 +9,19 @@
 
 library(shiny)
 
+
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
 
-    df_products_upload <- reactive({
-        inFile <- input$target_upload
-        if (is.null(inFile))
-            return(NULL)
-        df <- read.csv(inFile$datapath, header = TRUE,sep = input$separator)
-        return(df)
-    })
+    df <- read.csv('data/wireframe_data.csv')
 
-    output$sample_table<- DT::renderDataTable({
-        df <- df_products_upload()
-        DT::datatable(df)
+    rv <- reactiveVal(df$series)
+
+    # observeEvent(input[["btn"]], {
+    #     rv(rpois(1,10))
+    # })
+
+    observeEvent(rv(), {
+        session$sendCustomMessage("anim", rv())
     })
 })
