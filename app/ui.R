@@ -10,8 +10,6 @@
 library(shiny)
 library(shinydashboard)
 
-source('js/js.r')
-
 shinyUI(fluidPage(
 
   # Header
@@ -26,16 +24,8 @@ shinyUI(fluidPage(
                br(),
                column(3,includeMarkdown('./text/welcome.rmd')),
                column(7, fileInput('target_upload', 'Upload CSV file',
-                                   accept = c(
-                                     'text/csv',
-                                     'text/comma-separated-values',
-                                     '.csv'
-                                   )),
-                      radioButtons("separator","Separator: ",
-                                   choices = c(";",",",":"),
-                                   selected=",",inline=TRUE)
-               )
-             ),
+                                   accept = '.csv')
+             )),
              br(),
              hr(),
              br(),
@@ -57,12 +47,9 @@ shinyUI(fluidPage(
              fluidRow(
                column(12, strong("Mandatory fields:"))),
              fluidRow(
-               valueBox("", subtitle = strong("Date (YYYY-MM-DD)"),
-                        icon = icon("check-circle")
-               )
-             ),
+               uiOutput('info')
+               ),
              br(),
-             #actionButton("btn", "Change value"),
                fluidRow(
                column(12,  DT::dataTableOutput("sample_table"))
 )
