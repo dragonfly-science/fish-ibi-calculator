@@ -10,9 +10,18 @@
 library(shiny)
 library(data.table)
 
+cols_needed <- c('Date', 'Distance', 
+                 'Species code', 'Site',
+                 'Elevation', 'Count')
+req_fields <- rep(0, length(cols_needed))
+names(req_fields) <- cols_needed
+icons <- c("exclamation-triangle", "check-circle")
+cols <- c('red', 'green')
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
+    
+    rv <- reactiveValues(reqfields = req_fields)
     
     df_upload <- reactive({
         inFile <- input$target_upload
@@ -22,24 +31,61 @@ shinyServer(function(input, output, session) {
         return(df)
     })
     
+    # data table
     output$sample_table<- DT::renderDataTable({
         df <- df_upload()
-        DT::datatable(df)
+        DT::datatable(df, options = list(dom='t'))
     })
     
-    output$info <- renderUI({
+    # value boxes for required columns
+    observe({
         df <- df_upload()
-        req(df)
-        if ("date" %in% names(df)) {
-            ico <- icon("check-circle")
-            col <- 'green'
-        } else {
-            ico <- icon("exclamation-triangle")
-            col <- 'red'
+        for (c in cols_needed) {
+            if (c %in% names(df)) {
+                rv$reqfields[c] <- 1L
+            } else rv$reqfields[c] <- 0L
         }
-        valueBox("",
-                 subtitle = strong("Date (YYYY-MM-DD)"),
-                 icon = ico,
-                 color = col)
+    })
+    output$info1 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[1]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[1]] + 1L]
+        valueBox(tags$p(strong(cols_needed[1]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(YYYY-MM-DD)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info2 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[2]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[2]] + 1L]
+        valueBox(tags$p(strong(cols_needed[2]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(km from coast)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info3 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[3]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[3]] + 1L]
+        valueBox(tags$p(strong(cols_needed[3]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(from NZFFD)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info4 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[4]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[4]] + 1L]
+        valueBox(tags$p(strong(cols_needed[4]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(must be unique)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info5 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[5]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[5]] + 1L]
+        valueBox(tags$p(strong(cols_needed[5]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(meters a.s.l.)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info6 <- renderUI({
+        ico <- icons[rv$reqfields[cols_needed[6]] + 1L]
+        col <- cols[rv$reqfields[cols_needed[6]] + 1L]
+        valueBox(tags$p(strong(cols_needed[6]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(observ. per fish species)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
     })
 })

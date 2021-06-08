@@ -47,8 +47,17 @@ shinyUI(fluidPage(
              fluidRow(
                column(12, strong("Mandatory fields:"))),
              fluidRow(
-               uiOutput('info')
-               ),
+               column(6,
+               uiOutput('info1'),
+               uiOutput('info2'),
+               uiOutput('info3')
+               )),
+             fluidRow(
+               column(6,
+               uiOutput('info4'),
+               uiOutput('info5'),
+               uiOutput('info6')
+             )),
              br(),
                fluidRow(
                column(12,  DT::dataTableOutput("sample_table"))
