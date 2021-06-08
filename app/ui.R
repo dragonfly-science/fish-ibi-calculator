@@ -60,7 +60,17 @@ shinyUI(fluidPage(
              )),
              br(),
                fluidRow(
-               column(12,  DT::dataTableOutput("sample_table"))
+                 tags$head(
+                   tags$link(
+                     rel = "stylesheet",
+                     href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
+                   ),
+                   tags$script(
+                     src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
+                   )
+                 ),
+                 DTOutput("table")
+               # column(12,  DT::dataTableOutput("sample_table"))
 )
              ),
   tabPanel("3. Check input data"),

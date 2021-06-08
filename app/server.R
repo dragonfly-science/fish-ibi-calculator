@@ -31,11 +31,11 @@ shinyServer(function(input, output, session) {
         return(df)
     })
     
-    # data table
-    output$sample_table<- DT::renderDataTable({
-        df <- df_upload()
-        DT::datatable(df, options = list(dom='t'))
-    })
+    # data table on page 2
+    output[["table"]] <- renderDT({
+        datatable(df_upload(), callback = JS(callback),
+                  options = list(dom='t'))
+    }, server = FALSE)  
     
     # value boxes for required columns
     observe({
@@ -88,4 +88,5 @@ shinyServer(function(input, output, session) {
                  subtitle = strong(tags$p("(observ. per fish species)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
+
 })
