@@ -1,12 +1,3 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(data.table)
 
@@ -18,7 +9,75 @@ names(req_fields) <- cols_needed
 icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
-# Define server logic required to draw a histogram
+callback <- "$.contextMenu({
+    selector: '#table th',
+    trigger: 'right',
+    autoHide: true,
+    items: {
+        // <input type=\"radio\">
+        Area: {
+            name: \"Area\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '1'
+        },
+        Date: {
+            name: \"Date\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '2'
+        },
+        SpeciesCode: {
+            name: \"SpeciesCode\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '3'
+        },
+        NoObservations: {
+            name: \"NoObservations\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '4'
+        },
+        Latitude: {
+            name: \"Latitude (opt)\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '5'
+        },
+        Longitude: {
+            name: \"Longitude (opt)\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '6'
+        },
+        Easting: {
+            name: \"Easting (opt)\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '7'
+        },
+        Northing: {
+            name: \"Northing (opt)\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: '8'
+        }
+    },
+  events: {
+    show: function(opt) {
+      var $this = this;
+      $.contextMenu.setInputValues(opt, $this.data());
+    }, 
+    hide: function(opts) {
+      var $this = this;
+      var data = $.contextMenu.getInputValues(opts, $this.data());
+      var $th = opts.$trigger;
+      $th.text = data.value;
+    }
+  }
+});"
+
 shinyServer(function(input, output, session) {
     
     rv <- reactiveValues(reqfields = req_fields)
@@ -34,7 +93,8 @@ shinyServer(function(input, output, session) {
     # data table on page 2
     output[["table"]] <- renderDT({
         datatable(df_upload(), callback = JS(callback),
-                  options = list(dom='t'))
+                  options = list(dom='t'),
+                  rownames = FALSE)
     }, server = FALSE)  
     
     # value boxes for required columns
