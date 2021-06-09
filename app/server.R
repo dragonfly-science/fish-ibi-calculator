@@ -97,6 +97,13 @@ shinyServer(function(input, output, session) {
                   rownames = FALSE)
     }, server = FALSE)  
     
+    # data table on page 3 - will need to be changed
+    output[["table_new"]] <- renderDT({
+        datatable(df_upload(),
+                  options = list(dom='t'),
+                  rownames = FALSE)
+    }, server = FALSE)  
+    
     # value boxes for required columns
     observe({
         df <- df_upload()

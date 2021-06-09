@@ -1,0 +1,6 @@
+---
+title: "Check input data"
+---
+
+We extract only the columns from the spreadsheet that are important for FISH IBI
+calculation (mandatory and optional fields).
