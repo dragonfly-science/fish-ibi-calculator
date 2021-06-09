@@ -19,49 +19,49 @@ callback <- "$.contextMenu({
             name: \"Date\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '1'
+            value: 'Date',
         },
         Distance: {
             name: \"Distance\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '2'
+            value: 'Distance'
         },
         SpeciesCode: {
             name: \"SpeciesCode\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '3'
+            value: 'SpeciesCode'
         },
         Site: {
             name: \"Site\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '4'
+            value: 'Site'
         },
         Elevation: {
             name: \"Elevation\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '5'
+            value: 'Elevation'
         },
         Count: {
             name: \"Count\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '6'
+            value: 'Count'
         },
         Easting: {
             name: \"Easting (opt)\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '7'
+            value: 'Easting'
         },
         Northing: {
             name: \"Northing (opt)\", 
             type: 'radio', 
             radio: 'radio', 
-            value: '8'
+            value: 'Northing'
         }
     },
   events: {
@@ -69,11 +69,11 @@ callback <- "$.contextMenu({
       var $this = this;
       $.contextMenu.setInputValues(opt, $this.data());
     }, 
-    hide: function(opts) {
+    hide: function(opt) {
       var $this = this;
-      var data = $.contextMenu.getInputValues(opts, $this.data());
-      var $th = opts.$trigger;
-      $th.text = data.value;
+      var data = $.contextMenu.getInputValues(opt, $this.data());
+      var $th = opt.$trigger;
+      $th.text(data.radio);
     }
   }
 });"

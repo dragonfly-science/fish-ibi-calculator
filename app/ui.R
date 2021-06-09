@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(DT)
 
 
 shinyUI(fluidPage(
@@ -57,7 +58,7 @@ shinyUI(fluidPage(
                      src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                    )
                  ),
-                 DTOutput("table")
+                 DT::DTOutput("table")
                  )
              ),
   tabPanel("3. Check input data"),
