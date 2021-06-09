@@ -15,14 +15,14 @@ callback <- "$.contextMenu({
     autoHide: true,
     items: {
         // <input type=\"radio\">
-        Area: {
-            name: \"Area\", 
+        Date: {
+            name: \"Date\", 
             type: 'radio', 
             radio: 'radio', 
             value: '1'
         },
-        Date: {
-            name: \"Date\", 
+        Distance: {
+            name: \"Distance\", 
             type: 'radio', 
             radio: 'radio', 
             value: '2'
@@ -33,20 +33,20 @@ callback <- "$.contextMenu({
             radio: 'radio', 
             value: '3'
         },
-        NoObservations: {
-            name: \"NoObservations\", 
+        Site: {
+            name: \"Site\", 
             type: 'radio', 
             radio: 'radio', 
             value: '4'
         },
-        Latitude: {
-            name: \"Latitude (opt)\", 
+        Elevation: {
+            name: \"Elevation\", 
             type: 'radio', 
             radio: 'radio', 
             value: '5'
         },
-        Longitude: {
-            name: \"Longitude (opt)\", 
+        Count: {
+            name: \"Count\", 
             type: 'radio', 
             radio: 'radio', 
             value: '6'
