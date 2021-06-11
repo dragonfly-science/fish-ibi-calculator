@@ -1,10 +1,13 @@
 library(shiny)
 library(shinydashboard)
 library(DT)
+library(shinyWidgets)
 
 
 shinyUI(fluidPage(
 
+    useShinydashboard(),
+    
   # Header
   headerPanel(
     title=tags$a(tags$img(src='topimg.png'), target="_blank")),
@@ -29,7 +32,9 @@ shinyUI(fluidPage(
     tabPanel("2. Match headers",
              fluidRow(
                br(),
-               column(3,includeMarkdown('./text/matching.rmd'))),
+               column(3,includeMarkdown('./text/matching.rmd'))
+             , column(6, box(verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+             ),
              br(),
              hr(),
              br(),
