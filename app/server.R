@@ -12,7 +12,7 @@ cols <- c('red', 'green')
 rv <- NULL
 
 callback <- "$(document).contextMenu({
-    selector: '#table th',
+    selector: '#dtable th',
     trigger: 'right',
     autoHide: true,
     items: {
@@ -75,8 +75,8 @@ callback <- "$(document).contextMenu({
       var $this = this;
       var data = $.contextMenu.getInputValues(opt, $this.data());
       var $th = opt.$trigger;
+      $th.text(data.radio);
       Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
-      /* $th.text(data.radio); */
     }
   }
 });"
@@ -85,7 +85,7 @@ shinyServer(function(input, output, session) {
     
     rv <- reactiveValues(
         reqfields = req_fields,
-        selfields = data.table(req = names(req_fields), ori = NA_character_, good = 0L, key='req'),
+        selfields = data.frame(req = names(req_fields), ori = NA_character_, good = 0L),
         intable = NULL)
     
     observe({
@@ -95,7 +95,7 @@ shinyServer(function(input, output, session) {
             return(NULL)
         df <- fread(inFile$datapath, header = TRUE)
         fields <- rv[['selfields']]
-        fields[req %in% names(df), ori := req] # automatically pick the right columns
+        fields[fields$req %in% names(df), 'ori'] <- fields[fields$req %in% names(df), 'req']
         rv[['selfields']] <- fields
         rv[['intable']] <- df
     })
@@ -104,60 +104,43 @@ shinyServer(function(input, output, session) {
         req(rv)
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
-            d <- rv[['selfields']]
-            d[pair[1], `:=`(ori = pair[2], good = 1L)]
-            rv[['selfields']] <- d
+            sf <- rv[['selfields']]
+            sf[sf$req == pair[1], 'ori'] <- pair[2]
+            sf[sf$req == pair[1], 'good'] <- 1L
+            rv[['selfields']] <- sf
             d <- rv[['intable']]
-            setnames(d, pair[2], pair[1])
+            if (pair[2] %in% names(d)) {
+                names(d)[names(d) == pair[2]] <- pair[1]
+            }
             rv[['intable']] <- d
         }
     })
 
-    ## observeEvent(rv[['selfields']], {
-    ##     tochange <- rv[['selfields']][!is.na(ori)]
-    ##     d <- rv[['intable']]
-    ##     for (i in seq_len(nrow(tochange))) {
-    ##         setnames(d, tochange[i, ori], tochange[i, req])
-    ##     }
-    ##     rv[['intable']] <- d
-    ## })
-
     # data table on page 2
-    output$table <- renderDT({
-        req(rv)
+    output$dtable <- renderDT({
         d <- rv[['intable']]
-        datatable(d, callback = JS(callback),
+        DT::datatable(d, callback = JS(callback),
                   options = list(dom='t'),
                   rownames = FALSE)
-    }, server = FALSE)  
-    tableProx <- dataTableProxy('table')
+    }) #, server = FALSE)  
+    tableProx <- DT::dataTableProxy('dtable')
 
-    observe({
-        req(rv)
-        d <- rv[['intable']]
-        replaceData(tableProx, d)
+    
+    output$testnum <- renderUI({
+        numericInput('testnum', 'Sum(good)', value=sum(rv$selfields$good))
     })
-    # value boxes for required columns
-    ## observe({
-    ##     df <- rv[['intable']]
-    ##     for (c in cols_needed) {
-    ##         if (c %in% names(df)) {
-    ##             rv$reqfields[c] <- 1L
-    ##         } else rv$reqfields[c] <- 0L
-    ##     }
-    ## })
-    output$info1 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[1], good + 1L]
+    output$info1 <- renderValueBox({
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[1], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[1]), style = "font-size: 70%;"),
                  subtitle = strong(tags$p("(YYYY-MM-DD)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
-    output$info2 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[2], good + 1L]
+    output$info2 <- renderValueBox({
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[2], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[2]), style = "font-size: 70%;"),
@@ -165,8 +148,8 @@ shinyServer(function(input, output, session) {
                  icon = icon(ico), color = col)
     })
     output$info3 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[3], good + 1L]
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[3], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[3]), style = "font-size: 70%;"),
@@ -174,8 +157,8 @@ shinyServer(function(input, output, session) {
                  icon = icon(ico), color = col)
     })
     output$info4 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[4], good + 1L]
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[4], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[4]), style = "font-size: 70%;"),
@@ -183,8 +166,8 @@ shinyServer(function(input, output, session) {
                  icon = icon(ico), color = col)
     })
     output$info5 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[5], good + 1L]
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[5], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[5]), style = "font-size: 70%;"),
@@ -192,8 +175,8 @@ shinyServer(function(input, output, session) {
                  icon = icon(ico), color = col)
     })
     output$info6 <- renderUI({
-        req(rv)
-        ok <- rv$selfields[cols_needed[6], good + 1L]
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[6], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[6]), style = "font-size: 70%;"),
@@ -209,8 +192,10 @@ shinyServer(function(input, output, session) {
         print(rv$selfields)
         cat('\n\nnames(rv$intable)=\n')
         print(names(rv[['intable']]))
+        ## str(rv[['intable']])
         cat('\n\nok=\n')
-        print(rv$selfields[cols_needed[1], good + 1L])
+        d <- rv[['selfields']]
+        print(d[d$req==cols_needed[1], 'good'] + 1L)
     })
     
 })

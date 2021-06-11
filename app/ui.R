@@ -42,9 +42,10 @@ shinyUI(fluidPage(
                column(12, strong("Mandatory fields:"))),
              fluidRow(
                column(6,
-               uiOutput('info1'),
-               uiOutput('info2'),
-               uiOutput('info3')
+               valueBoxOutput('info1'),
+               valueBoxOutput('info2'),
+               uiOutput('info3'),
+               uiOutput('testnum')
                )),
              fluidRow(
                column(6,
@@ -63,7 +64,7 @@ shinyUI(fluidPage(
                      src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                    )
                  ),
-                 DT::DTOutput("table")
+                 DT::DTOutput("dtable")
                  )
              ),
   tabPanel("3. Check input data"),
