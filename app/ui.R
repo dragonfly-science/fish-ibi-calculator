@@ -19,40 +19,33 @@ shinyUI(fluidPage(
              fluidRow(
                br(),
                column(3,includeMarkdown('./text/welcome.rmd')),
-               column(7, fileInput('target_upload', 'Upload CSV file',
-                                   accept = '.csv'))),
+               column(7, fluidRow( 
+                      fileInput('target_upload', 'Upload CSV file',
+                                   accept = '.csv')),
+                      fluidRow(includeMarkdown('./text/needed.rmd')))),
              br(),
              hr(),
              br(),
-             fluidRow(column(3, tags$img(src = 'square.png'), target= "_blank"),
-                      column(7,includeMarkdown('./text/about.rmd'))),
-             br(),
-             hr(),
-             br()),
+             column(3,fluidRow(includeMarkdown('./text/about.rmd')),
+                    br(),
+                    fluidRow(tags$img(src = 'fishing.png'), target="_blank"),
+                    br())),
     tabPanel("2. Match headers",
              fluidRow(
                br(),
-               column(3,includeMarkdown('./text/matching.rmd'))
-             , column(6, box(verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+               column(3,includeMarkdown('./text/matching.rmd')),
+               column(6,
+                      fluidRow(strong("Mandatory fields:")),
+                      fluidRow(valueBoxOutput('info1')),
+                      fluidRow(valueBoxOutput('year')),
+                      fluidRow(valueBoxOutput('info2')),
+                      fluidRow(valueBoxOutput('info3')),
+                      fluidRow(valueBoxOutput('info4')),
+                      fluidRow(valueBoxOutput('info5')),
+                      fluidRow(valueBoxOutput('info6'))
+                      )
+             # , column(6, box(verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
              ),
-             br(),
-             hr(),
-             br(),
-             fluidRow(
-               column(12, strong("Mandatory fields:"))),
-             fluidRow(
-               column(6,
-               valueBoxOutput('info1'),
-               valueBoxOutput('info2'),
-               uiOutput('info3'),
-               uiOutput('testnum')
-               )),
-             fluidRow(
-               column(6,
-               uiOutput('info4'),
-               uiOutput('info5'),
-               uiOutput('info6')
-             )),
              br(),
                fluidRow(
                  tags$head(

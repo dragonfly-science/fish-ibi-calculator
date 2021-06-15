@@ -1,8 +1,8 @@
 library(shiny)
 library(data.table)
 
-cols_needed <- c('Date', 'Distance', 
-                 'Species code', 'Site',
+cols_needed <- c('m', 'y', 'Distance', 
+                 'spcode', 'Site',
                  'Elevation', 'Count')
 req_fields <- rep(0, length(cols_needed))
 names(req_fields) <- cols_needed
@@ -17,11 +17,17 @@ callback <- "$(document).contextMenu({
     autoHide: true,
     items: {
         // <input type=\"radio\">
-        Date: {
-            name: \"Date\", 
+        Month: {
+            name: \"Month\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Date',
+            value: 'm',
+        },
+        Year: {
+            name: \"Year\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: 'y',
         },
         Distance: {
             name: \"Distance\", 
@@ -30,10 +36,10 @@ callback <- "$(document).contextMenu({
             value: 'Distance'
         },
         SpeciesCode: {
-            name: \"SpeciesCode\", 
+            name: \"Species code\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'SpeciesCode'
+            value: 'spcode'
         },
         Site: {
             name: \"Site\", 
@@ -134,52 +140,61 @@ shinyServer(function(input, output, session) {
         ok <- d[d$req==cols_needed[1], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
-        valueBox(tags$p(strong(cols_needed[1]), style = "font-size: 70%;"),
-                 subtitle = strong(tags$p("(YYYY-MM-DD)", style = "font-size: 70%;")),
+        valueBox(tags$p(strong('Month'), style = "font-size: 70%;"),
+                subtitle = "",
                  icon = icon(ico), color = col)
+    })
+    output$year <- renderValueBox({
+      d <- rv[['selfields']]
+      ok <- d[d$req==cols_needed[2], 'good'] + 1L
+      ico <- icons[ok]
+      col <- cols[ok]
+      valueBox(tags$p(strong('Year'), style = "font-size: 70%;"),
+                subtitle ="",
+               icon = icon(ico), color = col)
     })
     output$info2 <- renderValueBox({
-        d <- rv[['selfields']]
-        ok <- d[d$req==cols_needed[2], 'good'] + 1L
-        ico <- icons[ok]
-        col <- cols[ok]
-        valueBox(tags$p(strong(cols_needed[2]), style = "font-size: 70%;"),
-                 subtitle = strong(tags$p("(km from coast)", style = "font-size: 70%;")),
-                 icon = icon(ico), color = col)
-    })
-    output$info3 <- renderUI({
         d <- rv[['selfields']]
         ok <- d[d$req==cols_needed[3], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
         valueBox(tags$p(strong(cols_needed[3]), style = "font-size: 70%;"),
+                 subtitle = strong(tags$p("(km from coast)", style = "font-size: 70%;")),
+                 icon = icon(ico), color = col)
+    })
+    output$info3 <- renderUI({
+        d <- rv[['selfields']]
+        ok <- d[d$req==cols_needed[4], 'good'] + 1L
+        ico <- icons[ok]
+        col <- cols[ok]
+        valueBox(tags$p(strong("Species code"), style = "font-size: 70%;"),
                  subtitle = strong(tags$p("(from NZFFD)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
     output$info4 <- renderUI({
         d <- rv[['selfields']]
-        ok <- d[d$req==cols_needed[4], 'good'] + 1L
+        ok <- d[d$req==cols_needed[5], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
-        valueBox(tags$p(strong(cols_needed[4]), style = "font-size: 70%;"),
+        valueBox(tags$p(strong(cols_needed[5]), style = "font-size: 70%;"),
                  subtitle = strong(tags$p("(must be unique)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
     output$info5 <- renderUI({
         d <- rv[['selfields']]
-        ok <- d[d$req==cols_needed[5], 'good'] + 1L
+        ok <- d[d$req==cols_needed[6], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
-        valueBox(tags$p(strong(cols_needed[5]), style = "font-size: 70%;"),
+        valueBox(tags$p(strong(cols_needed[6]), style = "font-size: 70%;"),
                  subtitle = strong(tags$p("(meters a.s.l.)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
     output$info6 <- renderUI({
         d <- rv[['selfields']]
-        ok <- d[d$req==cols_needed[6], 'good'] + 1L
+        ok <- d[d$req==cols_needed[7], 'good'] + 1L
         ico <- icons[ok]
         col <- cols[ok]
-        valueBox(tags$p(strong(cols_needed[6]), style = "font-size: 70%;"),
+        valueBox(tags$p(strong(cols_needed[7]), style = "font-size: 70%;"),
                  subtitle = strong(tags$p("(observ. per fish species)", style = "font-size: 70%;")),
                  icon = icon(ico), color = col)
     })
