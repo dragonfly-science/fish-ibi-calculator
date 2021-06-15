@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(shinyjs)
 library(DT)
 library(shinyWidgets)
 
@@ -12,6 +13,7 @@ shinyUI(fluidPage(
   headerPanel(
     title=tags$a(tags$img(src='topimg.png'), target="_blank")),
     #tags$head(tags$script(HTML(js))),
+  useShinyjs(),  # Set up shinyjs
 
     # Input widgets
   tabsetPanel(
@@ -34,17 +36,11 @@ shinyUI(fluidPage(
              fluidRow(
                br(),
                column(3,includeMarkdown('./text/matching.rmd')),
-               column(6,
-                      fluidRow(strong("Mandatory fields:")),
-                      fluidRow(valueBoxOutput('info1')),
-                      fluidRow(valueBoxOutput('year')),
-                      fluidRow(valueBoxOutput('info2')),
-                      fluidRow(valueBoxOutput('info3')),
-                      fluidRow(valueBoxOutput('info4')),
-                      fluidRow(valueBoxOutput('info5')),
-                      fluidRow(valueBoxOutput('info6'))
+               column(3,
+                      strong("Mandatory fields:"),
+                      uiOutput('mandfields')
                       )
-             # , column(6, box(verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+             , column(6, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
              ),
              br(),
                fluidRow(
