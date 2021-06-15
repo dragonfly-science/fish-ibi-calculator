@@ -142,9 +142,9 @@ shinyServer(function(input, output, session) {
     
     observe({
       if(all(rv$selfields$good == 1)){
-        enable(input$checkData)
+        enable('checkData')
       } else{
-        disable(input$checkData)
+        disable('checkData')
       }
     })
     
