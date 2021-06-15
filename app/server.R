@@ -15,7 +15,6 @@ rv <- NULL
 callback <- "$(document).contextMenu({
     selector: '#dtable th',
     trigger: 'right',
-    autoHide: true,
     items: {
         // <input type=\"radio\">
         Month: {
@@ -79,7 +78,7 @@ callback <- "$(document).contextMenu({
     show: function(opt) {
       var $this = this;
       $.contextMenu.setInputValues(opt, $this.data());
-    }, 
+    },
     hide: function(opt) {
       var $this = this;
       var data = $.contextMenu.getInputValues(opt, $this.data());
@@ -105,6 +104,7 @@ shinyServer(function(input, output, session) {
             return(NULL)
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
+        fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
