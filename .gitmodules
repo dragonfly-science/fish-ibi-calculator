@@ -1,0 +1,3 @@
+[submodule "fishr"]
+	path = fishr
+	url = git@github.com:dragonfly-science/fishr.git
