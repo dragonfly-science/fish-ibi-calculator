@@ -96,7 +96,8 @@ shinyServer(function(input, output, session) {
     rv <- reactiveValues(
         reqfields = req_fields,
         selfields = data.frame(req = names(req_fields), good = 0L),
-        intable = NULL, tablefields = NULL, tablefields_ori = NULL
+        intable = NULL, tablefields = NULL, tablefields_ori = NULL,
+        cleanTable = NULL
     )
     
     observe({
@@ -191,16 +192,14 @@ shinyServer(function(input, output, session) {
     # data table on page 3
     output$newTable <- renderDT({
       d <- rv[['cleanTable']]
-      nms <- names(d)
       dt <- DT::datatable(d,
                           options = list(dom='t', ordering=F),
                           rownames = FALSE)
-      sf <- rv[['selfields']]
       dt
     }, server = FALSE)  
     
-    observeEvent(input$checkData, {
-      rv$cleanTable = rv$intable[, intersect(names(rv$intable), cols_needed)]
+    observe({
+      rv$cleanTable <- rv$intable[, intersect(names(rv$intable), cols_needed)]
     })
     
     
