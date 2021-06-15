@@ -2,8 +2,7 @@
   title: "matching"
 ---
 
-### Please match your data headers to ours in order to run the analysis
+### **Please match your data headers to ours in order to run the analysis**
 
-#### Click on your table headers of your data below to identify which columns in you data correspond to the mandatory fields.
-
-Please note that if any of the headers are missing or can't be matched, you'll need to edit your original CSV and re-upload.
+#### Click on your **table headers below** to identify which columns in your data correspond to the mandatory fields.
+#### Please note that if any of the headers are missing or can't be matched, you'll need to edit your original CSV and re-upload.
