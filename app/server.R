@@ -86,7 +86,6 @@ callback <- "$(document).contextMenu({
       var $th = opt.$trigger;
       if (typeof data.radio !== \"undefined\") {
         Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
-        $th.text(data.radio);
       }
     }
   }
@@ -120,13 +119,12 @@ shinyServer(function(input, output, session) {
         updateCheckboxGroupInput(session, 'mandfields', selected = intersect(cols_needed, names(rv$intable)))
     })
     observeEvent(input$selfield, {
-        req(rv)
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
-            sf <- rv[['selfields']]
+            sf <- isolate(rv[['selfields']])
             sf[sf$req == pair[1], 'good'] <- 1L
             rv[['selfields']] <- sf
-            d <- rv[['intable']]
+            d <- isolate(rv[['intable']])
             if (pair[1] %in% names(d)) {
                 names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
             }
@@ -152,10 +150,6 @@ shinyServer(function(input, output, session) {
                       rownames = FALSE)
     }) #, server = FALSE)  
     
-    output$testnum <- renderUI({
-        numericInput('testnum', 'Sum(good)', value=sum(rv$selfields$good))
-    })
-
     output$logtxt <- renderPrint({
         req(rv)
         cat('input$selfield=\n')

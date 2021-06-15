@@ -16,7 +16,7 @@ shinyUI(fluidPage(
   useShinyjs(),  # Set up shinyjs
 
     # Input widgets
-  tabsetPanel(
+  tabsetPanel(type = 'pills',
     tabPanel("1. Upload your file",
              fluidRow(
                br(),
