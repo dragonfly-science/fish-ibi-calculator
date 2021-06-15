@@ -88,15 +88,8 @@ callback <- "$(document).contextMenu({
   }
 });"
 
-df <- fread('~/Downloads/transaction-report.csv')
-input <- list(selfield='SpeciesCode=Order ID')
 shinyServer(function(input, output, session) {
     
-    ## rv <- list(
-    ##     reqfields = req_fields,
-    ##     selfields = data.frame(req = names(req_fields), ori = NA_character_, good = 0L),
-    ##     intable = df
-    ## )
     rv <- reactiveValues(
         reqfields = req_fields,
         selfields = data.frame(req = names(req_fields), ori = NA_character_, good = 0L),
