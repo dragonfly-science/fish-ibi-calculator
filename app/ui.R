@@ -68,7 +68,7 @@ shinyUI(fluidPage(
                 )
             ),
             disabled(tabPanel("3. Check input data",
-                              DT::DTOutput("cleanTable"))),
+                              DT::DTOutput("newTable"))),
             disabled(tabPanel("4. Calculate IBI score"))
         )
     )
