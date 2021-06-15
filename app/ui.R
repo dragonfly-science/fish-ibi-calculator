@@ -16,7 +16,7 @@ shinyUI(fluidPage(
   useShinyjs(),  # Set up shinyjs
 
     # Input widgets
-  tabsetPanel(type = 'pills',
+  tabsetPanel(type = 'pills', id = 'myFirst',
     tabPanel("1. Upload your file",
              fluidRow(
                br(),
@@ -40,7 +40,8 @@ shinyUI(fluidPage(
                       strong("Mandatory fields:"),
                       uiOutput('mandfields')
                       )
-             , column(6, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+             ,  disabled( column(2, actionButton('checkData', "test")))
+             , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
              ),
              br(),
                fluidRow(

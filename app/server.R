@@ -138,6 +138,19 @@ shinyServer(function(input, output, session) {
             ## reloadData(tableProx, clearSelection='all')
         }
     })
+    
+    observe({
+      if(all(rv$selfields$good == 1)){
+        enable(input$checkData)
+      } else{
+        disable(input$checkData)
+      }
+    })
+    
+    observeEvent(input$checkData, {
+      updateTabsetPanel(session, "myFirst",
+                        selected = "3. Check input data")
+    })
 
     # data table on page 2
     output$dtable <- renderDT({
