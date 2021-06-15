@@ -60,6 +60,8 @@ callback <- "$(document).contextMenu({
             radio: 'radio', 
             value: 'Count'
         },
+        sep1: \"---------\",
+        // <optional>
         Easting: {
             name: \"Easting (opt)\", 
             type: 'radio', 
@@ -82,8 +84,10 @@ callback <- "$(document).contextMenu({
       var $this = this;
       var data = $.contextMenu.getInputValues(opt, $this.data());
       var $th = opt.$trigger;
-      Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
-      $th.text(data.radio);
+      if (typeof data.radio !== \"undefined\") {
+        Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
+        $th.text(data.radio);
+      }
     }
   }
 });"
@@ -92,7 +96,7 @@ shinyServer(function(input, output, session) {
     
     rv <- reactiveValues(
         reqfields = req_fields,
-        selfields = data.frame(req = names(req_fields), ori = NA_character_, good = 0L),
+        selfields = data.frame(req = names(req_fields), good = 0L),
         intable = NULL, tablefields = NULL, tablefields_ori = NULL
     )
     
@@ -102,7 +106,6 @@ shinyServer(function(input, output, session) {
             return(NULL)
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
-        fields[fields$req %in% names(df), 'ori'] <- fields[fields$req %in% names(df), 'req']
         rv[['selfields']] <- fields
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
@@ -121,19 +124,18 @@ shinyServer(function(input, output, session) {
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
             sf <- rv[['selfields']]
-            ## if (sf[sf$req == pair[1], 'ori'] %in% rv$tablefields_ori) {
-            sf[sf$req == pair[1], 'ori'] <- pair[2]
-            ## }
             sf[sf$req == pair[1], 'good'] <- 1L
             rv[['selfields']] <- sf
             d <- rv[['intable']]
-            print(pair)
-            print(names(d))
+            if (pair[1] %in% names(d)) {
+                names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
+            }
             if (pair[2] %in% names(d)) {
                 names(d)[names(d) == pair[2]] <- pair[1]
                 rv[['tablefields']] <- names(d)
             }
-            print(names(d))
+            sf$good <- ifelse(sf$req %in% names(d), 1, 0)
+            rv[['selfields']] <- sf
             rv[['intable']] <- d
             ## reloadData(tableProx, clearSelection='all')
         }
