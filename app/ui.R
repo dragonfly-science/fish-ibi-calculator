@@ -50,7 +50,7 @@ shinyUI(fluidPage(
                            strong("Mandatory fields:"),
                            uiOutput('mandfields')
                            )
-                 ,  disabled( column(2, actionButton('checkData', "test")))
+                 ,  disabled( column(2, actionButton('checkData', "Check input data")))
                  , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
                 ),
                 br(),
@@ -67,7 +67,8 @@ shinyUI(fluidPage(
                     DT::DTOutput("dtable")
                 )
             ),
-            disabled(tabPanel("3. Check input data")),
+            disabled(tabPanel("3. Check input data",
+                              DT::DTOutput("cleanTable"))),
             disabled(tabPanel("4. Calculate IBI score"))
         )
     )

@@ -116,9 +116,12 @@ shinyServer(function(input, output, session) {
         disabled(checkboxGroupInput('mandfields',  label = NULL, choices = cols_needed,
                                     selected = intersect(cols_needed, names(rv$intable))))
     })
+    
     observe({
-        updateCheckboxGroupInput(session, 'mandfields', selected = intersect(cols_needed, names(rv$intable)))
+        updateCheckboxGroupInput(session, 'mandfields',
+                                 selected = intersect(cols_needed, names(rv$intable)))
     })
+    
     observeEvent(input$selfield, {
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
@@ -138,19 +141,6 @@ shinyServer(function(input, output, session) {
             rv[['intable']] <- d
             ## reloadData(tableProx, clearSelection='all')
         }
-    })
-    
-    observe({
-        if(all(rv$selfields$good == 1)) {
-            enable('checkData')
-        } else{
-            disable('checkData')
-        }
-    })
-    
-    observeEvent(input$checkData, {
-      updateTabsetPanel(session, "myFirst",
-                        selected = "3. Check input data")
     })
 
     # data table on page 2
@@ -182,5 +172,37 @@ shinyServer(function(input, output, session) {
         d <- rv[['selfields']]
         print(d[d$req==cols_needed[1], 'good'] + 1L)
     })
+    
+    # button to go from tab 2 to 3
+    observe({
+      if(all(rv$selfields$good == 1)) {
+        enable('checkData')
+      } else{
+        disable('checkData')
+      }
+    })
+    
+    # check data button
+    observeEvent(input$checkData, {
+      updateTabsetPanel(session, "myFirst",
+                        selected = "3. Check input data")
+    })
+    
+    # data table on page 3
+    output$newTable <- renderDT({
+      d <- rv[['cleanTable']]
+      nms <- names(d)
+      dt <- DT::datatable(d,
+                          options = list(dom='t', ordering=F),
+                          rownames = FALSE)
+      sf <- rv[['selfields']]
+      dt
+    }, server = FALSE)  
+    
+    observeEvent(input$checkData, {
+      rv$cleanTable = rv$intable[, intersect(names(rv$intable), cols_needed)]
+    })
+    
+    
     
 })
