@@ -1,0 +1,12 @@
+/* #mandfields > div > div:nth-child(1) > label > input.disabled { */
+    
+/* } */
+input[type=checkbox][disabled]{
+    outline: 1px solid red;
+}
+input[type=checkbox]:disabled:checked{
+    background: #0f0;
+    color: #0ff;
+    background-color: #ff0;
+    outline: 1px solid #888;
+}

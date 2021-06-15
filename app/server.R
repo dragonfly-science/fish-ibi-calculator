@@ -141,11 +141,11 @@ shinyServer(function(input, output, session) {
     })
     
     observe({
-      if(all(rv$selfields$good == 1)){
-        enable('checkData')
-      } else{
-        disable('checkData')
-      }
+        if(all(rv$selfields$good == 1)) {
+            enable('checkData')
+        } else{
+            disable('checkData')
+        }
     })
     
     observeEvent(input$checkData, {
@@ -165,7 +165,7 @@ shinyServer(function(input, output, session) {
         goodfields <- sf[sf$good == 1, 'req']
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#E5F5E0")
         dt
-    }) #, server = FALSE)  
+    }, server = FALSE)  
     
     output$logtxt <- renderPrint({
         req(rv)
