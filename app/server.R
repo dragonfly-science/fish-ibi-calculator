@@ -1,6 +1,7 @@
 library(shiny)
 library(shinyjs)
 library(data.table)
+library(DT)
 
 cols_needed <- c('Month', 'Year', 'Distance', 
                  'SpeciesCode', 'Site',
@@ -143,11 +144,14 @@ shinyServer(function(input, output, session) {
     output$dtable <- renderDT({
         d <- rv[['intable']]
         nms <- names(d)
-        
-        DT::datatable(d, callback = JS(callback),
-                      colnames = rv[['tablefields']],
-                      options = list(dom='t', ordering=F),
-                      rownames = FALSE)
+        dt <- DT::datatable(d, callback = JS(callback),
+                            colnames = rv[['tablefields']],
+                            options = list(dom='t', ordering=F),
+                            rownames = FALSE)
+        sf <- rv[['selfields']]
+        goodfields <- sf[sf$good == 1, 'req']
+        dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#E5F5E0")
+        dt
     }) #, server = FALSE)  
     
     output$logtxt <- renderPrint({
