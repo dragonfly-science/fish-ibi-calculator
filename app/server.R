@@ -193,9 +193,14 @@ shinyServer(function(input, output, session) {
     }, server = FALSE)  
     
     observe({
-      rv$cleanTable <- rv$intable[, intersect(names(rv$intable), cols_needed)]
+        d <- rv$intable[, intersect(names(rv$intable), cols_needed)]
+        
+        ## d$issues <- NA
+        
+        ## if ('Year' %in% names(d)) {
+            
+        ## }
+        rv$cleanTable <- d
     })
-    
-    
     
 })
