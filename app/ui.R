@@ -76,8 +76,27 @@ shinyUI(fluidPage(
             ),
             tabPanel(
                 "3. Check input data",
+                br(), br(),
                 fluidRow(
-                    column(2, offset=8,
+                    column(6,
+                           hidden(wellPanel(
+                               id = 'allgood-panel',
+                               fluidRow(
+                                   column(4, icon('check')),
+                                   column(8, h3('No issues found'))
+                               ),
+                               p('The table below will be used as it is to calculate the IBI scores')
+                           )),
+                           hidden(wellPanel(
+                               id = 'withissues-panel',
+                               fluidRow(
+                                   column(4, icon('exclamation-triangle')),
+                                   column(8, h3('Issues were found in the data!'))
+                               ),
+                               p('Please correct the following issues and re-upload the file')
+                           ))
+                           ),
+                    column(2, offset=2,
                            actionButton('to4btn', 'Calculate IBI score')
                            )
                 ),

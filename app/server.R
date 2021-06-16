@@ -264,11 +264,35 @@ shinyServer(function(input, output, session) {
         rv$cleanTable <- d
     })
 
+    output$dataissues <- reactive({
+        d <- rv$cleanTable
+        if (sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) {
+            return(1)
+        } else {
+            return(0)
+        }
+    })
+
+    observe({
+        d <- rv$cleanTable
+        req(d)
+        if (sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) {
+            ## ** With issues
+            show('withissues-panel')
+            hide('allgood-panel')
+        } else {
+            ## ** No issues
+            hide('withissues-panel')
+            show('allgood-panel')
+        }
+    })
+    
     # data table on page 3
     output$newTable <- renderDT({
         req(rv$cleanTable)
         print(rv$cleanTable)
         d <- rv[['cleanTable']]
+        d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
         tabjs <- rv[['table_js']]
         print(tabjs)
         dt <- DT::datatable(d, rownames = F, selection = 'none',
