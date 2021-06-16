@@ -316,7 +316,8 @@ shinyServer(function(input, output, session) {
     observe({
         d <- rv$cleanTable
         req(d)
-        if (sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) {
+        if (any(grepl('_issues$', names(d))) &&
+            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
             ## ** With issues
             show('withissues-panel')
             hide('allgood-panel')
@@ -331,8 +332,12 @@ shinyServer(function(input, output, session) {
     output$newTable <- renderDT({
         req(rv$cleanTable)
         d <- rv[['cleanTable']]
-        d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
-        tabjs <- rv[['table_js']]
+        if (any(grepl('_issues$', names(d)))) {
+            d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
+            tabjs <- rv[['table_js']]
+        } else {
+            tabjs <- ''
+        }
         dt <- DT::datatable(d, rownames = F, selection = 'none',
                             options = list(
                                 paging = FALSE, searching = FALSE, ordering = FALSE
