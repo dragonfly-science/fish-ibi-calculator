@@ -30,8 +30,9 @@ shinyUI(fluidPage(
                     br(),
                     column(3,includeMarkdown('./text/welcome.rmd')),
                     column(7, fluidRow( 
-                                  fileInput('target_upload', 'Upload CSV file',
-                                            accept = '.csv')),
+                                  column(8, fileInput('target_upload', 'Upload CSV file',
+                                                      accept = '.csv')),
+                                  column(4, actionButton('exbtn', 'Demo table'))),
                            fluidRow(includeMarkdown('./text/needed.rmd')))),
                 br(),
                 hr(),

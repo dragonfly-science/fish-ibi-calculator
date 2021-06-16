@@ -8,10 +8,15 @@ cols_needed <- c('Stratum', 'Penetration',
                  )
 req_fields <- rep(0, length(cols_needed))
 names(req_fields) <- cols_needed
+
+cols_opt <- c('Easting', 'Northing', 'Location', 'NZreach')
+
 icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
 rv <- NULL
+
+## df <- read.csv('~/Downloads/goodtable.csv', stringsAsFactors=F)
 
 callback <- "$(document).contextMenu({
     selector: '#dtable th',
@@ -105,8 +110,20 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
+        updateTabsetPanel(session, "myFirst",
+                          selected = "2. Match headers")
     })
-
+    observeEvent(input$exbtn, {
+        df <- read.csv('data/demo-table.csv', header = TRUE, stringsAsFactors = F)
+        fields <- isolate(rv[['selfields']])
+        fields$good <- ifelse(fields$req %in% names(df), 1, 0)
+        rv[['selfields']] <- fields
+        rv[['intable']] <- df
+        rv[['tablefields']] <- names(df)
+        rv[['tablefields_ori']] <- names(df)
+        updateTabsetPanel(session, "myFirst",
+                          selected = "2. Match headers")
+    })
     output$mandfields <- renderUI({
         disabled(checkboxGroupInput('mandfields',  label = NULL, choices = cols_needed,
                                     selected = intersect(cols_needed, names(rv$intable))))
@@ -183,24 +200,80 @@ shinyServer(function(input, output, session) {
                         selected = "3. Check input data")
     })
     
-    # data table on page 3
-    output$newTable <- renderDT({
-      d <- rv[['cleanTable']]
-      dt <- DT::datatable(d,
-                          options = list(dom='t', ordering=F),
-                          rownames = FALSE)
-      dt
-    }, server = FALSE)  
     
+    ## * Table cleaned and showing errors
     observe({
-        d <- rv$intable[, intersect(names(rv$intable), cols_needed)]
+        req(rv$intable)
+        d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
+                            cols_needed[cols_opt %in% names(rv$intable)])]
+
+        ## ** Penetration
+        ## *** Check for non-numeric values
+        c <- !grepl('^[0-9.]+$', d$Penetration)
+        d[c, 'Penetration_issues'] <- 1L
+        d[c, 'Penetration_txt']    <- 'Value should be numeric'
+        ## *** Check for negative values
+        c <- d$Penetration < 0
+        d[c, 'Penetration_issues'] <- 1L
+        d[c, 'Penetration_txt']    <- 'Value should be positive'
+        ## *** Check for excessive values
+        c <- grepl('^[0-9.]+$', d$Penetration) & d$Penetration > 2000
+        d[c, 'Penetration_issues'] <- 1L
+        d[c, 'Penetration_txt']    <- 'Value too high'
+
+        ## ** SpeciesCode
+        ## *** Check for existence
+        c <- !(tolower(d$SpeciesCode) %in% fishr::fish_names[['NZFFD code']])
+        d[c, 'SpeciesCode_issues'] <- 1L
+        d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
+
+        ## ** Altitude
+        ## *** Check for non-numeric values
+        c <- is.na(as.numeric(d$Altitude))
+        d[c, 'Altitude_issues'] <- 1L
+        d[c, 'Altitude_txt']    <- 'Value should be numeric'
+        ## *** Check for negative values
+        c <- d$Altitude < 0
+        d[c, 'Altitude_issues'] <- 1L
+        d[c, 'Altitude_txt']    <- 'Value should be positive'
+        ## *** Check for excessive values
+        c <- d$Altitude > 3600
+        d[c, 'Altitude_issues'] <- 1L
+        d[c, 'Altitude_txt']    <- 'Value too high'
         
-        ## d$issues <- NA
+        rv$table_js <- paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
+                               as.vector(unlist(sapply(setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
+                                                function(v) {
+                                   if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
+                                       c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+                                                 which(names(d) == v)-1L,
+                                                 which(names(d) == paste0(v, '_txt'))-1L),
+                                         sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
+                                                 which(names(d) == paste0(v, '_issues'))-1L,
+                                                 which(names(d) == v)-1L))
+                                       }
+          }))),
+          "}"), collapse='\n')
         
-        ## if ('Year' %in% names(d)) {
-            
-        ## }
         rv$cleanTable <- d
     })
+
+    # data table on page 3
+    output$newTable <- renderDT({
+        req(rv$cleanTable)
+        print(rv$cleanTable)
+        d <- rv[['cleanTable']]
+        tabjs <- rv[['table_js']]
+        print(tabjs)
+        dt <- DT::datatable(d, rownames = F, selection = 'none',
+                            options = list(
+                                paging = FALSE, searching = FALSE, ordering = FALSE
+                              , rowCallback = JS(tabjs)
+                              , columnDefs = list(list(visible=FALSE,
+                                                       targets=grep('_issues$|_txt$', names(d))-1L))
+            )
+            )
+        dt
+    }, server = FALSE)
     
 })
