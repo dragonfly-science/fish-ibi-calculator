@@ -210,57 +210,97 @@ shinyServer(function(input, output, session) {
     ## * Table cleaned and showing errors
     observe({
         req(rv$intable)
+        print(head(rv$intable))
         d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
                             cols_needed[cols_opt %in% names(rv$intable)])]
+        print(head(d))
 
         ## ** Penetration
-        ## *** Check for non-numeric values
-        c <- !grepl('^[0-9.]+$', d$Penetration)
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Value should be numeric'
-        ## *** Check for negative values
-        c <- d$Penetration < 0
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Value should be positive'
-        ## *** Check for excessive values
-        c <- grepl('^[0-9.]+$', d$Penetration) & d$Penetration > 2000
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Value too high'
-
+        if ('Penetration' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$Penetration)
+            if (any(c)) {
+                d[c, 'Penetration_issues'] <- 1L
+                d[c, 'Penetration_txt']    <- 'Value is missing'
+            }
+            ## *** Check for non-numeric values
+            c <- !grepl('^[0-9.]+$', d$Penetration)
+            if (any(c)) {
+                d[c, 'Penetration_issues'] <- 1L
+                d[c, 'Penetration_txt']    <- 'Value should be numeric'
+            }
+            ## *** Check for negative values
+            c <- !is.na(d$Penetration) & d$Penetration < 0
+            if (any(c)) {
+                d[c, 'Penetration_issues'] <- 1L
+                d[c, 'Penetration_txt']    <- 'Value should be positive'
+            }
+            ## *** Check for excessive values
+            c <- grepl('^[0-9.]+$', d$Penetration) & d$Penetration > 2000
+            if (any(c)) {
+                d[c, 'Penetration_issues'] <- 1L
+                d[c, 'Penetration_txt']    <- 'Value too high'
+            }
+        }
         ## ** SpeciesCode
-        ## *** Check for existence
-        c <- !(tolower(d$SpeciesCode) %in% fishr::fish_names[['NZFFD code']])
-        d[c, 'SpeciesCode_issues'] <- 1L
-        d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
-
+        if ('SpeciesCode' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$SpeciesCode)
+            if (any(c)) {
+                d[c, 'SpeciesCode_issues'] <- 1L
+                d[c, 'SpeciesCode_txt']    <- 'Value is missing'
+            }
+            ## *** Check for existence
+            c <- !(tolower(d$SpeciesCode) %in% fishr::fish_names[['NZFFD code']])
+            if (any(c)) {
+                d[c, 'SpeciesCode_issues'] <- 1L
+                d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
+            }
+        }
         ## ** Altitude
-        ## *** Check for non-numeric values
-        c <- is.na(as.numeric(d$Altitude))
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Value should be numeric'
-        ## *** Check for negative values
-        c <- d$Altitude < 0
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Value should be positive'
-        ## *** Check for excessive values
-        c <- d$Altitude > 3600
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Value too high'
-        
-        rv$table_js <- paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
-                               as.vector(unlist(sapply(setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
+        if ('Altitude' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$Altitude)
+            if (any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value is missing'
+            }
+            ## *** Check for non-numeric values
+            c <- is.na(as.numeric(d$Altitude))
+            if (any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value should be numeric'
+            }
+            ## *** Check for negative values
+            c <- !is.na(d$Altitude) & d$Altitude < 0
+            if (any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value should be positive'
+            }
+            ## *** Check for excessive values
+            c <- !is.na(d$Altitude) & d$Altitude > 3600
+            if (any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value too high'
+            }
+        }
+
+        if (any(c(cols_needed, cols_opt) %in% names(d))) {
+            rv$table_js <-
+                paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
+                        as.vector(unlist(sapply(setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
                                                 function(v) {
-                                   if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
-                                       c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
-                                                 which(names(d) == v)-1L,
-                                                 which(names(d) == paste0(v, '_txt'))-1L),
-                                         sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
-                                                 which(names(d) == paste0(v, '_issues'))-1L,
-                                                 which(names(d) == v)-1L))
-                                       }
-          }))),
-          "}"), collapse='\n')
-        
+                                                    if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
+                                                        c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+                                                                  which(names(d) == v)-1L,
+                                                                  which(names(d) == paste0(v, '_txt'))-1L),
+                                                          sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
+                                                                  which(names(d) == paste0(v, '_issues'))-1L,
+                                                                  which(names(d) == v)-1L))
+                                                    }
+                                                }))),
+                        "}"), collapse='\n')
+        }
         rv$cleanTable <- d
     })
 
@@ -290,11 +330,9 @@ shinyServer(function(input, output, session) {
     # data table on page 3
     output$newTable <- renderDT({
         req(rv$cleanTable)
-        print(rv$cleanTable)
         d <- rv[['cleanTable']]
         d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
         tabjs <- rv[['table_js']]
-        print(tabjs)
         dt <- DT::datatable(d, rownames = F, selection = 'none',
                             options = list(
                                 paging = FALSE, searching = FALSE, ordering = FALSE
