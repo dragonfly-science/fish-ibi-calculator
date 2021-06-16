@@ -10,3 +10,8 @@ input[type=checkbox]:disabled:checked{
     background-color: #ff0;
     outline: 1px solid #888;
 }
+
+#mainpanel {
+    background-color: #EBEFEF;
+    max-width: 1365px;
+}

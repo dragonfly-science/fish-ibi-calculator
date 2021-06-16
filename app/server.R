@@ -199,6 +199,12 @@ shinyServer(function(input, output, session) {
       updateTabsetPanel(session, "myFirst",
                         selected = "3. Check input data")
     })
+
+    observeEvent(input$to4btn, {
+      updateTabsetPanel(session, "myFirst",
+                        selected = "4. Calculate IBI score")
+    })
+    
     
     
     ## * Table cleaned and showing errors

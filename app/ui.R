@@ -16,7 +16,7 @@ shinyUI(fluidPage(
     ##tags$head(tags$script(HTML(js))),
     useShinyjs(),  # Set up shinyjs
 
-    mainPanel(
+    mainPanel(width = 12, id = 'mainpanel',
         tags$head(
                  tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
              ),
@@ -28,12 +28,18 @@ shinyUI(fluidPage(
                 "1. Upload your file",
                 fluidRow(
                     br(),
-                    column(3,includeMarkdown('./text/welcome.rmd')),
-                    column(7, fluidRow( 
-                                  column(8, fileInput('target_upload', 'Upload CSV file',
-                                                      accept = '.csv')),
-                                  column(4, actionButton('exbtn', 'Demo table'))),
-                           fluidRow(includeMarkdown('./text/needed.rmd')))),
+                    column(
+                        6,
+                        includeMarkdown('./text/welcome.rmd')
+                    ),
+                    column(5, offset = 1,
+                        fileInput('target_upload', 'Upload CSV file', accept = '.csv'),
+                        p('Or use an example dataset'),
+                        actionButton('exbtn', 'Demo table'),
+                        br(), br(),
+                        includeMarkdown('./text/needed.rmd')
+                    )
+                ),
                 br(),
                 hr(),
                 br(),
@@ -51,8 +57,8 @@ shinyUI(fluidPage(
                            strong("Mandatory fields:"),
                            uiOutput('mandfields')
                            )
-                 ,  disabled( column(2, actionButton('checkData', "Check input data")))
-                 , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+                 , disabled( column(2, actionButton('checkData', "Check input data")))
+                 ## , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
                 ),
                 br(),
                 fluidRow(
@@ -68,8 +74,16 @@ shinyUI(fluidPage(
                     DT::DTOutput("dtable")
                 )
             ),
-            tabPanel("3. Check input data",
-                              DT::DTOutput("newTable")),
+            tabPanel(
+                "3. Check input data",
+                fluidRow(
+                    column(2, offset=8,
+                           actionButton('to4btn', 'Calculate IBI score')
+                           )
+                ),
+                fluidRow(DT::DTOutput("newTable")),
+                
+            ),
             tabPanel("4. Calculate IBI score")
         )
     )
