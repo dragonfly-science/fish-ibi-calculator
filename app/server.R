@@ -3,9 +3,9 @@ library(shinyjs)
 library(data.table)
 library(DT)
 
-cols_needed <- c('Month', 'Year', 'Distance', 
-                 'SpeciesCode', 'Site',
-                 'Elevation')
+cols_needed <- c('Stratum', 'Penetration', 
+                 'Altitude', 'SpeciesCode' 
+                 )
 req_fields <- rep(0, length(cols_needed))
 names(req_fields) <- cols_needed
 icons <- c("exclamation-triangle", "check-circle")
@@ -18,23 +18,17 @@ callback <- "$(document).contextMenu({
     trigger: 'right',
     items: {
         // <input type=\"radio\">
-        Month: {
-            name: \"Month\", 
+        Stratum: {
+            name: \"Stratum\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Month',
+            value: 'Stratum',
         },
-        Year: {
-            name: \"Year\", 
+        Penetration: {
+            name: \"Penetration\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Year',
-        },
-        Distance: {
-            name: \"Distance\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Distance'
+            value: 'Penetration'
         },
         SpeciesCode: {
             name: \"Species code\", 
@@ -42,17 +36,11 @@ callback <- "$(document).contextMenu({
             radio: 'radio', 
             value: 'SpeciesCode'
         },
-        Site: {
-            name: \"Site\", 
+        Altitude: {
+            name: \"Altitude\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Site'
-        },
-        Elevation: {
-            name: \"Elevation\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Elevation'
+            value: 'Altitude'
         },
         sep1: \"---------\",
         // <optional>
@@ -67,6 +55,18 @@ callback <- "$(document).contextMenu({
             type: 'radio', 
             radio: 'radio', 
             value: 'Northing'
+        },
+        Location: {
+            name: \"Location (opt)\",
+            type: 'radio',
+            radio: 'radio',
+            value: 'Location'
+        },
+        NZreach: {
+            name: \"NZreach (opt)\",
+            type: 'radio',
+            radio: 'radio',
+            value: 'NZreach'
         }
     },
   events: {
