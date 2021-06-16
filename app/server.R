@@ -5,7 +5,7 @@ library(DT)
 
 cols_needed <- c('Month', 'Year', 'Distance', 
                  'SpeciesCode', 'Site',
-                 'Elevation', 'Count')
+                 'Elevation')
 req_fields <- rep(0, length(cols_needed))
 names(req_fields) <- cols_needed
 icons <- c("exclamation-triangle", "check-circle")
@@ -53,12 +53,6 @@ callback <- "$(document).contextMenu({
             type: 'radio', 
             radio: 'radio', 
             value: 'Elevation'
-        },
-        Count: {
-            name: \"Count\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Count'
         },
         sep1: \"---------\",
         // <optional>
