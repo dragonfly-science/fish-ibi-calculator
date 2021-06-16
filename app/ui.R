@@ -11,7 +11,7 @@ shinyUI(fluidPage(
     title = 'IBI calculator',
     ## Header
     headerPanel(
-        title=tags$a(tags$img(src='topimg.png'), target="_blank")
+        title=tags$a(tags$img(src='header.png'), target="_blank")
     ),
     ##tags$head(tags$script(HTML(js))),
     useShinyjs(),  # Set up shinyjs
