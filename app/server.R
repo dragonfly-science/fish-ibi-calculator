@@ -3,13 +3,14 @@ library(shinyjs)
 library(data.table)
 library(DT)
 library(tidyverse)
+library(quantreg)
 
+load('../fishr/data/species_ibi_metrics.rda', v=T)
 source('../fishr/R/hello.R')
-load('../fishr/data/species_ibi_metrics.rda')
 
 cols_needed <- c('Stratum', 'Penetration', 
-                 'Altitude', 'SpeciesCode' 
-                 )
+                 'Altitude', 'SpeciesCode')
+
 req_fields <- rep(0, length(cols_needed))
 names(req_fields) <- cols_needed
 
@@ -19,7 +20,7 @@ icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
 rv <- NULL
-reactlog::reactlog_enable()
+## reactlog::reactlog_enable()
 
 ## df <- read.csv('~/Downloads/goodtable.csv', stringsAsFactors=F)
 
@@ -409,22 +410,26 @@ shinyServer(function(input, output, session) {
 
         site_metrics_all <- d %>%
             filter(Stratum > 10) %>% 
-            prep.site.metrics()
+            prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
-        qr.1.elev <- qr.construct("metric1", "altitude")
-        qr.2.elev <- qr.construct("metric2", "altitude")
-        qr.3.elev <- qr.construct("metric3", "altitude")
-        qr.4.elev <- qr.construct("metric4", "altitude")
-        qr.5.elev <- qr.construct("metric5", "altitude")
+        qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
+        qr.2.elev <- qr.construct("metric2", "altitude", data = site_metrics_all)
+        qr.3.elev <- qr.construct("metric3", "altitude", data = site_metrics_all)
+        qr.4.elev <- qr.construct("metric4", "altitude", data = site_metrics_all)
+        qr.5.elev <- qr.construct("metric5", "altitude", data = site_metrics_all)
         
-        qr.1.penet <- qr.construct("metric1", "penet")
-        qr.2.penet <- qr.construct("metric2", "penet")
-        qr.3.penet <- qr.construct("metric3", "penet")
-        qr.4.penet <- qr.construct("metric4", "penet")
-        qr.5.penet <- qr.construct("metric5", "penet")
+        qr.1.penet <- qr.construct("metric1", "penet", data = site_metrics_all)
+        qr.2.penet <- qr.construct("metric2", "penet", data = site_metrics_all)
+        qr.3.penet <- qr.construct("metric3", "penet", data = site_metrics_all)
+        qr.4.penet <- qr.construct("metric4", "penet", data = site_metrics_all)
+        qr.5.penet <- qr.construct("metric5", "penet", data = site_metrics_all)
         
         ibi_scores <- site_metrics_all %>% 
-            add.fish.metrics() %>% 
+            add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
+                             q4e=qr.4.elev, q5e=qr.5.elev,
+                             q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
+                             q4p=qr.4.penet, q5p=qr.5.penet
+                             ) %>% 
             add.fish.metric6() %>% 
             add.fish.ibi() %>% 
             cut.fish.ibi() %>% 
