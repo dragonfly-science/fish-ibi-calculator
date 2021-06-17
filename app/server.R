@@ -430,7 +430,13 @@ shinyServer(function(input, output, session) {
             add.fish.metric6() %>% 
             add.fish.ibi() %>% 
             cut.fish.ibi() %>% 
-            nps()
+            nps() %>% 
+          select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
+        
+        DT::datatable(ibi_scores,rownames = F, selection = 'none', width = 600,
+                      options = list(autoWidth = FALSE, scrollCollapse=TRUE
+                                     , paging = nrow(d)>15, pageLength = 15
+                                     , searching = FALSE, ordering = FALSE))
 
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
