@@ -536,7 +536,12 @@ shinyServer(function(input, output, session) {
       
       g
     })
-    
 
+    output$download <- downloadHandler(
+      filename = function(){"ibiScore.csv"},
+      content = function(fname){
+        write.csv(ibiData(), fname)
+      })
+    
 })
 
