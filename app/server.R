@@ -22,7 +22,7 @@ cols <- c('red', 'green')
 rv <- NULL
 ## reactlog::reactlog_enable()
 
-## df <- read.csv('~/Downloads/goodtable.csv', stringsAsFactors=F)
+## df <- read.csv('data/trial.csv', stringsAsFactors=F)
 
 callback <- "$(document).contextMenu({
     selector: '#dtable th',
@@ -318,8 +318,6 @@ shinyServer(function(input, output, session) {
             }
         }
 
-        rv$finalTable <- d
-
         d
         
     })
@@ -409,7 +407,6 @@ shinyServer(function(input, output, session) {
         req(d)
 
         site_metrics_all <- d %>%
-            filter(Stratum > 10) %>% 
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
         qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
@@ -434,9 +431,16 @@ shinyServer(function(input, output, session) {
             add.fish.ibi() %>% 
             cut.fish.ibi() %>% 
             nps()
-        
-        DT::datatable(ibi_scores)
 
+        dt <- DT::datatable(
+            ibi_scores, rownames = F, selection = 'none', width = 600,
+            class = 'nowrap hover compact stripe',
+            options = list(autoWidth = FALSE, scrollCollapse=TRUE, scrollX = TRUE,
+                         paging = nrow(d)>15, pageLength = 15,
+                         searching = FALSE, ordering = FALSE
+                           )
+        )        
+        dt
     }, server = F)
 
 
