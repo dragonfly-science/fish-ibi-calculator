@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinyjs)
 library(DT)
 library(shinyWidgets)
+library(shinycssloaders)
 
 fileInputOnlyButton <- function(..., label="") {
   temp <- fileInput(..., label=label)
@@ -15,6 +16,8 @@ fileInputOnlyButton <- function(..., label="") {
   temp$children[[1]]$children[[1]]$attribs$class <- NULL
   temp
 }
+
+withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
 shinyUI(
     fluidPage(
@@ -141,7 +144,7 @@ shinyUI(
                       ),
             ## * 4. Calculate IBI score
             tabPanel("4. Calculate IBI score",
-                     fluidRow(DT::DTOutput("ibiTable")))
+                     fluidRow(withspinner(DT::DTOutput("ibiTable"))))
         )
     )
     )
