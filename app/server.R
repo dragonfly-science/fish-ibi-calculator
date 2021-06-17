@@ -174,15 +174,16 @@ shinyServer(function(input, output, session) {
     output$dtable <- renderDT({
         d <- rv[['intable']]
         nms <- names(d)
-        dt <- DT::datatable(
-            d, callback = JS(callback), colnames = rv[['tablefields']], rownames = F,
-            selection = 'none', width = 600,
-            class = 'nowrap hover compact stripe',
-            options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
-                         , paging = nrow(d)>15, pageLength = 15
-                         , searching = FALSE, ordering = FALSE
-                           )
-        )
+        dt <- DT::datatable(d
+                          , callback = JS(callback)
+                          , colnames = rv[['tablefields']], rownames = F,
+                            selection = 'none', width = 600,
+                            class = 'nowrap hover compact stripe',
+                            options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
+                                         , paging = nrow(d)>15, pageLength = 15
+                                         , searching = FALSE, ordering = FALSE
+                                           )
+                            )
         sf <- rv[['selfields']]
         goodfields <- sf[sf$good == 1, 'req']
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#E5F5E0")
@@ -220,6 +221,15 @@ shinyServer(function(input, output, session) {
                         selected = "3. Check input data")
     }, label = 'Go to page 3')
 
+    # button to go from tab 2 to 3
+    observe({
+      if(dataissues()) {
+        disable('to4btn')
+      } else{
+        enable('to4btn')
+      }
+    }, label = 'Enable/disable button to next on page 3')
+    
     observeEvent(input$to4btn, {
       updateTabsetPanel(session, "myFirst",
                         selected = "4. Calculate IBI score")
@@ -335,7 +345,7 @@ shinyServer(function(input, output, session) {
     })
 
     
-    output$dataissues <- reactive({
+    dataissues <- reactive({
         d <- cleanTable()
         req(d)
         if (any(grepl('_issues$', names(d))) &&
