@@ -4,6 +4,7 @@ library(data.table)
 library(DT)
 library(tidyverse)
 library(quantreg)
+library(ggplot2)
 
 load('../fishr/data/species_ibi_metrics.rda', v=T)
 source('../fishr/R/hello.R')
@@ -508,5 +509,34 @@ shinyServer(function(input, output, session) {
         )        
         dt
     }, server = F)
+    
+    output$npsGraph <- renderPlot({
+      ibi_scores <- ibiData()
+      req(ibi_scores)
+      
+      group.colors <- c('A' = "#5ac4aa",
+                        'B' = "#4e9786", 
+                        'C' = "#2c5469", 
+                        'D' ="#b03c3c",
+                        'NA' = '#d6dde0')
+      
+      g <- ggplot(ibi_scores, aes(x = nps_score)) + 
+        geom_histogram(stat = "count", fill = group.colors) + 
+        xlab("NPS-FM category") + 
+        ylab("Number of sites") + 
+        theme_bw() +
+        theme(panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.major.y = element_line(size=.1, color="black"),
+              panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank(),
+              panel.border = element_blank(),
+              axis.line = element_line(),
+              axis.text.x=element_text(size = 7))
+      
+      g
+    })
+    
 
 })
+
