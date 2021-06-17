@@ -15,6 +15,7 @@ icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
 rv <- NULL
+reactlog::reactlog_enable()
 
 ## df <- read.csv('~/Downloads/goodtable.csv', stringsAsFactors=F)
 
@@ -96,13 +97,19 @@ shinyServer(function(input, output, session) {
         reqfields = req_fields,
         selfields = data.frame(req = names(req_fields), good = 0L),
         intable = NULL, tablefields = NULL, tablefields_ori = NULL,
-        cleanTable = NULL
+        finalTable = NULL
     )
+
+
+    ## * Data loading
     
     observe({
         inFile <- input$target_upload
         if (is.null(inFile))
             return(NULL)
+        rv[['intable']] <- NULL
+        rv[['ignoredrows']] <- NULL
+        rv[['finalTable']] <- NULL
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
@@ -112,8 +119,13 @@ shinyServer(function(input, output, session) {
         rv[['tablefields_ori']] <- names(df)
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
-    })
+    }, label='File upload')
+    
     observeEvent(input$exbtn, {
+        df <- NULL
+        rv[['intable']] <- NULL
+        rv[['ignoredrows']] <- NULL
+        rv[['finalTable']] <- NULL
         df <- read.csv('data/demo-table.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
@@ -123,17 +135,19 @@ shinyServer(function(input, output, session) {
         rv[['tablefields_ori']] <- names(df)
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
-    })
+    }, label = 'Demo loading')
+
+    ## * List of required fields
     output$mandfields <- renderUI({
         disabled(checkboxGroupInput('mandfields',  label = NULL, choices = cols_needed,
                                     selected = intersect(cols_needed, names(rv$intable))))
     })
-    
     observe({
         updateCheckboxGroupInput(session, 'mandfields',
                                  selected = intersect(cols_needed, names(rv$intable)))
     })
-    
+
+    ## * Renaming fields from context menu
     observeEvent(input$selfield, {
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
@@ -153,16 +167,22 @@ shinyServer(function(input, output, session) {
             rv[['intable']] <- d
             ## reloadData(tableProx, clearSelection='all')
         }
-    })
+    }, label = 'Fields renaming')
 
+    ## * Raw input table
     # data table on page 2
     output$dtable <- renderDT({
         d <- rv[['intable']]
         nms <- names(d)
-        dt <- DT::datatable(d, callback = JS(callback),
-                            colnames = rv[['tablefields']],
-                            options = list(dom='t', ordering=F),
-                            rownames = FALSE)
+        dt <- DT::datatable(
+            d, callback = JS(callback), colnames = rv[['tablefields']], rownames = F,
+            selection = 'none', width = 600,
+            class = 'nowrap hover compact stripe',
+            options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
+                         , paging = nrow(d)>15, pageLength = 15
+                         , searching = FALSE, ordering = FALSE
+                           )
+        )
         sf <- rv[['selfields']]
         goodfields <- sf[sf$good == 1, 'req']
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#E5F5E0")
@@ -192,28 +212,26 @@ shinyServer(function(input, output, session) {
       } else{
         disable('checkData')
       }
-    })
+    }, label = 'Enable/disable button to next on page 2')
     
     # check data button
     observeEvent(input$checkData, {
       updateTabsetPanel(session, "myFirst",
                         selected = "3. Check input data")
-    })
+    }, label = 'Go to page 3')
 
     observeEvent(input$to4btn, {
       updateTabsetPanel(session, "myFirst",
                         selected = "4. Calculate IBI score")
-    })
+    }, label = 'Go to page 4')
     
     
+    ## * Table cleaned and with identified issues
     
-    ## * Table cleaned and showing errors
-    observe({
+    cleanTable <- reactive({
         req(rv$intable)
-        print(head(rv$intable))
         d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
                             cols_needed[cols_opt %in% names(rv$intable)])]
-        print(head(d))
 
         ## ** Penetration
         if ('Penetration' %in% names(d)) {
@@ -285,68 +303,139 @@ shinyServer(function(input, output, session) {
             }
         }
 
-        if (any(c(cols_needed, cols_opt) %in% names(d))) {
-            rv$table_js <-
-                paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
-                        as.vector(unlist(sapply(setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
-                                                function(v) {
-                                                    if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
-                                                        c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
-                                                                  which(names(d) == v)-1L,
-                                                                  which(names(d) == paste0(v, '_txt'))-1L),
-                                                          sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
-                                                                  which(names(d) == paste0(v, '_issues'))-1L,
-                                                                  which(names(d) == v)-1L))
-                                                    }
-                                                }))),
-                        "}"), collapse='\n')
-        }
-        rv$cleanTable <- d
+        rv$finalTable <- d
+
+        d
+        
     })
 
+
+    table_js <- reactive({
+        d <- cleanTable()
+        req(d)
+        
+        ## ** Javascript bit for cell colour and tooltip
+        if (any(c(cols_needed, cols_opt) %in% names(d))) {
+                paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
+                        as.vector(unlist(sapply(
+                            setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
+                            function(v) {
+                                if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
+                                    c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+                                              which(names(d) == v)-1L,
+                                              which(names(d) == paste0(v, '_txt'))-1L),
+                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
+                                              which(names(d) == paste0(v, '_issues'))-1L,
+                                              which(names(d) == v)-1L))
+                                }
+                            }))),
+                        "}"), collapse='\n')
+        }
+        
+    })
+
+    
     output$dataissues <- reactive({
-        d <- rv$cleanTable
-        if (sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) {
+        d <- cleanTable()
+        req(d)
+        if (any(grepl('_issues$', names(d))) &&
+            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
             return(1)
         } else {
             return(0)
         }
-    })
+    }, label = 'Data with issues?')
 
-    observe({
-        d <- rv$cleanTable
+    observeEvent(input$remIssuesBtn, {
+        d <- cleanTable()
         req(d)
+        if (any(grepl('_issues$', names(d)))) {
+            rv$ignoredrows <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0)
+            d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) == 0,]
+        }
+        rv$finalTable <- d
+    }, label = 'Ignore rows with issues')
+    
+    observe({
+        d <- cleanTable()
+        req(d)
+        rv$finalTable <- d
+    })
+    
+    ## * Cleaned table on page 3
+    
+    output$newTable <- renderDT({
+        d <- rv$finalTable
+        req(d)
+        print(head(d))
         if (any(grepl('_issues$', names(d))) &&
             sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
-            ## ** With issues
-            show('withissues-panel')
-            hide('allgood-panel')
-        } else {
-            ## ** No issues
-            hide('withissues-panel')
-            show('allgood-panel')
-        }
-    })
-    
-    # data table on page 3
-    output$newTable <- renderDT({
-        req(rv$cleanTable)
-        d <- rv[['cleanTable']]
-        if (any(grepl('_issues$', names(d)))) {
             d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
-            tabjs <- rv[['table_js']]
+            tabjs <- table_js()
         } else {
-            tabjs <- ''
+            tabjs <- NULL
         }
-        dt <- DT::datatable(d, rownames = F, selection = 'none',
-                            options = list(
-                                paging = FALSE, searching = FALSE, ordering = FALSE
-                              , rowCallback = JS(tabjs)
-                              , columnDefs = list(list(visible=FALSE,
-                                                       targets=grep('_issues$|_txt$', names(d))-1L))
-            )
-            )
+        dt <- DT::datatable(
+            d, rownames = F, selection = 'none', width = 600,
+            class = 'nowrap hover compact stripe',
+            options = list(autoWidth = FALSE, scrollCollapse=TRUE
+                         , paging = nrow(d)>15, pageLength = 15
+                         , searching = FALSE, ordering = FALSE
+                         , rowCallback = JS(tabjs)
+                         , columnDefs = list(list(visible=FALSE,
+                                                  targets=grep('_issues$|_txt$', names(d))-1L))
+                           )
+        )
         dt
     }, server = FALSE)
+
+
+    ## * Feedback on issues
     
+    output$issuesTxt <- renderText({
+        d <- rv$finalTable
+        req(d)
+        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        n.rows.noissues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) == 0)
+        n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
+
+        sprintf('%s<br>%i valid rows%s',
+                ifelse(n.issues == 0, 'No issues found',
+                       sprintf('%i data issues were found', n.issues)),
+                n.rows.noissues,
+                ifelse(n.ignoredrows == 0, '',
+                       sprintf('<br>(%s rows with issues were ignored)', n.ignoredrows)))
+    })
+
+    output$issueImg <- renderImage({
+        d <- rv$finalTable
+        req(d)
+        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        if (n.issues > 0) {
+            list(src = 'data/warning.png',
+                 width = '100px', height = '100px',
+                 alt = 'Warning')
+        } else {
+            list(src = 'data/check.png',
+                 width = '100px', height = '100px',
+                 alt = 'All good')
+        }
+    }, deleteFile=F)
+    
+    output$issuesSubTxt <- renderText({
+        d <- rv$finalTable
+        req(d)
+        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        if (n.issues > 0) {
+            return('Please correct the following issues and re-upload the file')
+        } else {
+            return('The table below will be used as it is to calculate the IBI scores')
+        }
+    })
+
+    observeEvent(input$testbtn, {
+        print(cleanTable())
+        print(rv$finalTable)
+        
+    })
 })

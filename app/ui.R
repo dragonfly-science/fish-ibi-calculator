@@ -93,29 +93,22 @@ shinyUI(fluidPage(
                 br(), br(),
                 fluidRow(
                     column(6,
-                           hidden(wellPanel(
-                               id = 'allgood-panel',
+                           wellPanel(
+                               id = 'issues-panel',
                                fluidRow(
-                                   column(4, icon('check')),
-                                   column(8, h3('No issues found'))
+                                   column(3, imageOutput('issueImg', height='100px', width='100px')),
+                                   column(9, h2(htmlOutput('issuesTxt')))
                                ),
-                               p('The table below will be used as it is to calculate the IBI scores')
-                           )),
-                           hidden(wellPanel(
-                               id = 'withissues-panel',
-                               fluidRow(
-                                   column(4, icon('exclamation-triangle')),
-                                   column(8, h3('Issues were found in the data!'))
-                               ),
-                               p('Please correct the following issues and re-upload the file')
-                           ))
+                               p(textOutput('issuesSubTxt'))
+                           ),
                            ),
                     column(2, offset=4,
-                           actionButton('to4btn', 'Calculate IBI score')
+                           actionButton('remIssuesBtn', 'Ignore issues'),
+                           actionButton('to4btn', 'Calculate IBI score'),
+                           actionButton('testbtn', 'Test')
                            )
                 ),
-                fluidRow(DT::DTOutput("newTable")),
-                
+                fluidRow(DT::DTOutput("newTable"))
                 ),
 
             ## * 4. Calculate IBI score
