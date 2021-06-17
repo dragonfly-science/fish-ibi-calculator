@@ -409,7 +409,6 @@ shinyServer(function(input, output, session) {
         req(d)
 
         site_metrics_all <- d %>%
-            filter(Stratum > 10) %>% 
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
         qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
@@ -433,9 +432,13 @@ shinyServer(function(input, output, session) {
             add.fish.metric6() %>% 
             add.fish.ibi() %>% 
             cut.fish.ibi() %>% 
-            nps()
+            nps() %>% 
+          select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
         
-        DT::datatable(ibi_scores)
+        DT::datatable(ibi_scores,rownames = F, selection = 'none', width = 600,
+                      options = list(autoWidth = FALSE, scrollCollapse=TRUE
+                                     , paging = nrow(d)>15, pageLength = 15
+                                     , searching = FALSE, ordering = FALSE))
 
     }, server = F)
 
