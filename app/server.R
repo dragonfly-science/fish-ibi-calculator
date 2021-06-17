@@ -402,56 +402,7 @@ shinyServer(function(input, output, session) {
         )
         dt
     }, server = FALSE)
-    
-    output$ibiTable <- renderDT({
-        d <- rv$finalTable
-        req(d)
 
-        d$Altitude <- as.numeric(d$Altitude)
-        d$Penetration <- as.numeric(d$Penetration)
-        
-        site_metrics_all <- d %>%
-            prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
-        
-        qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
-        qr.2.elev <- qr.construct("metric2", "altitude", data = site_metrics_all)
-        qr.3.elev <- qr.construct("metric3", "altitude", data = site_metrics_all)
-        qr.4.elev <- qr.construct("metric4", "altitude", data = site_metrics_all)
-        qr.5.elev <- qr.construct("metric5", "altitude", data = site_metrics_all)
-        
-        qr.1.penet <- qr.construct("metric1", "penet", data = site_metrics_all)
-        qr.2.penet <- qr.construct("metric2", "penet", data = site_metrics_all)
-        qr.3.penet <- qr.construct("metric3", "penet", data = site_metrics_all)
-        qr.4.penet <- qr.construct("metric4", "penet", data = site_metrics_all)
-        qr.5.penet <- qr.construct("metric5", "penet", data = site_metrics_all)
-        
-        ibi_scores <- site_metrics_all %>% 
-            add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
-                             q4e=qr.4.elev, q5e=qr.5.elev,
-                             q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
-                             q4p=qr.4.penet, q5p=qr.5.penet
-                             ) %>% 
-            add.fish.metric6() %>% 
-            add.fish.ibi() %>% 
-            cut.fish.ibi() %>% 
-            nps() %>% 
-          select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
-        
-        DT::datatable(ibi_scores,rownames = F, selection = 'none', width = 600,
-                      options = list(autoWidth = FALSE, scrollCollapse=TRUE
-                                     , paging = nrow(d)>15, pageLength = 15
-                                     , searching = FALSE, ordering = FALSE))
-
-        dt <- DT::datatable(
-            ibi_scores, rownames = F, selection = 'none', width = 600,
-            class = 'nowrap hover compact stripe',
-            options = list(autoWidth = FALSE, scrollCollapse=TRUE, scrollX = TRUE,
-                         paging = nrow(d)>15, pageLength = 15,
-                         searching = FALSE, ordering = FALSE
-                           )
-        )        
-        dt
-    }, server = F)
 
 
     ## * Feedback on issues
@@ -502,4 +453,60 @@ shinyServer(function(input, output, session) {
         print(rv$finalTable)
         
     })
+
+
+    ## * IBI scores
+    
+    ibiData <- reactive({
+        d <- rv$finalTable
+        req(d)
+
+        d$Altitude <- as.numeric(d$Altitude)
+        d$Penetration <- as.numeric(d$Penetration)
+        
+        site_metrics_all <- d %>%
+            prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
+        
+        qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
+        qr.2.elev <- qr.construct("metric2", "altitude", data = site_metrics_all)
+        qr.3.elev <- qr.construct("metric3", "altitude", data = site_metrics_all)
+        qr.4.elev <- qr.construct("metric4", "altitude", data = site_metrics_all)
+        qr.5.elev <- qr.construct("metric5", "altitude", data = site_metrics_all)
+        
+        qr.1.penet <- qr.construct("metric1", "penet", data = site_metrics_all)
+        qr.2.penet <- qr.construct("metric2", "penet", data = site_metrics_all)
+        qr.3.penet <- qr.construct("metric3", "penet", data = site_metrics_all)
+        qr.4.penet <- qr.construct("metric4", "penet", data = site_metrics_all)
+        qr.5.penet <- qr.construct("metric5", "penet", data = site_metrics_all)
+        
+        ibi_scores <- site_metrics_all %>% 
+            add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
+                             q4e=qr.4.elev, q5e=qr.5.elev,
+                             q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
+                             q4p=qr.4.penet, q5p=qr.5.penet
+                             ) %>% 
+            add.fish.metric6() %>% 
+            add.fish.ibi() %>% 
+            cut.fish.ibi() %>% 
+            nps()
+
+        ibi_scores
+    })
+    
+    output$ibiTable <- renderDT({
+        ibi_scores <- ibiData()
+        req(ibi_scores)
+        ibi_scores <- ibi_scores %>% select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
+        
+        dt <- DT::datatable(
+            ibi_scores, rownames = F, selection = 'none', width = 600,
+            class = 'nowrap hover compact stripe',
+            options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = ncol(ibi_scores)>15,
+                         paging = nrow(ibi_scores)>15, pageLength = 15,
+                         searching = FALSE, ordering = FALSE
+                           )
+        )        
+        dt
+    }, server = F)
+
 })
