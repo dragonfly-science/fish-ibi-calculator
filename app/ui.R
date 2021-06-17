@@ -55,11 +55,12 @@ shinyUI(
                         ),
                         column(
                             5, offset = 1,
+                            br(), 
                             fluidRow(
                                 column(
                                     6,
                                     fileInputOnlyButton('target_upload', 
-                                                        buttonLabel='Upload CSV file',
+                                                        buttonLabel='Upload CSV file ↑',
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
@@ -79,6 +80,7 @@ shinyUI(
                         tags$img(src="fishing.png", width = '100%')
                     )
                 ),
+                tabPanel('>'),
                 
                 ## * 2. Match headers
                 tabPanel(
@@ -115,6 +117,7 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
+                tabPanel('>'),
 
                 ## * 3. Check input data
                 tabPanel(
@@ -140,6 +143,8 @@ shinyUI(
                     ),
                     fluidRow(DT::DTOutput("newTable"))
                 ),
+                tabPanel('>'),
+                
                 ## * 4. Calculate IBI score
                 tabPanel("4. Calculate IBI score",
                          fluidRow(withspinner(DT::DTOutput("ibiTable"))),

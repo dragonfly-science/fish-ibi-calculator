@@ -339,7 +339,7 @@ shinyServer(function(input, output, session) {
                                     c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
                                               which(names(d) == v)-1L,
                                               which(names(d) == paste0(v, '_txt'))-1L),
-                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#f00\").css(\"color\", \"#fff\").css(\"font-weight\", \"bold\")",
+                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#ff000044\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
                                               which(names(d) == paste0(v, '_issues'))-1L,
                                               which(names(d) == v)-1L))
                                 }

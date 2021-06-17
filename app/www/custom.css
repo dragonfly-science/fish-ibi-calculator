@@ -57,6 +57,13 @@ input[type=checkbox]:disabled:checked{
 
 #mainpanel {
     background-color: #EBEFEF;
+    /* padding-left: 10%; */
+    /* padding-right: 10%; */
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.tab-content {
     padding-left: 10%;
     padding-right: 10%;
 }
@@ -81,3 +88,55 @@ input[type=checkbox]:disabled:checked{
 hr {
     border-top: 1px solid #ccc !important;
 }
+
+.nav-tabs {
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: #D2DCE0 !important;
+}
+
+
+#myFirst > li > a {
+    color: #5C777F !important;
+    font-weight: bold;
+    font-size: 1.1em;
+    /* width: 200px; */
+}
+
+#myFirst > li.active > a{
+    background-color: #D2DCE0 !important;
+    color: #003547 !important;
+    font-weight: bold;
+    border-bottom: 3px solid #00C8A7 !important;
+}
+
+.btn {
+    border-radius: 5px;
+    border-color: #009985;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #009985;
+    padding: 12px 16px;
+    /* height: 50px; */
+}
+.btn[disabled] {
+    border-radius: 5px;
+    border-color: #aaa;
+    color: #000;
+    font-weight: normal;
+    background-color: #aaa;
+}
+.btn:focus, .btn:hover, .btn:activem, .btn:target, .btn:visited {
+    border-radius: 5px !important;
+    border-color: #009985 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    background-color: #00C8A7 !important;
+}
+
+ul {
+    padding-left: 1.1em !important;
+    line-height: 1em;
+}
+
