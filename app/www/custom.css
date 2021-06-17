@@ -1,5 +1,8 @@
 /* #mandfields > div > div:nth-child(1) > label > input.disabled { */
 
+body {
+    color: #003547;
+}
 /* body {  */
 /* 	max-width: 1250px;  */
 /* 	margin: 0 auto !important;  */
