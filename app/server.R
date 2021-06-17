@@ -2,6 +2,9 @@ library(shiny)
 library(shinyjs)
 library(data.table)
 library(DT)
+library(tidyverse)
+
+source('../fishr/R/hello.R')
 
 cols_needed <- c('Stratum', 'Penetration', 
                  'Altitude', 'SpeciesCode' 
@@ -388,6 +391,36 @@ shinyServer(function(input, output, session) {
         )
         dt
     }, server = FALSE)
+    
+    output$ibiTable <- renderDT({
+      d <- rv$newTable
+      df <- DT::datatable(d)
+      #req(d)
+      site_metrics_all <- df %>%
+        filter(Stratum > 10) %>% 
+        prep.site.metrics()
+      
+      qr.1.elev <- qr.construct("metric1", "altitude")
+      qr.2.elev <- qr.construct("metric2", "altitude")
+      qr.3.elev <- qr.construct("metric3", "altitude")
+      qr.4.elev <- qr.construct("metric4", "altitude")
+      qr.5.elev <- qr.construct("metric5", "altitude")
+      
+      qr.1.penet <- qr.construct("metric1", "penet")
+      qr.2.penet <- qr.construct("metric2", "penet")
+      qr.3.penet <- qr.construct("metric3", "penet")
+      qr.4.penet <- qr.construct("metric4", "penet")
+      qr.5.penet <- qr.construct("metric5", "penet")
+      
+      ibi_scores <- site_metrics_all %>% 
+        add.fish.metrics() %>% 
+        add.fish.metric6() %>% 
+        add.fish.ibi() %>% 
+        cut.fish.ibi() %>% 
+        nps()
+      
+      ibi_scores
+    }, server = F)
 
 
     ## * Feedback on issues

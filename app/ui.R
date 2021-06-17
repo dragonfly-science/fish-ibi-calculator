@@ -112,7 +112,8 @@ shinyUI(fluidPage(
                 ),
 
             ## * 4. Calculate IBI score
-            tabPanel("4. Calculate IBI score")
+            tabPanel("4. Calculate IBI score",
+                     fluidRow(DT::DTOutput("ibiTable")))
         )
     )
     )
