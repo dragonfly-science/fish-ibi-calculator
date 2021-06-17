@@ -147,8 +147,10 @@ shinyUI(
                 
                 ## * 4. Calculate IBI score
                 tabPanel("4. Calculate IBI score",
+                         strong("Your IBI score has been calculated successfully."),
+                         downloadButton('download',"Download results"),
+                         fluidRow(withspinner(plotOutput("npsGraph"))),
                          fluidRow(withspinner(DT::DTOutput("ibiTable"))),
-                         fluidRow(withspinner(plotOutput("npsGraph")))
                          )
             )
         )

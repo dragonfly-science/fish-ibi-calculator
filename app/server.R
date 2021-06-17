@@ -133,7 +133,7 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- NULL
         rv[['ignoredrows']] <- NULL
         rv[['finalTable']] <- NULL
-        df <- read.csv('data/demo-table.csv', header = TRUE, stringsAsFactors = F)
+        df <- read.csv('data/trial.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -536,7 +536,12 @@ shinyServer(function(input, output, session) {
       
       g
     })
-    
 
+    output$download <- downloadHandler(
+      filename = function(){"ibiScore.csv"},
+      content = function(fname){
+        write.csv(ibiData(), fname)
+      })
+    
 })
 
