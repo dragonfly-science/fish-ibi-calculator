@@ -23,6 +23,7 @@ cols <- c('red', 'green')
 rv <- NULL
 ## reactlog::reactlog_enable()
 
+
 ## df <- read.csv('data/trial.csv', stringsAsFactors=F)
 ## df <- read.csv('data/demo-table.csv', stringsAsFactors=F)
 
@@ -98,7 +99,10 @@ callback <- "$(document).contextMenu({
   }
 });"
 
+
 shinyServer(function(input, output, session) {
+
+    shinyjs::disable(selector = '#myFirst li a[data-value=">"]')
     
     rv <- reactiveValues(
         reqfields = req_fields,
@@ -107,7 +111,27 @@ shinyServer(function(input, output, session) {
         finalTable = NULL
     )
 
-
+    observe({
+        if (is.null(rv$intable)) {
+            shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
+            shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
+            shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
+        } else {
+            shinyjs::enable(selector = '#myFirst li a[data-value="2. Match headers"]')
+        }
+        if (!is.null(rv$selfields) && all(rv$selfields$good == 1)) {
+            shinyjs::enable(selector = '#myFirst li a[data-value="3. Check input data"]')
+        } else {
+            shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
+        }
+        if (!is.null(dataissues()) && !dataissues()) {
+            shinyjs::enable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
+        } else {
+            shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
+        }
+        
+    })
+    
     ## * Data loading
     
     observe({

@@ -17,6 +17,23 @@ fileInputOnlyButton <- function(..., label="") {
     temp
 }
 
+## jscode <- "
+## shinyjs.disableTab = function(name) {
+##   var tab = $('.nav li a[data-value=' + name + ']');
+##   tab.bind('click.tab', function(e) {
+##     e.preventDefault();
+##     return false;
+##   });
+##   tab.addClass('disabled');
+## }
+
+## shinyjs.enableTab = function(name) {
+##   var tab = $('.nav li a[data-value=' + name + ']');
+##   tab.unbind('click.tab');
+##   tab.removeClass('disabled');
+## }
+## "
+
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
 shinyUI(
@@ -33,7 +50,8 @@ shinyUI(
         ),
         
         useShinyjs(),  # Set up shinyjs
-
+        ## extendShinyjs(text = jscode, functions = c('disableTab', 'enableTab')),
+        
         mainPanel(
             width = 12, id = 'mainpanel',
             tags$head(
@@ -80,7 +98,9 @@ shinyUI(
                         tags$img(src="fishing.png", width = '100%')
                     )
                 ),
-                tabPanel('>'),
+                ## div(class='tab-pane disabled', id = 'sep1', title = '>'),
+                ## HTML("<li>\></li>"), #tabPanel('>'),
+                tabPanel('>', id='sep1'),
                 
                 ## * 2. Match headers
                 tabPanel(

@@ -140,3 +140,34 @@ ul {
     line-height: 1em;
 }
 
+/* #sep1 { */
+/*     pointer-events: none !important; */
+/* } */
+/* .wrapper { */
+/* } */
+#myFirst li a[data-value=">"] {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    width: 1vw;
+}
+
+#myFirst li a[disabled] {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    color: #AEBBBF !important;
+    
+}
+
+#myFirst li a[data-value="1. Upload your file"] {
+    width: 19vw;
+}
+#myFirst li a[data-value="2. Match headers"] {
+    width: 19vw;
+}
+#myFirst li a[data-value="3. Check input data"] {
+    width: 19vw;
+}
+#myFirst li a[data-value="4. Calculate IBI score"] {
+    width: 19vw;
+}
+
