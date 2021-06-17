@@ -5,6 +5,7 @@ library(DT)
 library(tidyverse)
 
 source('../fishr/R/hello.R')
+load('../fishr/data/species_ibi_metrics.rda')
 
 cols_needed <- c('Stratum', 'Penetration', 
                  'Altitude', 'SpeciesCode' 
@@ -438,8 +439,8 @@ shinyServer(function(input, output, session) {
     output$issuesTxt <- renderText({
         d <- rv$finalTable
         req(d)
-        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
         n.rows.noissues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) == 0)
+        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
         n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
 
         sprintf('%s<br>%i valid rows%s',
