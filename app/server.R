@@ -23,6 +23,7 @@ rv <- NULL
 ## reactlog::reactlog_enable()
 
 ## df <- read.csv('data/trial.csv', stringsAsFactors=F)
+## df <- read.csv('data/demo-table.csv', stringsAsFactors=F)
 
 callback <- "$(document).contextMenu({
     selector: '#dtable th',
@@ -406,6 +407,9 @@ shinyServer(function(input, output, session) {
         d <- rv$finalTable
         req(d)
 
+        d$Altitude <- as.numeric(d$Altitude)
+        d$Penetration <- as.numeric(d$Penetration)
+        
         site_metrics_all <- d %>%
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
