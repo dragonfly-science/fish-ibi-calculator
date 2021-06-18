@@ -1,0 +1,1 @@
+Moderate integrity of fish community. Habitat and/or migratory access are reduced and show some signs of stress.

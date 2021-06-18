@@ -1,0 +1,1 @@
+High integrity of fish community. Habitat and migratory access have minimal degradation.
