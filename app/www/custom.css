@@ -196,7 +196,7 @@ ul {
 #myFirst li a[data-value="<i class=\"glyphicon glyphicon-menu-right arrowico\" role=\"presentation\" aria-label=\"menu-right icon\"></i>"] {
     pointer-events: none !important;
     cursor: not-allowed;
-    width: 4vw;
+    width: 75px;
 }
 /* #myFirst li a[data-value=" "] { */
 /*     pointer-events: none !important; */
