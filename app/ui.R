@@ -164,12 +164,20 @@ shinyUI(
                 
                 ## * 4. Calculate IBI score
                 tabPanel("4. Calculate IBI score",
-                         br(),br(),
-                         headerPanel(
-                             fluidRow(
-                                 column(6,div(strong("Your IBI score has been calculated successfully.")))
-                                 , column(4,div(downloadButton('download',"Download results ↓ ",icon = icon(""),style='font-size:80%')), offset = 2,
-                                         ))
+                         fluidRow(
+                             br(),br(),
+                             column(
+                                 7,
+                                 h2(includeMarkdown('text/page-4-title.md'))),
+                             column(
+                                 5,
+                                 fluidRow(
+                                     column(
+                                         6,""),
+                                     column(6,
+                                            div(downloadButton('download',"Download results ↓ ",icon = icon(""),style='font-size:100%')))
+                                 )
+                             )
                          ),
                          br(), br(),
                          fluidRow(column(2, "View by"),

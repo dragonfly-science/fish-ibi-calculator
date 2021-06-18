@@ -1,0 +1,1 @@
+Your IBI score has been calculated successfully
