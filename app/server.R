@@ -570,7 +570,14 @@ shinyServer(function(input, output, session) {
               panel.border = element_blank(),
               axis.line = element_line(),
               axis.line.y = element_blank(),
-              axis.text.x=element_text(size = 7))
+              axis.text.x=element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+              axis.ticks = element_blank()) +
+        theme(plot.margin=unit(c(0.5, 0.5, 0.5, 0.5),"cm"))+
+        theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+        theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+      
+      
+        
       
       g
     })
