@@ -171,16 +171,18 @@ shinyUI(
                          headerPanel(
                              fluidRow(
                                  column(6,div(strong("Your IBI score has been calculated successfully.")))
-                                 , column(4,div(downloadButton('download',"Download results", style='font-size:80%')), offset = 2,
+                                 , column(4,div(downloadButton('download',"Download results ↓ ",icon = icon(""),style='font-size:80%')), offset = 2,
                                          ))
                          ),
                          br(), br(),
-                         fluidRow(column(1, "View by"),
+                         fluidRow(column(2, "View by"),
                                   column(width = 3, selectInput("download", "", choices = c("NPS-FM category"))),
                                   column(width = 3, selectInput("download", "", choices = c("NPS-FM category"))),
-                                  offset = 5),
+                                  offset = 4),
                          br(),
                          hr(), 
+                         #br(),
+                         fluidRow(column(width = 6,strong("Scores across number of sites"))),
                          br(),
                          fluidRow(column(width = 6, withspinner(plotOutput("npsGraph")))),
                          br(), br(),

@@ -545,9 +545,10 @@ shinyServer(function(input, output, session) {
                         'NA' = '#d6dde0')
       
       g <- ggplot(ibi_scores, aes(x = nps_score)) + 
-        geom_histogram(stat = "count", fill = group.colors) + 
+        geom_histogram(stat = "count", fill = group.colors, alpha = 0.9) + 
         xlab("NPS-FM category") + 
         ylab("Number of sites") + 
+        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
         theme_bw() +
         theme(panel.grid.major.x = element_blank(),
               panel.grid.minor.x = element_blank(),
@@ -556,6 +557,7 @@ shinyServer(function(input, output, session) {
               panel.grid.minor = element_blank(),
               panel.border = element_blank(),
               axis.line = element_line(),
+              axis.line.y = element_blank(),
               axis.text.x=element_text(size = 7))
       
       g
