@@ -1,0 +1,1 @@
+Low integrity of fish community. Habitat and/or migratory access is considerably impairing and stressing the community.
