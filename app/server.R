@@ -20,6 +20,8 @@ cols_opt <- c('Easting', 'Northing', 'Location', 'NZreach')
 icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
+
+
 rv <- NULL
 ## reactlog::reactlog_enable()
 
@@ -256,10 +258,13 @@ shinyServer(function(input, output, session) {
     observe({
       if(dataissues()) {
         disable('to4btn')
+        enable('remIssuesBtn')
       } else {
         enable('to4btn')
+        disable('remIssuesBtn')
       }
     }, label = 'Enable/disable button to next on page 3')
+
     
     observeEvent(input$to4btn, {
       updateTabsetPanel(session, "myFirst",
@@ -418,7 +423,7 @@ shinyServer(function(input, output, session) {
             d, rownames = F, selection = 'none', width = 600,
             class = 'nowrap hover compact stripe',
             options = list(autoWidth = FALSE, scrollCollapse=TRUE
-                         , paging = nrow(d)>15, pageLength = 15
+                         , paging = nrow(d)>15, pageLength = 15, lengthChange = F
                          , searching = FALSE, ordering = FALSE
                          , rowCallback = JS(tabjs)
                          , columnDefs = list(list(visible=FALSE,
@@ -444,9 +449,16 @@ shinyServer(function(input, output, session) {
                        sprintf('%i data issues were found', n.issues)),
                 n.rows.noissues,
                 ifelse(n.ignoredrows == 0, '',
-                       sprintf('<br>(%s rows with issues were ignored)', n.ignoredrows)))
+                       sprintf('<br>(%s rows with issues were excluded)', n.ignoredrows)))
     })
-
+    output$issuesIcon <- renderText({
+        if (dataissues()) {
+            as.character(icon('exclamation-triangle', class='dangerico'))
+        } else {
+            as.character(icon('check-square', class='nodangerico'))
+        }
+    })
+    
     output$issueImg <- renderImage({
         d <- rv$finalTable
         req(d)

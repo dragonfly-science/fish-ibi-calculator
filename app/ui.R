@@ -4,6 +4,7 @@ library(shinyjs)
 library(DT)
 library(shinyWidgets)
 library(shinycssloaders)
+library(data.table)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
@@ -16,23 +17,6 @@ fileInputOnlyButton <- function(..., label="") {
     temp$children[[1]]$children[[1]]$attribs$class <- NULL
     temp
 }
-
-## jscode <- "
-## shinyjs.disableTab = function(name) {
-##   var tab = $('.nav li a[data-value=' + name + ']');
-##   tab.bind('click.tab', function(e) {
-##     e.preventDefault();
-##     return false;
-##   });
-##   tab.addClass('disabled');
-## }
-
-## shinyjs.enableTab = function(name) {
-##   var tab = $('.nav li a[data-value=' + name + ']');
-##   tab.unbind('click.tab');
-##   tab.removeClass('disabled');
-## }
-## "
 
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
@@ -50,7 +34,6 @@ shinyUI(
         ),
         
         useShinyjs(),  # Set up shinyjs
-        ## extendShinyjs(text = jscode, functions = c('disableTab', 'enableTab')),
         
         mainPanel(
             width = 12, id = 'mainpanel',
@@ -66,14 +49,16 @@ shinyUI(
                 tabPanel(
                     "1. Upload your file",
                     fluidRow(
-                        br(),
+                        br(),br(),
                         column(
                             6,
-                            includeMarkdown('./text/welcome.rmd')
+                            h2(includeMarkdown('text/page-1-title.md')),
+                            br(),
+                            h5(includeMarkdown('text/page-1-description.md'))
+                            ## includeMarkdown('./text/welcome.rmd')
                         ),
                         column(
                             5, offset = 1,
-                            br(), 
                             fluidRow(
                                 column(
                                     6,
@@ -86,44 +71,51 @@ shinyUI(
                                        actionButton('exbtn', 'Use demo table'))
                             ),
                             br(), 
-                            includeMarkdown('./text/needed.rmd')
+                            h6(includeMarkdown('text/page-1-requirements.md'))
                         )
                     ),
                     br(),
                     hr(),
                     br(),
-                    includeMarkdown('./text/about.rmd'),
-                    br(),
+                    h3(includeMarkdown('text/page-1-about-title.md')),
+                    div(class = 'twocols', h5(includeMarkdown('text/page-1-about.md'))),
+                    br(),br(),
                     span(
-                        tags$img(src="fishing.png", width = '100%')
+                        tags$img(src="fishing.png", width = '100%'),
+                        h5(includeMarkdown('text/page-1-image-caption.md'))
                     )
                 ),
                 ## div(class='tab-pane disabled', id = 'sep1', title = '>'),
                 ## HTML("<li>\></li>"), #tabPanel('>'),
-                tabPanel('>', id='sep1'),
+
+                ## tabPanel('>', id='sep1'),
+                ## tabPanel(' ', id='sep1'),
+                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                ## tabPanel(div('a', class = 'arrow'), id='sep1'),
+                ## tabPanel(title=tags$img(src="arrow-right.png"), id='sep1'),
                 
                 ## * 2. Match headers
                 tabPanel(
                     "2. Match headers",
                     fluidRow(
-                        br(),
-                        column(5,
-                               includeMarkdown('./text/matching.rmd')
+                        br(), br(),
+                        column(6,
+                               h2(includeMarkdown('text/page-2-title.md')),
+                               br(),
+                               h5(includeMarkdown('text/page-2-description.md')),
                                ),
-                        column(4, offset = 1,
-                               br(), br(),
+                        column(3, offset = 1,
                                strong("Mandatory fields:"),
                                uiOutput('mandfields')
                                )
                       , disabled(
                             column(2,
-                                   br(), br(),
                                    actionButton('checkData', "Check input data")
                                    )
                         )
                         ## , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
                     ),
-                    br(),
+                    br(), br(),
                     fluidRow(
                         tags$head(
                                  tags$link(
@@ -137,25 +129,29 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
-                tabPanel('>'),
+                ## tabPanel('>'),
+                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
 
                 ## * 3. Check input data
                 tabPanel(
                     "3. Check input data",
                     br(), br(),
                     fluidRow(
-                        column(6,
+                        column(8,
                                wellPanel(
                                    id = 'issues-panel',
                                    fluidRow(
-                                       column(3, imageOutput('issueImg', height='100px', width='100px')),
+                                       column(3, class='smallcol', align='center',
+                                              uiOutput('issuesIcon')
+                                             ),
+                                              ## imageOutput('issueImg', height='100px', width='100px')),
                                        column(9, h2(htmlOutput('issuesTxt')))
                                    ),
-                                   p(textOutput('issuesSubTxt'))
+                                   h5(textOutput('issuesSubTxt'))
                                ),
                                ),
-                        column(2, offset=4,
-                               actionButton('remIssuesBtn', 'Ignore issues'),
+                        column(2, offset = 2, align = 'right',
+                               actionButton('remIssuesBtn', 'Exclude issues'),
                                br(),br(),
                                actionButton('to4btn', 'Calculate IBI score')
                                ## , actionButton('testbtn', 'Test')
@@ -163,7 +159,8 @@ shinyUI(
                     ),
                     fluidRow(DT::DTOutput("newTable"))
                 ),
-                tabPanel('>'),
+                ## tabPanel('>'),
+                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
                 
                 ## * 4. Calculate IBI score
                 tabPanel("4. Calculate IBI score",
@@ -172,7 +169,13 @@ shinyUI(
                          fluidRow(withspinner(plotOutput("npsGraph"))),
                          fluidRow(withspinner(DT::DTOutput("ibiTable"))),
                          )
+            ),
+            
+            span(
+                br(),br(), br(),
+                tags$img(src="footer.png", width = '100%')
             )
         )
+                
     )
 )

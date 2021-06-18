@@ -1,8 +1,18 @@
+/* @import url("https://fonts.googleapis.com/css?family=Merriweather"); */
+/* @import url("https://fonts.googleapis.com/css?family=Maven+Pro"); */
+/* @import url('https://fonts.googleapis.com/css?family=Roboto|Raleway'); */
 /* #mandfields > div > div:nth-child(1) > label > input.disabled { */
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Merriweather&display=swap');
 
 body {
-    color: #003547;
+    color: #003147;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 24px;
 }
+
 /* body {  */
 /* 	max-width: 1250px;  */
 /* 	margin: 0 auto !important;  */
@@ -56,7 +66,7 @@ input[type=checkbox]:disabled:checked{
 }
 
 #mainpanel {
-    background-color: #EBEFEF;
+    background-color: #ECEFF0;
     /* padding-left: 10%; */
     /* padding-right: 10%; */
     padding-left: 0;
@@ -73,7 +83,11 @@ input[type=checkbox]:disabled:checked{
 }
 
 .h2, h2 {
-    /* font-family: 'Titillium Web', sans-serif !important; */
+    font-family: 'Merriweather', serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 35px;
     /* font-family: 'Roboto', sans-serif !important; */
     /* font-weight: bold; */
     /* color: #279BC6; */
@@ -85,39 +99,170 @@ input[type=checkbox]:disabled:checked{
     /* color: #5c640f; */
 }
 
-hr {
-    border-top: 1px solid #ccc !important;
+.h3, h3 {
+    font-family: 'Merriweather', serif;
+    font-style: normal;
+    font-weight: 900 !important;
+    font-size: 20px;
+    line-height: 25px;
+    /* font-family: 'Roboto', sans-serif !important; */
+    /* font-weight: bold; */
+    /* color: #279BC6; */
+    /* text-shadow: 0px 0px 7px #fff; */
+    /* text-align: left; */
+    margin-top: 0px;
+    margin-bottom: 0px;
+    /* font-size: 4em; */
+    /* color: #5c640f; */
 }
+
+/* p { */
+/*     color: #003147; */
+/*     font-family: Lato; */
+/*     font-style: normal; */
+/*     font-weight: normal; */
+/*     font-size: 18px; */
+/*     line-height: 24px; */
+/* } */
+
+.h5, h5 {
+    color: #003147;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.h6, h6 {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;    
+    color: #003147;
+}
+
+hr {
+    border-top: 1px solid #D4DDE1 !important;
+}
+
+
+/** Tab panels **/
 
 .nav-tabs {
     padding-left: 10%;
     padding-right: 10%;
-    background-color: #D2DCE0 !important;
+    background-color: #D4DDE1 !important;
 }
 
-
 #myFirst > li > a {
-    color: #5C777F !important;
-    font-weight: bold;
-    font-size: 1.1em;
+    color: #607781 !important;
+    text-align: center;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 29px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     /* width: 200px; */
 }
 
-#myFirst > li.active > a{
-    background-color: #D2DCE0 !important;
-    color: #003547 !important;
+#myFirst > li.active > a {
+    background-color: unset !important;
+    color: #003147 !important;
     font-weight: bold;
-    border-bottom: 3px solid #00C8A7 !important;
+    border-bottom: 3px solid #00C7A8 !important;
 }
 
+ul {
+    /* position:absolute; */
+    /* width: 1440px; */
+    /* left: 0px; */
+    /* top: 126px; */
+    /* height: 80px; */
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+    /* height: 70px; */
+    /* vertical-align: bottom; */
+}
+
+/* #sep1 { */
+/*     pointer-events: none !important; */
+/* } */
+/* .wrapper { */
+/* } */
+#myFirst li a[data-value="<i class=\"glyphicon glyphicon-menu-right arrowico\" role=\"presentation\" aria-label=\"menu-right icon\"></i>"] {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    width: 4vw;
+}
+/* #myFirst li a[data-value=" "] { */
+/*     pointer-events: none !important; */
+/*     cursor: not-allowed; */
+/*     width: 1vw; */
+/*     background-image: url('right-arrow2.png'); */
+/*     height: 100%; */
+/*     background-position: center; */
+/*     background-repeat: no-repeat; */
+/*     background-size: cover; */
+/* } */
+
+#myFirst li a[disabled] {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    color: #AEBBBF !important;
+    
+}
+
+/* #myFirst li a[data-value="1. Upload your file"] { */
+/*     width: 100%; */
+/* } */
+/* #myFirst li a[data-value="2. Match headers"] { */
+/*     width: 100%; */
+/* } */
+/* #myFirst li a[data-value="3. Check input data"] { */
+/*     width: 100%; */
+/* } */
+/* #myFirst li a[data-value="4. Calculate IBI score"] { */
+/*     width: 100%; */
+/* } */
+
+
+
+.arrowico {
+    top: 4px;
+    color: #bbb;
+}
+
+.dangerico {
+    color: #BF2F37;
+    font-size: 80px !important;
+}
+.nodangerico {
+    color: #00C7A8;
+    font-size: 80px !important;
+}
+
+
+
+/** Buttons **/
+
 .btn {
-    border-radius: 5px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    border-radius: 3px;
     border-color: #009985;
     color: #fff;
     font-weight: bold;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
     background-color: #009985;
     padding: 12px 16px;
+    width: 200px;
     /* height: 50px; */
 }
 .btn[disabled] {
@@ -135,39 +280,70 @@ hr {
     background-color: #00C8A7 !important;
 }
 
-ul {
-    padding-left: 1.1em !important;
-    line-height: 1em;
+
+.arrow {
+    /* arrow */
+    position: relative;
+    width: 46.85px;
+    height: 32.74px;
+    opacity: 0.2;
+
+    /* Group */
+    position: absolute;
+    left: 9.02%;
+    right: 10.35%;
+    top: 10.31%;
+    bottom: 10.31%;
+
+    /* Vector */
+    position: absolute;
+    left: 9.02%;
+    right: 15.5%;
+    top: 50%;
+    bottom: 50%;
+
+    /* MFE grey dark */
+    border: 3px solid #607781;
+
+    /* Vector */
+    position: absolute;
+    left: 61.92%;
+    right: 10.35%;
+    top: 10.31%;
+    bottom: 10.31%;
+
+    /* MFE grey dark */
+    border: 3px solid #607781;
 }
 
-/* #sep1 { */
-/*     pointer-events: none !important; */
-/* } */
-/* .wrapper { */
-/* } */
-#myFirst li a[data-value=">"] {
-    pointer-events: none !important;
-    cursor: not-allowed;
-    width: 1vw;
+.twocols {
+    column-count: 2;
+    column-gap: 40px;
 }
 
-#myFirst li a[disabled] {
-    pointer-events: none !important;
-    cursor: not-allowed;
-    color: #AEBBBF !important;
+h6 > ul, h6 > li {
+    list-style-type: disc;
+    list-style-position: inside;
+    /* padding: 10px 0 10px 20px; */
+    text-indent: -1em;
     
+    /* list-style-position: outside !important; */
+    /* text-indent: -0.5em !important; */
+    padding-left: 1.2em !important;
 }
 
-#myFirst li a[data-value="1. Upload your file"] {
-    width: 19vw;
-}
-#myFirst li a[data-value="2. Match headers"] {
-    width: 19vw;
-}
-#myFirst li a[data-value="3. Check input data"] {
-    width: 19vw;
-}
-#myFirst li a[data-value="4. Calculate IBI score"] {
-    width: 19vw;
+
+#issues-panel {
+    background-color: unset;
+    border: unset;
+    box-shadow: unset;
+    padding-top: 0px;
 }
 
+.smallcol {
+    width: 120px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+    border-right: 1px solid #D4DDE1 !important;
+    /* background-color: red; */
+}
