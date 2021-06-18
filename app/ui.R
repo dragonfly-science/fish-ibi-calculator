@@ -8,8 +8,7 @@ library(data.table)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
-    ## Cut away the label
-    temp$children[[1]] <- NULL
+    temp$children[[1]] <- NULL ## Cut away the label
     ## Cut away the input field (after label is cut, this is position 1 now)
     temp$children[[1]]$children[[2]] <- NULL
     ## Remove input group classes (makes button flat on one side)
@@ -55,7 +54,6 @@ shinyUI(
                             h2(includeMarkdown('text/page-1-title.md')),
                             br(),
                             h5(includeMarkdown('text/page-1-description.md'))
-                            ## includeMarkdown('./text/welcome.rmd')
                         ),
                         column(
                             5, offset = 1,
@@ -97,24 +95,22 @@ shinyUI(
                 ## * 2. Match headers
                 tabPanel(
                     "2. Match headers",
+                    br(), br(),
                     fluidRow(
-                        br(), br(),
-                        column(6,
+                        column(7,
                                h2(includeMarkdown('text/page-2-title.md')),
                                br(),
-                               h5(includeMarkdown('text/page-2-description.md')),
+                               h5(includeMarkdown('text/page-2-description.md'))
                                ),
-                        column(3, offset = 1,
-                               strong("Mandatory fields:"),
-                               uiOutput('mandfields')
-                               )
-                      , disabled(
-                            column(2,
+                        column(3, offset = 2 #, align = 'right'
+                             , disabled(
                                    actionButton('checkData', "Check input data")
-                                   )
-                        )
-                        ## , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+                               )
+                             , br(), br(), br()
+                             , uiOutput('mandfields')
+                               )
                     ),
+                    ## , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
                     br(), br(),
                     fluidRow(
                         tags$head(
@@ -137,7 +133,7 @@ shinyUI(
                     "3. Check input data",
                     br(), br(),
                     fluidRow(
-                        column(8,
+                        column(9, id='rescol1',
                                wellPanel(
                                    id = 'issues-panel',
                                    fluidRow(
@@ -150,7 +146,7 @@ shinyUI(
                                    h5(textOutput('issuesSubTxt'))
                                ),
                                ),
-                        column(2, offset = 2, align = 'right',
+                        column(3, id='rescol2', align = 'right',
                                actionButton('remIssuesBtn', 'Exclude issues'),
                                br(),br(),
                                actionButton('to4btn', 'Calculate IBI score')

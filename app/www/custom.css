@@ -261,7 +261,7 @@ ul {
     font-weight: bold;
     /* font-size: 1.1em; */
     background-color: #009985;
-    padding: 12px 16px;
+    padding: 14px 18px;
     width: 200px;
     /* height: 50px; */
 }
@@ -338,6 +338,7 @@ h6 > ul, h6 > li {
     border: unset;
     box-shadow: unset;
     padding-top: 0px;
+    padding-left: 0px;
 }
 
 .smallcol {
@@ -346,4 +347,133 @@ h6 > ul, h6 > li {
     /* padding-right: 20px; */
     border-right: 1px solid #D4DDE1 !important;
     /* background-color: red; */
+}
+
+#mandfields {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;    
+    color: #003147;
+    /* float: left; */
+    /* color: #AEBBBF !important; */
+}
+
+.fa-check {
+    color: #00C7A8;
+    font-size: 20px !important;
+}
+
+#mandfields .control-label {
+    padding-bottom: 15px;
+}
+
+.pretty.p-icon .state .icon {
+    top: calc((0% - (100% - 0.4em)) - 8%) !important;
+}
+
+#mandfields input[type=checkbox]:not(:checked) {
+    background-color: #fff !important;
+    background: #fff !important;
+}
+
+#manfields .state label:before {
+      background-color: #fff !important;
+}
+
+table.dataTable thead th,
+table.dataTable thead td {
+    /* , */
+    /* table.dataTable thead tr, */
+    /* table.dataTable thead td, */
+    /* table.dataTable tbody th, */
+    /* table.dataTable tbody tr, */
+    background-color: #D4DDE1;
+    border-bottom: unset !important;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 30px;
+    color: #003147;
+    padding-left: 15px !important;
+    
+    /* border: 1px solid #607781; */
+}
+
+table.dataTable thead tr {
+    /* border: 1px solid #607781; */
+}
+table.dataTable tbody {
+    border: 1px solid #607781;
+}
+
+table.dataTable.no-footer {
+    border: unset !important;
+}
+table.dataTable tbody td {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 30px;
+    color: #003147;
+    padding-left: 15px !important;
+    /* border-left: 1px solid #D4DDE1 !important; */
+    /* border: 1px solid #D4DDE1 !important; */
+    /* , */
+    /* table.dataTable thead tr, */
+    /* table.dataTable thead td, */
+    /* table.dataTable tbody th, */
+    /* table.dataTable tbody tr, */
+    /* background-color: #D4DDE1; */
+    /* border-bottom: unset !important; */
+}
+
+.dataTables_info,
+.dataTables_paginate {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 30px;
+    color: #003147;
+}
+
+table {
+    /* border: 1px solid #D4DDE1; */
+    border-collapse: collapse;
+}
+    
+table td + td, table tr + tr {
+    /* border-collapse: collapse; */
+    border-left: 1px solid #D4DDE1;
+    /* border-bottom: 1px solid #D4DDE1; */
+    /* border: 1px solid #D4DDE1; */
+}
+table td {
+    /* border-collapse: collapse; */
+    /* border-left: 1px solid #D4DDE1; */
+    border-bottom: 1px solid #D4DDE1;
+    /* border: 1px solid #D4DDE1; */
+}
+
+/* table, th, td { */
+/*     border-collapse: collapse; */
+/*     border-left: 1px solid #D4DDE1; */
+/*     border-left: 1px solid #D4DDE1; */
+/* } */
+table thead th + th,
+table thead td + td {
+    border-left: 1px solid #607781;
+    /* border-right: 1px solid #607781; */
+    border-collapse: collapse;
+}
+
+#rescol1, #rescol2 {
+    padding-left: 0px;
+    padding-right: 0px;
 }

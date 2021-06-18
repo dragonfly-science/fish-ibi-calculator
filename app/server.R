@@ -5,6 +5,7 @@ library(DT)
 library(tidyverse)
 library(quantreg)
 library(ggplot2)
+library(shinyWidgets)
 
 load('../fishr/data/species_ibi_metrics.rda', v=T)
 source('../fishr/R/hello.R')
@@ -172,13 +173,25 @@ shinyServer(function(input, output, session) {
 
     ## * List of required fields
     output$mandfields <- renderUI({
-        disabled(checkboxGroupInput('mandfields',  label = NULL, choices = cols_needed,
-                                    selected = intersect(cols_needed, names(rv$intable))))
+        ## checkboxGroupInput('mandfields',  label = 'Mandatory fields:', choices = cols_needed,
+        ##                    selected = intersect(cols_needed, names(rv$intable)))
+        ## awesomeCheckboxGroup('mandfields',  label = 'Mandatory fields:', choices = cols_needed,
+        ##                      selected = intersect(cols_needed, names(rv$intable)))
+        prettyCheckboxGroup(inputId='mandfields',  label = 'Mandatory fields:', choices = cols_needed,
+                            shape = 'round', icon = icon('check'), animation = 'pulse',
+                            selected = intersect(cols_needed, names(rv$intable)))
     })
     observe({
-        updateCheckboxGroupInput(session, 'mandfields',
-                                 selected = intersect(cols_needed, names(rv$intable)))
-    })
+        ## updateCheckboxGroupInput(session, 'mandfields',
+        ##                          selected = intersect(cols_needed, names(rv$intable)))
+        ## updateAwesomeCheckboxGroup(session, 'mandfields',
+        ##                            selected = intersect(cols_needed, names(rv$intable)))
+        updatePrettyCheckboxGroup(session, inputId='mandfields', label = 'Mandatory fields:',
+                                  choices = cols_needed,
+                                  selected = intersect(cols_needed, names(rv$intable)),
+                                  prettyOptions = list(shape = 'round', icon = icon('check'),
+                                                       animation = 'pulse'))
+        })
 
     ## * Renaming fields from context menu
     observeEvent(input$selfield, {
@@ -211,17 +224,18 @@ shinyServer(function(input, output, session) {
                           , callback = JS(callback)
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
-                            class = 'nowrap hover compact stripe',
+                            class = 'nowrap hover compact nostripe',
                             options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
                                          , paging = nrow(d)>15, pageLength = 15
                                          , searching = FALSE, ordering = FALSE
+                                         , columnDefs = list(list(className = 'dt-left', targets = '_all'))
                                            )
                             )
         sf <- rv[['selfields']]
         goodfields <- sf[sf$good == 1, 'req']
-        dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#E5F5E0")
+        dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
         dt
-    }, server = FALSE)  
+    }, server = FALSE)
     
     output$logtxt <- renderPrint({
         req(rv)
@@ -421,12 +435,13 @@ shinyServer(function(input, output, session) {
         }
         dt <- DT::datatable(
             d, rownames = F, selection = 'none', width = 600,
-            class = 'nowrap hover compact stripe',
+            class = 'nowrap hover compact nostripe',
             options = list(autoWidth = FALSE, scrollCollapse=TRUE
                          , paging = nrow(d)>15, pageLength = 15, lengthChange = F
                          , searching = FALSE, ordering = FALSE
                          , rowCallback = JS(tabjs)
-                         , columnDefs = list(list(visible=FALSE,
+                         , columnDefs = list(list(className = 'dt-left', targets = '_all'),
+                                             list(visible=FALSE,
                                                   targets=grep('_issues$|_txt$', names(d))-1L))
                            )
         )
