@@ -61,7 +61,8 @@ shinyUI(
                                 column(
                                     6,
                                     fileInputOnlyButton('target_upload', 
-                                                        buttonLabel='Upload CSV file ↑',
+                                                        buttonLabel =
+                                                            div(HTML('Upload CSV file&nbsp;&nbsp;'), icon('upload')),
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
@@ -153,80 +154,83 @@ shinyUI(
                                ## , actionButton('testbtn', 'Test')
                                )
                     ),
+                    br(), br(),
                     fluidRow(DT::DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
                 tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
                 
                 ## * 4. Calculate IBI score
-                tabPanel("4. Calculate IBI score",
-                         fluidRow(
-                             br(),br(),
-                             column(
-                                 7,
-                                 h2(includeMarkdown('text/page-4-title.md'))),
-                             column(
-                                 5,
-                                 fluidRow(
-                                     column(
-                                         6,""),
-                                     column(6,
-                                            div(downloadButton('download',"Download results ↓ ",icon = icon(""),style='font-size:100%')))
-                                 )
-                             )
-                         ),
-                         br(), br(),
-                         fluidRow(column(2, "View by"),
-                                  column(width = 3, selectInput("download", "", choices = c("NPS-FM category"))),
-                                  column(width = 3, selectInput("download", "", choices = c("NPS-FM category"))),
-                                  offset = 4),
-                         br(),
-                         hr(), 
-                         #br(),
-                         fluidRow(column(width = 6,strong("Scores across number of sites"))),
-                         br(),
-                         fluidRow(column(width = 6, withspinner(plotOutput("npsGraph")))),
-                         br(), br(),
-                         fluidRow(
-                             column(width= 2, 
-                                    h5(strong("A")),
-                                    h5("≥ 34"),
-                                    hr(),
-                                    includeMarkdown('text/nps-a.md')),
-                             column(width= 2, 
-                                    h5(strong("B")),
-                                    h5("< 34 and ≥ 28"),
-                                    hr(),
-                                    includeMarkdown('text/nps-b.md')),
-                             column(width= 2, 
-                                    h5(strong("C")),
-                                    h5("< 28 and ≥ 18"),
-                                    hr(),
-                                    includeMarkdown('text/nps-c.md')),
-                             column(width= 2, 
-                                    h5(strong("D")),
-                                    h5("< 18"),
-                                    hr(),
-                                    includeMarkdown('text/nps-d.md')),
-                             column(width= 2, 
-                                    h5(strong("No fish")),
-                                    h5("-"),
-                                    hr())
-                         ),
-                         br(),
-                         hr(),
-                         br(),
-                         fluidRow(strong("Table of results")),
-                         br(),
-                         fluidRow(withspinner(DT::DTOutput("ibiTable"))),
-                         )
-            ),
-            
-            span(
-                br(),br(), br(),
-                tags$img(src="footer.png", width = '100%')
-            )
-        )
+                tabPanel(
+                    "4. Calculate IBI score",
+                    br(),br(),
+                    fluidRow(
+                        column(
+                            7,
+                            h2(includeMarkdown('text/page-4-title.md'))
+                        ),
+                        column(
+                            5, align='right',
+                            downloadButton('download', 
+                                           label=div(HTML("Download results&nbsp;&nbsp;"),
+                                                     icon("download"), style='display: inline-block !important'),
+                                           icon = icon(""), style='width: 250px; height: 55px')
+                        )
+                    ),
+                    br(), br(),
+                    fluidRow(column(2, "View by"),
+                             column(width = 3,
+                                    selectInput("download", "", choices = c("NPS-FM category"))),
+                             column(width = 3,
+                                    selectInput("download", "", choices = c("NPS-FM category"))),
+                             offset = 4),
+                    br(),
+                    hr(), 
+                                        #br(),
+                    fluidRow(column(width = 6,strong("Scores across number of sites"))),
+                    br(),
+                    fluidRow(column(width = 6, withspinner(plotOutput("npsGraph")))),
+                    br(), br(),
+                    fluidRow(
+                        column(width= 2, 
+                               h5(strong("A")),
+                               h5("≥ 34"),
+                               hr(),
+                               includeMarkdown('text/nps-a.md')),
+                        column(width= 2, 
+                               h5(strong("B")),
+                               h5("< 34 and ≥ 28"),
+                               hr(),
+                               includeMarkdown('text/nps-b.md')),
+                        column(width= 2, 
+                               h5(strong("C")),
+                               h5("< 28 and ≥ 18"),
+                               hr(),
+                               includeMarkdown('text/nps-c.md')),
+                        column(width= 2, 
+                               h5(strong("D")),
+                               h5("< 18"),
+                               hr(),
+                               includeMarkdown('text/nps-d.md')),
+                        column(width= 2, 
+                               h5(strong("No fish")),
+                               h5("-"),
+                               hr())
+                    ),
+                    br(),
+                    hr(),
+                    br(),
+                    fluidRow(strong("Table of results")),
+                    br(),
+                    fluidRow(withspinner(DT::DTOutput("ibiTable"))),
+                    )
+                    ),
+                    
+                    span(
+                        br(),br(), br(),
+                        tags$img(src="footer.png", width = '100%')
+                    )
+                )
                 
     )
 )
