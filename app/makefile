@@ -10,3 +10,6 @@ run:
 
 local:
 	 Rscript -e "shiny::runApp('.', port=$(PORT), host = '127.0.0.1')"
+
+deploy:
+	Rscript -e "rsconnect::deployApp('.', appName='Fish-IBI-Calculator')"

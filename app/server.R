@@ -6,9 +6,15 @@ library(tidyverse)
 library(quantreg)
 library(ggplot2)
 library(shinyWidgets)
+library(leaflet)
+library(sf)
+## library(tmap)
+library(leaflet.esri)
+library(kableExtra)
 
-load('../fishr/data/species_ibi_metrics.rda', v=T)
-source('../fishr/R/hello.R')
+load('data/species_ibi_metrics.rda', v=T)
+load('data/fish_names.rda', v=T)
+source('fishr-functions.R')
 
 cols_needed <- c('Stratum', 'Penetration', 
                  'Altitude', 'SpeciesCode')
@@ -291,7 +297,7 @@ shinyServer(function(input, output, session) {
     cleanTable <- reactive({
         req(rv$intable)
         d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
-                            cols_needed[cols_opt %in% names(rv$intable)])]
+                            cols_opt[cols_opt %in% names(rv$intable)])]
 
         ## ** Penetration
         if ('Penetration' %in% names(d)) {
@@ -329,7 +335,7 @@ shinyServer(function(input, output, session) {
                 d[c, 'SpeciesCode_txt']    <- 'Value is missing'
             }
             ## *** Check for existence
-            c <- !(tolower(d$SpeciesCode) %in% fishr::fish_names[['NZFFD code']])
+            c <- !(tolower(d$SpeciesCode) %in% fish_names[['NZFFD code']])
             if (any(c)) {
                 d[c, 'SpeciesCode_issues'] <- 1L
                 d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
@@ -544,7 +550,9 @@ shinyServer(function(input, output, session) {
 
         ibi_scores
     })
+
     
+    ## * Table of IBI scores
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
@@ -560,7 +568,67 @@ shinyServer(function(input, output, session) {
         )        
         dt
     }, server = F)
+
     
+    ## * MAP
+    output$map <- renderLeaflet({
+
+        ibi_scores <- copy(ibiData())
+        ibi <- as.data.table(ibi_scores)
+        req(ibi)
+        dt <- as.data.table(rv$finalTable)
+
+        if (all(c('Easting', 'Northing') %in% names(dt))) {
+            
+            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), Stratum]
+            ibi <- merge(ibi, coords, by = 'Stratum', all = T)
+            ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
+            ibi <- st_transform(ibi, crs = 4326)
+            ibi <- cbind(ibi, st_coordinates(ibi))
+            ibi <- as.data.table(ibi)
+            ibi <- ibi[, .(Stratum, ibi_score, ibi_score_cut, nps_score,
+                           total_sp_richness, number_non_native, X, Y)]
+
+            numcols <- colorNumeric('RdYlBu', domain = NULL)
+
+            
+            ibi[, labels := paste0(
+                      sprintf("<strong> Stratum %s: </strong><br/> ", Stratum),
+                      ## new_bay, "<br/> ",
+                      kable_styling(knitr::kable(data.frame(ibi_score, ibi_score_cut, nps_score,
+                                                            total_sp_richness, number_non_native),
+                                                 format='html', escape = F)))
+              , by = 1:nrow(ibi)]
+
+            ## Create map
+            leaflet() %>%
+                addTiles() %>%
+                setView(173.6, -41, zoom = 5) %>% 
+                addEsriBasemapLayer(esriBasemapLayers$Topographic, autoLabels = TRUE
+                                    ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
+                                    ) %>%
+                addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                 fillColor = ~numcols(ibi_score), color = ~numcols(ibi_score),
+                                 popup = ~labels %>% lapply(htmltools::HTML),
+                                 popupOptions = labelOptions(
+                                     style = list("font-weight" = "normal",
+                                                  padding = "3px 8px", "color" = 'grey80'),
+                                     textsize = "17px", direction = "auto", sticky = F,
+                                     maxWidth = 700, closeOnClick = T),
+                                 ## radius = ~radius,
+                                 fillOpacity = 0.6,
+                                 radius = 4,
+                                 opacity = 0.8,
+                                 weight = 1
+                                 ) %>%
+                addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
+                          title = 'IBI score')
+
+        }
+
+    })
+
+
     output$npsGraph <- renderPlot({
       ibi_scores <- ibiData()
       req(ibi_scores)

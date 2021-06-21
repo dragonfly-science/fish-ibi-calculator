@@ -186,10 +186,16 @@ shinyUI(
                              offset = 4),
                     br(),
                     hr(), 
-                                        #br(),
-                    fluidRow(column(width = 6,strong("Scores across number of sites"))),
-                    br(),
-                    fluidRow(column(width = 6, withspinner(plotOutput("npsGraph")))),
+                    ##br(),
+                    fluidRow(column(6
+                                  , strong("Scores across number of sites"), br(), br()
+                                  , withspinner(plotOutput("npsGraph")))
+                           , column(6
+                                  , strong("Map of locations"), br(), br()
+                                  , withspinner(leafletOutput('map')))
+                             ),
+                    ## br(),
+                    ## fluidRow(column(width = 6, )),
                     br(), br(),
                     fluidRow(
                         column(width= 2, 
