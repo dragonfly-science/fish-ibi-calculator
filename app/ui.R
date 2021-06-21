@@ -234,6 +234,5 @@ shinyUI(
                     )
                 )
                 
->>>>>>> origin/feature/change-table-header-from-contextMenu
     )
 )
