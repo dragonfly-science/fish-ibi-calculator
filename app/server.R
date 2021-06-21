@@ -11,6 +11,7 @@ library(sf)
 ## library(tmap)
 library(leaflet.esri)
 library(kableExtra)
+library(mapview)
 
 load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
@@ -595,7 +596,6 @@ shinyServer(function(input, output, session) {
             
             ibi[, labels := paste0(
                       sprintf("<strong> Stratum %s: </strong><br/> ", Stratum),
-                      ## new_bay, "<br/> ",
                       kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
                                                             `IBI category`      = ibi_score_cut,
                                                             `NPS category`      = nps_score,
@@ -605,7 +605,7 @@ shinyServer(function(input, output, session) {
               , by = 1:nrow(ibi)]
 
             ## Create map
-            leaflet() %>%
+            rv$map <- leaflet() %>%
                 addTiles() %>%
                 setView(173.6, -41, zoom = 5) %>% 
                 addEsriBasemapLayer(esriBasemapLayers$Topographic, autoLabels = TRUE
@@ -631,20 +631,32 @@ shinyServer(function(input, output, session) {
                 ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
                 ##           title = 'IBI score')
 
+            rv$map
         }
 
     })
 
 
+    output$mapdl <- downloadHandler(
+        filename = 'IBI_map.png',
+        ## filename = 'IBI_map.html',
+        content = function(file) {
+            mapshot(rv$map, file = file)
+            ## saveWidget(rv$map, 'map.html', selfcontained=F)
+            ## webshot::webshot('map.html', file = file)
+        }
+    )
+    
+    
     output$npsGraph <- renderPlot({
       ibi_scores <- ibiData()
       req(ibi_scores)
       
-      group.colors <- c('A' = "#5ac4aa",
-                        'B' = "#4e9786", 
-                        'C' = "#2c5469", 
-                        'D' ="#b03c3c",
-                        'NA' = '#d6dde0')
+      group.colors <- c('A'  = "#00C7A8",
+                        'B'  = "#2C9986", 
+                        'C'  = "#004A6D", 
+                        'D'  = "#BF2F37",
+                        'NA' = '#d4dde1')
       
       g <- ggplot(ibi_scores, aes(x = nps_score)) + 
         geom_histogram(stat = "count", fill = group.colors, alpha = 0.9) + 

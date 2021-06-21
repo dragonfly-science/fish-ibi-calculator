@@ -85,14 +85,8 @@ shinyUI(
                         h5(includeMarkdown('text/page-1-image-caption.md'))
                     )
                 ),
-                ## div(class='tab-pane disabled', id = 'sep1', title = '>'),
-                ## HTML("<li>\></li>"), #tabPanel('>'),
 
-                ## tabPanel('>', id='sep1'),
-                ## tabPanel(' ', id='sep1'),
                 tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
-                ## tabPanel(div('a', class = 'arrow'), id='sep1'),
-                ## tabPanel(title=tags$img(src="arrow-right.png"), id='sep1'),
                 
                 ## * 2. Match headers
                 tabPanel(
@@ -127,7 +121,6 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
-                ## tabPanel('>'),
                 tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
 
                 ## * 3. Check input data
@@ -192,7 +185,9 @@ shinyUI(
                                   , strong("Scores across number of sites"), br(), br()
                                   , withspinner(plotOutput("npsGraph")))
                            , column(6
-                                  , strong("Map of locations"), br(), br()
+                                  , fluidRow(column(8, strong("Map of locations")),
+                                             column(4, downloadButton('mapdl', 'Download map')))
+                                  , br()
                                   , withspinner(leafletOutput('map')))
                              ),
                     ## br(),
