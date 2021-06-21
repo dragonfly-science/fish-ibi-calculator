@@ -244,16 +244,6 @@ shinyServer(function(input, output, session) {
         dt
     }, server = FALSE)
     
-<<<<<<< HEAD
-    # data table on page 3 - will need to be changed
-    output[["table_new"]] <- renderDT({
-        datatable(df_upload(),
-                  options = list(dom='t'),
-                  rownames = FALSE)
-    }, server = FALSE)  
-    
-    # value boxes for required columns
-=======
     output$logtxt <- renderPrint({
         req(rv)
         cat('input$selfield=\n')
@@ -271,7 +261,6 @@ shinyServer(function(input, output, session) {
     })
     
     # button to go from tab 2 to 3
->>>>>>> origin/feature/change-table-header-from-contextMenu
     observe({
       if(all(rv$selfields$good == 1)) {
         enable('checkData')

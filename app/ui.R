@@ -40,22 +40,6 @@ shinyUI(
             tags$head(
                      tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
                  ),
-<<<<<<< HEAD
-                 DTOutput("table")
-                 )
-             ),
-  tabPanel("3. Check input data"
-           ,
-           fluidRow(
-             br(),
-             column(3, includeMarkdown('./text/checking.rmd'))),
-             br(),
-           fluidRow(
-             DTOutput("table_new")
-           )
-           ),
-  tabPanel("4. Calculate IBI score")
-=======
 
             ## Input widgets
             tabsetPanel(
