@@ -589,14 +589,18 @@ shinyServer(function(input, output, session) {
             ibi <- ibi[, .(Stratum, ibi_score, ibi_score_cut, nps_score,
                            total_sp_richness, number_non_native, X, Y)]
 
-            numcols <- colorNumeric('RdYlBu', domain = NULL)
-
+            numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
+            factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
+            ibi[, nps_score := factor(as.character(nps_score), levels = c('A', 'B', 'C', 'D'))]
             
             ibi[, labels := paste0(
                       sprintf("<strong> Stratum %s: </strong><br/> ", Stratum),
                       ## new_bay, "<br/> ",
-                      kable_styling(knitr::kable(data.frame(ibi_score, ibi_score_cut, nps_score,
-                                                            total_sp_richness, number_non_native),
+                      kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
+                                                            `IBI category`      = ibi_score_cut,
+                                                            `NPS category`      = nps_score,
+                                                            `Total sp richness` = total_sp_richness,
+                                                            `Non-native spp`   = number_non_native),
                                                  format='html', escape = F)))
               , by = 1:nrow(ibi)]
 
@@ -608,7 +612,8 @@ shinyServer(function(input, output, session) {
                                     ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
                                     ) %>%
                 addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 fillColor = ~numcols(ibi_score), color = ~numcols(ibi_score),
+                                 ## fillColor = ~numcols(ibi_score), color = ~numcols(ibi_score),
+                                 fillColor = ~factcols(nps_score), color = ~factcols(nps_score),
                                  popup = ~labels %>% lapply(htmltools::HTML),
                                  popupOptions = labelOptions(
                                      style = list("font-weight" = "normal",
@@ -621,8 +626,10 @@ shinyServer(function(input, output, session) {
                                  opacity = 0.8,
                                  weight = 1
                                  ) %>%
-                addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
-                          title = 'IBI score')
+                addLegend(data = ibi, "bottomright", pal = factcols, values = ~nps_score,
+                          title = 'NPS category')
+                ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
+                ##           title = 'IBI score')
 
         }
 
