@@ -5,6 +5,7 @@ library(DT)
 library(shinyWidgets)
 library(shinycssloaders)
 library(data.table)
+library(leaflet)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
