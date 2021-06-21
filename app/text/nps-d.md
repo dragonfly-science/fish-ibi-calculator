@@ -1,0 +1,1 @@
+Severe loss of fish community integrity. There is substantial loss of habitat and/or migratory access, causing a high level of stress on the community.
