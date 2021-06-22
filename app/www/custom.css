@@ -177,15 +177,8 @@ hr {
 }
 
 ul {
-    /* position:absolute; */
-    /* width: 1440px; */
-    /* left: 0px; */
-    /* top: 126px; */
-    /* height: 80px; */
-    padding-left: 10% !important;
-    padding-right: 10% !important;
-    /* height: 70px; */
-    /* vertical-align: bottom; */
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 /* #sep1 { */

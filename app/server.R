@@ -42,6 +42,10 @@ callback <- "$(document).contextMenu({
     trigger: 'right',
     items: {
         // <input type=\"radio\">
+        menuHeading1: {
+          type: 'html',
+          html: '<h4><strong>Match header with one of these:</strong></h4>'
+        },
         Stratum: {
             name: \"Stratum\", 
             type: 'radio', 
@@ -68,6 +72,10 @@ callback <- "$(document).contextMenu({
         },
         sep1: \"---------\",
         // <optional>
+        menuHeading2: {
+          type: 'html',
+          html: '<h4><strong>Optional location</strong> (needed for map)</h4>'
+        },
         Easting: {
             name: \"Easting (opt)\", 
             type: 'radio', 

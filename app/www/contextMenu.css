@@ -1,0 +1,42 @@
+.context-menu-list ul{
+  padding: 20px, 10px;
+}
+
+.context-menu-item {
+  padding-left: .6em;
+}
+
+.context-menu-item h4 {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.context-menu-item span {
+  margin-left: 10px;
+}
+
+input[type='radio']:after {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        position: relative;
+        top: -3px;
+        left: -1px;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+}
+    
+input[type='radio']:checked:after {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        position: relative;
+        top: -3px;
+        left: -1px;
+        background-color: #00c7a8;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+}

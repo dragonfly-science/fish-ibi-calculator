@@ -26,13 +26,14 @@ shinyUI(
         useShinydashboard(),
         title = 'IBI calculator',
         ## Header
-        titlePanel(
-            windowTitle = 'IBI calculator',
-            title = span(
-                tags$img(src="header.png", width = '100%')
+        tags$header(id = 'headerDiv',
+                titlePanel(
+                windowTitle = 'IBI calculator',
+                title = span(
+                    tags$img(src="header.png", width = '100%')
+                )
             )
         ),
-        
         useShinyjs(),  # Set up shinyjs
         
         mainPanel(
@@ -93,7 +94,7 @@ shinyUI(
                     "2. Match headers",
                     br(), br(),
                     fluidRow(
-                        column(7,
+                        column(6,
                                h2(includeMarkdown('text/page-2-title.md')),
                                br(),
                                h5(includeMarkdown('text/page-2-description.md'))
@@ -111,9 +112,13 @@ shinyUI(
                     fluidRow(
                         tags$head(
                                  tags$link(
+                                         rel = "stylesheet",
+                                        href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
+                                 ),
+                                 tags$link(
                                           rel = "stylesheet",
-                                          href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
-                                      ),
+                                          href = "contextMenu.css"
+                                 ),
                                  tags$script(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                                       )
