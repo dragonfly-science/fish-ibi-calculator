@@ -39,7 +39,7 @@ shinyUI(
         mainPanel(
             width = 12, id = 'mainpanel',
             tags$head(
-                     tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/custom.css")
                  ),
 
             ## Input widgets
@@ -117,7 +117,7 @@ shinyUI(
                                  ),
                                  tags$link(
                                           rel = "stylesheet",
-                                          href = "contextMenu.css"
+                                          href = "styles/contextMenu.css"
                                  ),
                                  tags$script(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
