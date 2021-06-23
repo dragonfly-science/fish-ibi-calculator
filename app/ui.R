@@ -177,7 +177,14 @@ shinyUI(
                     fluidRow(
                         column(
                             7,
-                            h2(includeMarkdown('text/page-4-title.md'))
+                            h2(includeMarkdown('text/page-4-title.md')),
+                            div(style="display:inline-block;width:15%;text-align: left; margin-bottom:50px;",
+                                h5("View by")),
+                            div(style="display:inline-block;width:40%;text-align: center;",
+                                selectInput("download", "", choices = c("NPS-FM category"))),
+                            div(style="display:inline-block;width:40%;text-align: center;",
+                                selectInput("download2", "", choices = c("NPS-FM category"))),
+
                         ),
                         column(
                             5, align='right',
@@ -187,13 +194,6 @@ shinyUI(
                                            icon = icon(""), style='width: 250px; height: 55px')
                         )
                     ),
-                    br(), br(),
-                    fluidRow(column(2, "View by"),
-                             column(width = 3,
-                                    selectInput("download", "", choices = c("NPS-FM category"))),
-                             column(width = 3,
-                                    selectInput("download", "", choices = c("NPS-FM category"))),
-                             offset = 4),
                     br(),
                     hr(), 
                     ##br(),

@@ -578,7 +578,7 @@ shinyServer(function(input, output, session) {
             ibi_scores, rownames = F, selection = 'none', width = 600,
             class = 'nowrap hover compact stripe',
             options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = ncol(ibi_scores)>15,
-                         paging = nrow(ibi_scores)>15, pageLength = 15,
+                         paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
                          searching = FALSE, ordering = FALSE,
                          columnDefs = list(list(
                            className = 'dt-left', targets = 1:5
