@@ -193,12 +193,11 @@ shinyUI(
                     hr(), 
                     ##br(),
                     fluidRow(column(6
-                                  , div(class = 'subheader', "Scores across number of sites"), br()
+                                  , div(class = 'subheader', "Scores across number of sites")
                                   , withspinner(plotOutput("npsGraph")))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
                                              column(4, downloadButton('mapdl', 'Download map')))
-                                  , br()
                                   , withspinner(leafletOutput('map')))
                              ),
                     br(), br(),
