@@ -563,7 +563,8 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score", "ibi_score_cut", "nps_score", "Stratum")
+        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score",
+                                            "ibi_score_cut", "nps_score", "Stratum")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
@@ -585,15 +586,17 @@ shinyServer(function(input, output, session) {
         req(ibi)
         dt <- as.data.table(rv$finalTable)
 
+        print(ibi[1])
+        print(dt[1])
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
-            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), Stratum]
-            ibi <- merge(ibi, coords, by = 'Stratum', all = T)
+            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
+            ibi <- merge(ibi, coords, by.x = c('date', 'siteID'), by.y = c('Date', 'SiteID'), all = T)
             ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
             ibi <- st_transform(ibi, crs = 4326)
             ibi <- cbind(ibi, st_coordinates(ibi))
             ibi <- as.data.table(ibi)
-            ibi <- ibi[, .(Stratum, ibi_score, ibi_score_cut, nps_score,
+            ibi <- ibi[, .(date, siteID, ibi_score, ibi_score_cut, nps_score,
                            total_sp_richness, number_non_native, X, Y)]
 
             numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
@@ -601,7 +604,7 @@ shinyServer(function(input, output, session) {
             ibi[, nps_score := factor(as.character(nps_score), levels = c('A', 'B', 'C', 'D'))]
             
             ibi[, labels := paste0(
-                      sprintf("<strong> Stratum %s: </strong><br/> ", Stratum),
+                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", siteID, date),
                       kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
                                                             `IBI category`      = ibi_score_cut,
                                                             `NPS category`      = nps_score,
@@ -683,9 +686,6 @@ shinyServer(function(input, output, session) {
         theme(plot.margin=unit(c(0.5, 0.5, 0.5, 0.5),"cm"))+
         theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
         theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
-      
-      
-        
       
       g
     })
