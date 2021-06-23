@@ -453,3 +453,7 @@ table thead td + td {
 button div img.arrow-next {
   transform: rotate(90deg);
 }
+
+img.arrow-download {
+  transform: rotate(180deg);
+}
