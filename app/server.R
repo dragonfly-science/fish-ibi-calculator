@@ -17,7 +17,7 @@ load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
 source('fishr-functions.R')
 
-cols_needed <- c('Stratum', 'Penetration', 
+cols_needed <- c('Date', 'SiteID', 'Penetration', 
                  'Altitude', 'SpeciesCode')
 
 req_fields <- rep(0, length(cols_needed))
@@ -42,11 +42,17 @@ callback <- "$(document).contextMenu({
     trigger: 'right',
     items: {
         // <input type=\"radio\">
-        Stratum: {
-            name: \"Stratum\", 
+        Date: {
+            name: \"Date\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Stratum',
+            value: 'Date',
+        },
+        SiteID: {
+            name: \"SiteID\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: 'SiteID',
         },
         Penetration: {
             name: \"Penetration\", 
@@ -383,7 +389,7 @@ shinyServer(function(input, output, session) {
         if (any(c(cols_needed, cols_opt) %in% names(d))) {
                 paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
                         as.vector(unlist(sapply(
-                            setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
+                            setdiff(cols_needed[cols_needed %in% names(d)], 'Date'),
                             function(v) {
                                 if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
                                     c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
@@ -557,7 +563,7 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
+        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score", "ibi_score_cut", "nps_score", "Stratum")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,

@@ -37,10 +37,13 @@ add.fish.dates <- function(.data){
 #' @export
 prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics){
   .data %>%
+    unite(Stratum, c(Date, SiteID), remove=FALSE) %>% 
     group_by(Stratum) %>%
     distinct(SpeciesCode, .keep_all = TRUE) %>%
     inner_join(species.ibi.metrics, by = c("SpeciesCode" = "spcode")) %>%  # filtering to only species with metric info. change to left_join to get all.
     summarise(
+      date = first(Date),
+      siteID = first(SiteID),
       altitude = first(Altitude),
       penet = first(Penetration),
       # east = first(east),
