@@ -87,7 +87,7 @@ shinyUI(
                     )
                 ),
 
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='arrow.svg')),
                 
                 ## * 2. Match headers
                 tabPanel(
@@ -126,7 +126,7 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='arrow.svg')),
 
                 ## * 3. Check input data
                 tabPanel(
@@ -157,7 +157,7 @@ shinyUI(
                     fluidRow(DT::DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='arrow.svg')),
                 
                 ## * 4. Calculate IBI score
                 tabPanel(

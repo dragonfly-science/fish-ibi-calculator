@@ -186,7 +186,7 @@ ul {
 /* } */
 /* .wrapper { */
 /* } */
-#myFirst li a[data-value="<i class=\"glyphicon glyphicon-menu-right arrowico\" role=\"presentation\" aria-label=\"menu-right icon\"></i>"] {
+#myFirst li a[data-value="<img src=\"arrow.svg\"/>"] {
     pointer-events: none !important;
     cursor: not-allowed;
     width: 75px;
