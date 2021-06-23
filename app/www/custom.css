@@ -449,7 +449,6 @@ table thead td + td {
     width: 150px;
     /* height: 50px; */
 }
-<<<<<<< HEAD
 
 button div img.arrow-next {
   transform: rotate(90deg);
@@ -458,8 +457,6 @@ button div img.arrow-next {
 img.arrow-download {
   transform: rotate(180deg);
 }
-||||||| 51c2bce
-=======
 
 .subheader {
     font-family: 'Merriweather', serif;
@@ -469,4 +466,7 @@ img.arrow-download {
     line-height: 24px;
     margin-bottom: 30px;
 }
->>>>>>> 1fbc68c63c956f3ea89c43533fc206a724120059
+
+.context-menu-item > ul > li > span {
+    font-weight: 400;
+}
