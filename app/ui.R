@@ -148,7 +148,7 @@ shinyUI(
                                ),
                                ),
                         column(
-                            5, offset = 1,
+                            6,
                             fluidRow(
                                 column(
                                     6,
@@ -190,8 +190,8 @@ shinyUI(
                             5, align='right',
                             downloadButton('download', 
                                            label=div(HTML("Download results&nbsp;&nbsp;"),
-                                                     img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important'),
-                                           icon = icon(""), style='width: 250px; height: 55px')
+                                                     img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important;'),
+                                           icon = icon(""))
                         )
                     ),
                     br(),

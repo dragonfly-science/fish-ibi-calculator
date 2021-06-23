@@ -19,12 +19,24 @@
   margin-left: 10px;
 }
 
+.context-menu-input > label {
+    font-family: Lato;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    color: #607781;
+}
+
+input[type='radio'] {
+  -moz-appearance: none;
+}
+
 input[type='radio']:after {
         width: 15px;
         height: 15px;
         border-radius: 50%;
         position: relative;
-        top: -3px;
+        top: 0px;
         left: -1px;
         background-color: #ECEFF0;
         content: '';
@@ -38,7 +50,7 @@ input[type='radio']:checked:after {
         height: 15px;
         border-radius: 50%;
         position: relative;
-        top: -3px;
+        top: 0px;
         left: -1px;
         background-color: #00c7a8;
         content: '';

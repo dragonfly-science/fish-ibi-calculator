@@ -243,18 +243,11 @@ ul {
     font-weight: bold;
     /* font-size: 1.1em; */
     background-color: #009985;
-    padding: 14px 18px;
+    padding: 14px 50px;
     max-width: 300px;
     height: 60px;
 }
 
-.btn[disabled] {
-    border-radius: 5px;
-    border-color: #aaa;
-    color: #000;
-    font-weight: normal;
-    background-color: #aaa;
-}
 .btn:focus, .btn:hover, .btn:activem, .btn:target, .btn:visited {
     border-radius: 5px !important;
     border-color: #009985 !important;
@@ -263,6 +256,13 @@ ul {
     background-color: #00C8A7 !important;
 }
 
+.btn[disabled] {
+    border-radius: 5px;
+    border-color: #aaa;
+    color: #607781 !important;
+    font-weight: normal;
+    background-color: #D4DDE1 !important;
+}
 
 .arrow {
     /* arrow */
@@ -469,6 +469,9 @@ table thead td + td {
 
 button div img.arrow-next {
   transform: rotate(90deg);
+  margin-left: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 img.arrow-download {
@@ -484,10 +487,3 @@ img.arrow-download {
     margin-bottom: 35px;
 }
 
-.context-menu-input > label {
-    font-family: Lato;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 24px;
-    color: #607781;
-}
