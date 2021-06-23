@@ -17,7 +17,7 @@ load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
 source('fishr-functions.R')
 
-cols_needed <- c('Stratum', 'Penetration', 
+cols_needed <- c('Date', 'SiteID', 'Penetration', 
                  'Altitude', 'SpeciesCode')
 
 req_fields <- rep(0, length(cols_needed))
@@ -46,11 +46,17 @@ callback <- "$(document).contextMenu({
           type: 'html',
           html: '<h4><strong>Match header with one of these:</strong></h4>'
         },
-        Stratum: {
-            name: \"Stratum\", 
+        Date: {
+            name: \"Date\", 
             type: 'radio', 
             radio: 'radio', 
-            value: 'Stratum',
+            value: 'Date',
+        },
+        SiteID: {
+            name: \"SiteID\", 
+            type: 'radio', 
+            radio: 'radio', 
+            value: 'SiteID',
         },
         Penetration: {
             name: \"Penetration\", 
@@ -391,7 +397,7 @@ shinyServer(function(input, output, session) {
         if (any(c(cols_needed, cols_opt) %in% names(d))) {
                 paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
                         as.vector(unlist(sapply(
-                            setdiff(cols_needed[cols_needed %in% names(d)], 'Stratum'),
+                            setdiff(cols_needed[cols_needed %in% names(d)], 'Date'),
                             function(v) {
                                 if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
                                     c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
@@ -565,14 +571,18 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("Stratum", "ibi_score", "ibi_score_cut", "nps_score")
+        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score",
+                                            "ibi_score_cut", "nps_score", "Stratum")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
             class = 'nowrap hover compact stripe',
             options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = ncol(ibi_scores)>15,
                          paging = nrow(ibi_scores)>15, pageLength = 15,
-                         searching = FALSE, ordering = FALSE
+                         searching = FALSE, ordering = FALSE,
+                         columnDefs = list(list(
+                           className = 'dt-left', targets = 1:5
+                         ))
                            )
         )        
         dt
@@ -587,15 +597,17 @@ shinyServer(function(input, output, session) {
         req(ibi)
         dt <- as.data.table(rv$finalTable)
 
+        print(ibi[1])
+        print(dt[1])
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
-            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), Stratum]
-            ibi <- merge(ibi, coords, by = 'Stratum', all = T)
+            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
+            ibi <- merge(ibi, coords, by.x = c('date', 'siteID'), by.y = c('Date', 'SiteID'), all = T)
             ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
             ibi <- st_transform(ibi, crs = 4326)
             ibi <- cbind(ibi, st_coordinates(ibi))
             ibi <- as.data.table(ibi)
-            ibi <- ibi[, .(Stratum, ibi_score, ibi_score_cut, nps_score,
+            ibi <- ibi[, .(date, siteID, ibi_score, ibi_score_cut, nps_score,
                            total_sp_richness, number_non_native, X, Y)]
 
             numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
@@ -603,7 +615,7 @@ shinyServer(function(input, output, session) {
             ibi[, nps_score := factor(as.character(nps_score), levels = c('A', 'B', 'C', 'D'))]
             
             ibi[, labels := paste0(
-                      sprintf("<strong> Stratum %s: </strong><br/> ", Stratum),
+                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", siteID, date),
                       kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
                                                             `IBI category`      = ibi_score_cut,
                                                             `NPS category`      = nps_score,
@@ -682,12 +694,9 @@ shinyServer(function(input, output, session) {
               axis.line.y = element_blank(),
               axis.text.x=element_text(size = 12, face = 'bold', margin = margin(t = 15)),
               axis.ticks = element_blank()) +
-        theme(plot.margin=unit(c(0.5, 0.5, 0.5, 0.5),"cm"))+
+        theme(plot.margin=unit(c(1, 0.5, 0.5, 0.5),"cm"))+
         theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
         theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
-      
-      
-        
       
       g
     })
