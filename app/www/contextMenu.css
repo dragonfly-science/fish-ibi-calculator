@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Merriweather&display=swap');
+
+.context-menu-root {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+}
+
+.context-menu-item {
+  padding-left: .6em;
+}
+
+.context-menu-item h4 {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.context-menu-item span {
+  margin-left: 10px;
+}
+
+input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        position: relative;
+        top: -3px;
+        left: -1px;
+        background-color: #ECEFF0;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 1px solid #d4dde1;
+}
+    
+input[type='radio']:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        position: relative;
+        top: -3px;
+        left: -1px;
+        background-color: #00c7a8;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+}

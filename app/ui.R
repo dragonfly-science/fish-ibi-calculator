@@ -26,13 +26,14 @@ shinyUI(
         useShinydashboard(),
         title = 'IBI calculator',
         ## Header
-        titlePanel(
-            windowTitle = 'IBI calculator',
-            title = span(
-                tags$img(src="header.png", width = '100%')
+        tags$header(id = 'headerDiv',
+                titlePanel(
+                windowTitle = 'IBI calculator',
+                title = span(
+                    tags$img(src="header.png", width = '100%')
+                )
             )
         ),
-        
         useShinyjs(),  # Set up shinyjs
         
         mainPanel(
@@ -57,13 +58,13 @@ shinyUI(
                             h5(includeMarkdown('text/page-1-description.md'))
                         ),
                         column(
-                            5, offset = 1,
+                            6,
                             fluidRow(
                                 column(
                                     6,
                                     fileInputOnlyButton('target_upload', 
                                                         buttonLabel =
-                                                            div(HTML('Upload CSV file&nbsp;&nbsp;'), icon('upload')),
+                                                            div(class="button-inner", HTML('Upload CSV file&nbsp;&nbsp;'), img(class="arrow-up", src="icons/buttonArrow.svg")),
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
@@ -86,21 +87,21 @@ shinyUI(
                     )
                 ),
 
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='icons/arrow.svg')),
                 
                 ## * 2. Match headers
                 tabPanel(
                     "2. Match headers",
                     br(), br(),
                     fluidRow(
-                        column(7,
+                        column(6,
                                h2(includeMarkdown('text/page-2-title.md')),
                                br(),
                                h5(includeMarkdown('text/page-2-description.md'))
                                ),
                         column(3, offset = 2 #, align = 'right'
                              , disabled(
-                                   actionButton('checkData', "Check input data")
+                                   actionButton('checkData', div(HTML("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
                                )
                              , br(), br(), br()
                              , uiOutput('mandfields')
@@ -111,9 +112,13 @@ shinyUI(
                     fluidRow(
                         tags$head(
                                  tags$link(
+                                         rel = "stylesheet",
+                                        href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
+                                 ),
+                                 tags$link(
                                           rel = "stylesheet",
-                                          href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
-                                      ),
+                                          href = "contextMenu.css"
+                                 ),
                                  tags$script(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                                       )
@@ -121,7 +126,7 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='icons/arrow.svg')),
 
                 ## * 3. Check input data
                 tabPanel(
@@ -163,7 +168,7 @@ shinyUI(
                     fluidRow(DT::DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
-                tabPanel(icon('menu-right', class='arrowico', lib='glyphicon'), id='sep1'),
+                tabPanel(img(src='icons/arrow.svg')),
                 
                 ## * 4. Calculate IBI score
                 tabPanel(
@@ -178,7 +183,7 @@ shinyUI(
                             5, align='right',
                             downloadButton('download', 
                                            label=div(HTML("Download results&nbsp;&nbsp;"),
-                                                     icon("download"), style='display: inline-block !important'),
+                                                     img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important'),
                                            icon = icon(""), style='width: 250px; height: 55px')
                         )
                     ),
