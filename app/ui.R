@@ -128,7 +128,7 @@ shinyUI(
                     "3. Check input data",
                     br(), br(),
                     fluidRow(
-                        column(9, id='rescol1',
+                        column(6, id='rescol1',
                                wellPanel(
                                    id = 'issues-panel',
                                    fluidRow(
@@ -138,15 +138,26 @@ shinyUI(
                                               ## imageOutput('issueImg', height='100px', width='100px')),
                                        column(9, h2(htmlOutput('issuesTxt')))
                                    ),
+                                   br(),
                                    h5(textOutput('issuesSubTxt'))
                                ),
                                ),
-                        column(3, id='rescol2', align = 'right',
-                               actionButton('remIssuesBtn', 'Exclude issues'),
-                               br(),br(),
-                               actionButton('to4btn', 'Calculate IBI score')
+                        column(
+                            5, offset = 1,
+                            fluidRow(
+                                column(
+                                    6,
+                                    id='rescol2', align = 'right',
+                               actionButton('remIssuesBtn', 'Exclude issues')
+                               ),
+                               # br(),br(),
+                               column(
+                                   6,
+                                   actionButton('to4btn', 'Calculate IBI score')
                                ## , actionButton('testbtn', 'Test')
                                )
+                            )
+                        )
                     ),
                     br(), br(),
                     fluidRow(DT::DTOutput("newTable"))
