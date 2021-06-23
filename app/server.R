@@ -694,9 +694,9 @@ shinyServer(function(input, output, session) {
     })
 
     output$download <- downloadHandler(
-      filename = function(){"ibiScore.csv"},
-      content = function(fname){
-        write.csv(ibiData(), fname)
+      filename = "ibiScore.csv",
+      content = function(fname) {
+        fwrite(ibiData(), fname)
       })
     
 })
