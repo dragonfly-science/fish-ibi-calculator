@@ -571,7 +571,10 @@ shinyServer(function(input, output, session) {
             class = 'nowrap hover compact stripe',
             options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = ncol(ibi_scores)>15,
                          paging = nrow(ibi_scores)>15, pageLength = 15,
-                         searching = FALSE, ordering = FALSE
+                         searching = FALSE, ordering = FALSE,
+                         columnDefs = list(list(
+                           className = 'dt-left', targets = 1:5
+                         ))
                            )
         )        
         dt
@@ -683,7 +686,7 @@ shinyServer(function(input, output, session) {
               axis.line.y = element_blank(),
               axis.text.x=element_text(size = 12, face = 'bold', margin = margin(t = 15)),
               axis.ticks = element_blank()) +
-        theme(plot.margin=unit(c(0.5, 0.5, 0.5, 0.5),"cm"))+
+        theme(plot.margin=unit(c(1, 0.5, 0.5, 0.5),"cm"))+
         theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
         theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
       

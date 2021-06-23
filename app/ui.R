@@ -128,7 +128,7 @@ shinyUI(
                     "3. Check input data",
                     br(), br(),
                     fluidRow(
-                        column(9, id='rescol1',
+                        column(6, id='rescol1',
                                wellPanel(
                                    id = 'issues-panel',
                                    fluidRow(
@@ -138,15 +138,26 @@ shinyUI(
                                               ## imageOutput('issueImg', height='100px', width='100px')),
                                        column(9, h2(htmlOutput('issuesTxt')))
                                    ),
+                                   br(),
                                    h5(textOutput('issuesSubTxt'))
                                ),
                                ),
-                        column(3, id='rescol2', align = 'right',
-                               actionButton('remIssuesBtn', 'Exclude issues'),
-                               br(),br(),
-                               actionButton('to4btn', 'Calculate IBI score')
+                        column(
+                            5, offset = 1,
+                            fluidRow(
+                                column(
+                                    6,
+                                    id='rescol2', align = 'right',
+                               actionButton('remIssuesBtn', 'Exclude issues')
+                               ),
+                               # br(),br(),
+                               column(
+                                   6,
+                                   actionButton('to4btn', 'Calculate IBI score')
                                ## , actionButton('testbtn', 'Test')
                                )
+                            )
+                        )
                     ),
                     br(), br(),
                     fluidRow(DT::DTOutput("newTable"))
@@ -190,35 +201,35 @@ shinyUI(
                                   , br()
                                   , withspinner(leafletOutput('map')))
                              ),
-                    ## br(),
-                    ## fluidRow(column(width = 6, )),
                     br(), br(),
                     fluidRow(
-                        column(width= 2, 
+                        splitLayout(cellWidths = rep("20%", 5),
+                                    cellArgs = list(style='white-space: normal;'),
+                        column(width= 12, 
                                h5(strong("A")),
                                h5("≥ 34"),
                                hr(),
-                               includeMarkdown('text/nps-a.md')),
-                        column(width= 2, 
+                               h6(includeMarkdown('text/nps-a.md'))),
+                        column(width= 12, 
                                h5(strong("B")),
                                h5("< 34 and ≥ 28"),
                                hr(),
-                               includeMarkdown('text/nps-b.md')),
-                        column(width= 2, 
+                               h6(includeMarkdown('text/nps-b.md'))),
+                        column(width= 12, 
                                h5(strong("C")),
                                h5("< 28 and ≥ 18"),
                                hr(),
-                               includeMarkdown('text/nps-c.md')),
-                        column(width= 2, 
+                               h6(includeMarkdown('text/nps-c.md'))),
+                        column(width= 12, 
                                h5(strong("D")),
                                h5("< 18"),
                                hr(),
-                               includeMarkdown('text/nps-d.md')),
-                        column(width= 2, 
+                               h6(includeMarkdown('text/nps-d.md'))),
+                        column(width= 12, 
                                h5(strong("No fish")),
-                               h5("-"),
+                               h6(h5("-")),
                                hr())
-                    ),
+                    )),
                     br(),
                     hr(),
                     br(),
