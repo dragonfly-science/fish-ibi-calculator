@@ -1,5 +1,7 @@
-.context-menu-list ul{
-  padding: 20px, 10px;
+.context-menu-root {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  padding-left: 30px;
 }
 
 .context-menu-item {
@@ -16,21 +18,22 @@
 }
 
 input[type='radio']:after {
-        width: 18px;
-        height: 18px;
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
         position: relative;
         top: -3px;
         left: -1px;
-        background-color: #d1d3d1;
+        background-color: #ECEFF0;
         content: '';
         display: inline-block;
         visibility: visible;
+        border: 1px solid #d4dde1;
 }
     
 input[type='radio']:checked:after {
-        width: 18px;
-        height: 18px;
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
         position: relative;
         top: -3px;
