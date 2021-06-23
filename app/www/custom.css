@@ -103,6 +103,16 @@ input[type=checkbox]:disabled:checked{
     /* color: #5c640f; */
 }
 
+
+.h4, h4 {
+    color: #003147;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+}
+
 /* p { */
 /*     color: #003147; */
 /*     font-family: Lato; */
@@ -464,9 +474,13 @@ img.arrow-download {
     font-weight: 900;
     font-size: 20px;
     line-height: 24px;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
-.context-menu-item > ul > li > span {
-    font-weight: 400;
+.context-menu-input > label {
+    font-family: Lato;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    color: #607781;
 }
