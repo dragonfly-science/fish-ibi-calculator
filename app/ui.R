@@ -64,7 +64,7 @@ shinyUI(
                                     6,
                                     fileInputOnlyButton('target_upload', 
                                                         buttonLabel =
-                                                            div(HTML('Upload CSV file&nbsp;&nbsp;'), icon('upload')),
+                                                            div(class="button-inner", HTML('Upload CSV file&nbsp;&nbsp;'), img(class="arrow-up", src="icons/buttonArrow.svg")),
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
@@ -87,7 +87,7 @@ shinyUI(
                     )
                 ),
 
-                tabPanel(img(src='arrow.svg')),
+                tabPanel(img(src='icons/arrow.svg')),
                 
                 ## * 2. Match headers
                 tabPanel(
@@ -101,7 +101,7 @@ shinyUI(
                                ),
                         column(3, offset = 2 #, align = 'right'
                              , disabled(
-                                   actionButton('checkData', "Check input data")
+                                   actionButton('checkData', div(HTML("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
                                )
                              , br(), br(), br()
                              , uiOutput('mandfields')
@@ -126,7 +126,7 @@ shinyUI(
                         DT::DTOutput("dtable")
                     )
                 ),
-                tabPanel(img(src='arrow.svg')),
+                tabPanel(img(src='icons/arrow.svg')),
 
                 ## * 3. Check input data
                 tabPanel(
@@ -157,7 +157,7 @@ shinyUI(
                     fluidRow(DT::DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
-                tabPanel(img(src='arrow.svg')),
+                tabPanel(img(src='icons/arrow.svg')),
                 
                 ## * 4. Calculate IBI score
                 tabPanel(

@@ -13,22 +13,9 @@ body {
     line-height: 24px;
 }
 
-/* body {  */
-/* 	max-width: 1250px;  */
-/* 	margin: 0 auto !important;  */
-/* 	/\* margin-right: 0 auto !important; *\/ */
-/* 	margin-top: 0 !important; */
-/* 	float: none !important;  */
-/* } */
-/* .header-container, .body-container, .footer-container {  */
-/* 	max-width: 1080px;  */
-/*     margin: 0 auto;  */
-/* } */
 .container-fluid {
     max-width: 1440px;
     margin: 0 auto;
-    /* padding-left: 5%; */
-    /* padding-right: 5%; */
 }
 
 /* } */
@@ -186,7 +173,7 @@ ul {
 /* } */
 /* .wrapper { */
 /* } */
-#myFirst li a[data-value="<img src=\"arrow.svg\"/>"] {
+#myFirst li a[data-value="<img src=\"icons/arrow.svg\"/>"] {
     pointer-events: none !important;
     cursor: not-allowed;
     width: 75px;
@@ -208,21 +195,6 @@ ul {
     color: #AEBBBF !important;
     
 }
-
-/* #myFirst li a[data-value="1. Upload your file"] { */
-/*     width: 100%; */
-/* } */
-/* #myFirst li a[data-value="2. Match headers"] { */
-/*     width: 100%; */
-/* } */
-/* #myFirst li a[data-value="3. Check input data"] { */
-/*     width: 100%; */
-/* } */
-/* #myFirst li a[data-value="4. Calculate IBI score"] { */
-/*     width: 100%; */
-/* } */
-
-
 
 .arrowico {
     top: 4px;
@@ -246,7 +218,7 @@ ul {
     font-family: Lato;
     font-style: normal;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 24px;
     border-radius: 3px;
     border-color: #009985;
@@ -255,9 +227,10 @@ ul {
     /* font-size: 1.1em; */
     background-color: #009985;
     padding: 14px 18px;
-    width: 200px;
-    /* height: 50px; */
+    max-width: 300px;
+    height: 60px;
 }
+
 .btn[disabled] {
     border-radius: 5px;
     border-color: #aaa;
@@ -415,15 +388,6 @@ table.dataTable tbody td {
     line-height: 30px;
     color: #003147;
     padding-left: 15px !important;
-    /* border-left: 1px solid #D4DDE1 !important; */
-    /* border: 1px solid #D4DDE1 !important; */
-    /* , */
-    /* table.dataTable thead tr, */
-    /* table.dataTable thead td, */
-    /* table.dataTable tbody th, */
-    /* table.dataTable tbody tr, */
-    /* background-color: #D4DDE1; */
-    /* border-bottom: unset !important; */
 }
 
 .dataTables_info,
@@ -442,10 +406,7 @@ table {
 }
     
 table td + td, table tr + tr {
-    /* border-collapse: collapse; */
     border-left: 1px solid #D4DDE1;
-    /* border-bottom: 1px solid #D4DDE1; */
-    /* border: 1px solid #D4DDE1; */
 }
 table td {
     /* border-collapse: collapse; */
@@ -487,4 +448,8 @@ table thead td + td {
     padding: 2px;
     width: 150px;
     /* height: 50px; */
+}
+
+button div img.arrow-next {
+  transform: rotate(90deg);
 }
