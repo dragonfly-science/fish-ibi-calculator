@@ -2,7 +2,7 @@
 /* @import url("https://fonts.googleapis.com/css?family=Maven+Pro"); */
 /* @import url('https://fonts.googleapis.com/css?family=Roboto|Raleway'); */
 /* #mandfields > div > div:nth-child(1) > label > input.disabled { */
-@import url('https://fonts.googleapis.com/css2?family=Lato&family=Merriweather&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap');
 
 body {
     color: #003147;
@@ -494,4 +494,12 @@ table thead td + td {
     padding: 2px;
     width: 150px;
     /* height: 50px; */
+}
+
+.subheader {
+    font-family: 'Merriweather', serif;
+    font-style: normal;
+    font-weight: 900 !important;
+    font-size: 15px;
+    line-height: 20px;
 }
