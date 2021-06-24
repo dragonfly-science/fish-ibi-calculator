@@ -175,22 +175,24 @@ shinyUI(
                 ## * 4. Calculate IBI score
                 tabPanel(
                     "4. Calculate IBI score",
+                    tags$head(
+                        tags$link(rel="stylesheet", type="text/css", href="styles/tabPanel4.css")
+                    ),
                     br(),br(),
                     fluidRow(
                         column(
-                            7,
-                            h2(includeMarkdown('text/page-4-title.md')),
-                            div(style="display: flex; align-content: center;",
-                                div(style="width: 15%;",
-                                    h5("View by: ", style="margin-top: auto; margin-bottom: auto;")),
-                                div(style="width: 40%;",
-                                    selectInput("download", "", choices = c("NPS-FM category"))),
-                                div(style="width: 40%;",
-                                    selectInput("download2", "", choices = c("NPS-FM category"))),
+                            8,
+                            div(style="margin-bottom: 40px;",
+                                h2(includeMarkdown('text/page-4-title.md'))
+                            ),
+                            div(style="display: flex; flex-direction: row; flex-wrap: wrap;",
+                                    span(HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
+                                    span(id="select-1", selectInput("download", "", choices = c("NPS-FM category"))),
+                                    span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category"))),
                             )
                         ),
                         column(
-                            5, align='right',
+                            4, align='right',
                             downloadButton('download', 
                                            label=div(HTML("Download results&nbsp;&nbsp;"),
                                                      img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important;'),
