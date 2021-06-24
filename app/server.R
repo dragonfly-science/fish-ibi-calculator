@@ -619,50 +619,81 @@ shinyServer(function(input, output, session) {
             ibi <- as.data.table(ibi)
             ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
                            total_sp_richness, number_non_native, X, Y)]
-
-            numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
-            factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
+            
             ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D'))]
+            ibi[, IBIscoreCute := factor(as.character(IBIscoreCut), levels = c('Low quality',
+                                                                               'Medium quality',
+                                                                               'High quality'))]
             
             ibi[, labels := paste0(
-                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
-                      kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
-                                                            `IBI category`      = IBIscoreCut,
-                                                            `NPS category`      = NPSscore,
-                                                            `Total sp richness` = total_sp_richness,
-                                                            `Non-native spp`   = number_non_native),
-                                                 format='html', escape = F)))
+              sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
+              kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
+                                                    `IBI category`      = IBIscoreCut,
+                                                    `NPS category`      = NPSscore,
+                                                    `Total sp richness` = total_sp_richness,
+                                                    `Non-native spp`   = number_non_native),
+                                         format='html', escape = F)))
               , by = 1:nrow(ibi)]
-
-            ## Create map
-            rv$map <- leaflet() %>%
+            
+            if (input$sel_score == 'nps_score') {
+              factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
+              fc = ~factcols(NPSscore) 
+              c = ~factcols(NPSscore)
+              
+              rv$map <- leaflet() %>%
+                # addTiles() %>%
                 setView(173.6, -41, zoom = 5) %>% 
                 addEsriBasemapLayer(esriBasemapLayers$Gray, autoLabels = TRUE
-                                    ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
-                                    ) %>%
-                ## addTiles() %>%
+                ) %>%
                 addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 ## fillColor = ~numcols(IBIscore), color = ~numcols(IBIscore),
-                                 fillColor = ~factcols(NPSscore), color = ~factcols(NPSscore),
+                                 fillColor = fc, color = c,
                                  popup = ~labels %>% lapply(htmltools::HTML),
                                  popupOptions = labelOptions(
-                                     style = list("font-weight" = "normal",
-                                                  padding = "3px 8px", "color" = 'grey80'),
-                                     textsize = "17px", direction = "auto", sticky = F,
-                                     maxWidth = 700, closeOnClick = T),
+                                   style = list("font-weight" = "normal",
+                                                padding = "3px 8px", "color" = 'grey80'),
+                                   textsize = "17px", direction = "auto", sticky = F,
+                                   maxWidth = 700, closeOnClick = T),
                                  ## radius = ~radius,
                                  fillOpacity = 0.6,
                                  radius = 4,
                                  opacity = 0.8,
                                  weight = 1
-                                 ) %>%
+                ) %>%
                 addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
-                          title = 'NPS category') %>%
-                addFullscreenControl()
-                ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~IBIscore,
-                ##           title = 'IBI score')
-
-            rv$map
+                          title = 'NPS category')
+              
+              rv$map
+              
+            } else if (input$sel_score == 'ibi_score') {
+              factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986')), domain = NULL)
+              fc = ~factcols(IBIscoreCut) 
+              c = ~factcols(IBIscoreCut)
+              
+              rv$map <- leaflet() %>%
+                # addTiles() %>%
+                setView(173.6, -41, zoom = 5) %>% 
+                addEsriBasemapLayer(esriBasemapLayers$Gray, autoLabels = TRUE
+                ) %>%
+                addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                 fillColor = fc, color = c,
+                                 popup = ~labels %>% lapply(htmltools::HTML),
+                                 popupOptions = labelOptions(
+                                   style = list("font-weight" = "normal",
+                                                padding = "3px 8px", "color" = 'grey80'),
+                                   textsize = "17px", direction = "auto", sticky = F,
+                                   maxWidth = 700, closeOnClick = T),
+                                 ## radius = ~radius,
+                                 fillOpacity = 0.6,
+                                 radius = 4,
+                                 opacity = 0.8,
+                                 weight = 1
+                ) %>%
+                addLegend(data = ibi, "bottomright", pal = factcols, values = ~IBIscoreCut,
+                          title = 'IBI category')
+              
+              rv$map
+            }
+   
         }
 
     })
