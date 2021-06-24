@@ -185,7 +185,7 @@ shinyUI(
                             div(style="margin-bottom: 40px;",
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
-                            div(style="display: flex; flex-direction: row; flex-wrap: wrap",
+                            div(id="select-container",
                                 span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
                                 span(id="select-1",
                                      selectInput("sel_score", "",

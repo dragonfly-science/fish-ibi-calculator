@@ -1,3 +1,9 @@
+#select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 #select-label {
   margin-right: 40px;
 }
