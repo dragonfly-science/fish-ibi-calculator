@@ -62,7 +62,7 @@ shinyUI(
                             fluidRow(
                                 column(
                                     6,
-                                    fileInputOnlyButton('target_upload', 
+                                    fileInputOnlyButton('target_upload',
                                                         buttonLabel =
                                                             div(class="button-inner", HTML('Upload CSV file&nbsp;&nbsp;'), img(class="arrow-up", src="icons/buttonArrow.svg")),
                                                         accept = c("text/csv",
@@ -178,13 +178,14 @@ shinyUI(
                         column(
                             7,
                             h2(includeMarkdown('text/page-4-title.md')),
-                            div(style="display:inline-block;width:15%;text-align: left; margin-bottom:50px;",
-                                h5("View by")),
-                            div(style="display:inline-block;width:40%;text-align: center;",
-                                selectInput("download", "", choices = c("NPS-FM category"))),
-                            div(style="display:inline-block;width:40%;text-align: center;",
-                                selectInput("download2", "", choices = c("NPS-FM category"))),
-
+                            div(style="display: flex; align-content: center;",
+                                div(style="width: 15%;",
+                                    h5("View by: ", style="margin-top: auto; margin-bottom: auto;")),
+                                div(style="width: 40%;",
+                                    selectInput("download", "", choices = c("NPS-FM category"))),
+                                div(style="width: 40%;",
+                                    selectInput("download2", "", choices = c("NPS-FM category"))),
+                            )
                         ),
                         column(
                             5, align='right',
