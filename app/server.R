@@ -9,7 +9,7 @@ library(shinyWidgets)
 library(leaflet)
 library(sf)
 ## library(tmap)
-library(leaflet.esri)
+library(leaflet.extras)
 library(kableExtra)
 library(mapview)
 
@@ -123,6 +123,13 @@ callback <- "$(document).contextMenu({
   }
 });"
 
+
+## rv <- list(
+##     reqfields = req_fields,
+##     selfields = data.frame(req = names(req_fields), good = 0L),
+##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
+##     finalTable = NULL
+## )
 
 shinyServer(function(input, output, session) {
 
@@ -311,6 +318,7 @@ shinyServer(function(input, output, session) {
     
     cleanTable <- reactive({
         req(rv$intable)
+
         d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
                             cols_opt[cols_opt %in% names(rv$intable)])]
 
@@ -540,17 +548,17 @@ shinyServer(function(input, output, session) {
         site_metrics_all <- d %>%
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
-        qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
-        qr.2.elev <- qr.construct("metric2", "altitude", data = site_metrics_all)
-        qr.3.elev <- qr.construct("metric3", "altitude", data = site_metrics_all)
-        qr.4.elev <- qr.construct("metric4", "altitude", data = site_metrics_all)
-        qr.5.elev <- qr.construct("metric5", "altitude", data = site_metrics_all)
+        qr.1.elev <- qr.construct("metric1", "Altitude", data = site_metrics_all)
+        qr.2.elev <- qr.construct("metric2", "Altitude", data = site_metrics_all)
+        qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
+        qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)
+        qr.5.elev <- qr.construct("metric5", "Altitude", data = site_metrics_all)
         
-        qr.1.penet <- qr.construct("metric1", "penet", data = site_metrics_all)
-        qr.2.penet <- qr.construct("metric2", "penet", data = site_metrics_all)
-        qr.3.penet <- qr.construct("metric3", "penet", data = site_metrics_all)
-        qr.4.penet <- qr.construct("metric4", "penet", data = site_metrics_all)
-        qr.5.penet <- qr.construct("metric5", "penet", data = site_metrics_all)
+        qr.1.penet <- qr.construct("metric1", "Penet", data = site_metrics_all)
+        qr.2.penet <- qr.construct("metric2", "Penet", data = site_metrics_all)
+        qr.3.penet <- qr.construct("metric3", "Penet", data = site_metrics_all)
+        qr.4.penet <- qr.construct("metric4", "Penet", data = site_metrics_all)
+        qr.5.penet <- qr.construct("metric5", "Penet", data = site_metrics_all)
         
         ibi_scores <- site_metrics_all %>% 
             add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
@@ -571,8 +579,8 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score",
-                                            "ibi_score_cut", "nps_score", "Stratum")
+        ibi_scores <- ibi_scores %>% select("Date", 'SiteID', "IBIscore",
+                                            "IBIscoreCut", "NPSscore", "Stratum")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
@@ -590,6 +598,7 @@ shinyServer(function(input, output, session) {
 
     
     ## * MAP
+    
     output$map <- renderLeaflet({
 
         ibi_scores <- copy(ibiData())
@@ -602,60 +611,92 @@ shinyServer(function(input, output, session) {
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
             coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
-            ibi <- merge(ibi, coords, by.x = c('date', 'siteID'), by.y = c('Date', 'SiteID'), all = T)
+            ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
             ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
             ibi <- st_transform(ibi, crs = 4326)
             ibi <- cbind(ibi, st_coordinates(ibi))
             ibi <- as.data.table(ibi)
-            ibi <- ibi[, .(date, siteID, ibi_score, ibi_score_cut, nps_score,
+            ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
                            total_sp_richness, number_non_native, X, Y)]
-
-            numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
-            factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
-            ibi[, nps_score := factor(as.character(nps_score), levels = c('A', 'B', 'C', 'D'))]
+            
+            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D'))]
+            ibi[, IBIscoreCute := factor(as.character(IBIscoreCut), levels = c('Low quality',
+                                                                               'Medium quality',
+                                                                               'High quality'))]
             
             ibi[, labels := paste0(
-                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", siteID, date),
-                      kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
-                                                            `IBI category`      = ibi_score_cut,
-                                                            `NPS category`      = nps_score,
-                                                            `Total sp richness` = total_sp_richness,
-                                                            `Non-native spp`   = number_non_native),
-                                                 format='html', escape = F)))
+              sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
+              kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
+                                                    `IBI category`      = IBIscoreCut,
+                                                    `NPS category`      = NPSscore,
+                                                    `Total sp richness` = total_sp_richness,
+                                                    `Non-native spp`   = number_non_native),
+                                         format='html', escape = F)))
               , by = 1:nrow(ibi)]
-
-            ## Create map
-            rv$map <- leaflet() %>%
-                addTiles() %>%
-                setView(173.6, -41, zoom = 5) %>% 
-                addEsriBasemapLayer(esriBasemapLayers$Topographic, autoLabels = TRUE
-                                    ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
-                                    ) %>%
-                addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 ## fillColor = ~numcols(ibi_score), color = ~numcols(ibi_score),
-                                 fillColor = ~factcols(nps_score), color = ~factcols(nps_score),
-                                 popup = ~labels %>% lapply(htmltools::HTML),
-                                 popupOptions = labelOptions(
-                                     style = list("font-weight" = "normal",
-                                                  padding = "3px 8px", "color" = 'grey80'),
-                                     textsize = "17px", direction = "auto", sticky = F,
-                                     maxWidth = 700, closeOnClick = T),
-                                 ## radius = ~radius,
-                                 fillOpacity = 0.6,
-                                 radius = 4,
-                                 opacity = 0.8,
-                                 weight = 1
-                                 ) %>%
-                addLegend(data = ibi, "bottomright", pal = factcols, values = ~nps_score,
-                          title = 'NPS category')
-                ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
-                ##           title = 'IBI score')
-
-            rv$map
+            
+            if (input$sel_score == 'nps_score') {
+              factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
+              fc = ~factcols(NPSscore) 
+              c = ~factcols(NPSscore)
+              
+              rv$map <- leaflet() %>%
+                                        # addTiles() %>%
+                  setView(173.6, -41, zoom = 5) %>%
+                  addProviderTiles(providers$CartoDB.Positron) %>%
+                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                   fillColor = fc, color = c,
+                                   popup = ~labels %>% lapply(htmltools::HTML),
+                                   popupOptions = labelOptions(
+                                       style = list("font-weight" = "normal",
+                                                    padding = "3px 8px", "color" = 'grey80'),
+                                       textsize = "17px", direction = "auto", sticky = F,
+                                       maxWidth = 700, closeOnClick = T),
+                                   ## radius = ~radius,
+                                   fillOpacity = 0.6,
+                                   radius = 4,
+                                   opacity = 0.8,
+                                   weight = 1
+                                   ) %>%
+                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
+                            title = 'NPS category') %>%
+                  addFullscreenControl()
+              
+              rv$map
+              
+            } else if (input$sel_score == 'ibi_score') {
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
+              fc = ~factcols(IBIscoreCut) 
+              c = ~factcols(IBIscoreCut)
+              
+              rv$map <- leaflet() %>%
+                # addTiles() %>%
+                  setView(173.6, -41, zoom = 5) %>% 
+                  addProviderTiles(providers$CartoDB.Positron) %>%
+                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                   fillColor = fc, color = c,
+                                   popup = ~labels %>% lapply(htmltools::HTML),
+                                   popupOptions = labelOptions(
+                                       style = list("font-weight" = "normal",
+                                                    padding = "3px 8px", "color" = 'grey80'),
+                                       textsize = "17px", direction = "auto", sticky = F,
+                                       maxWidth = 700, closeOnClick = T),
+                                   ## radius = ~radius,
+                                   fillOpacity = 0.6,
+                                   radius = 4,
+                                   opacity = 0.8,
+                                   weight = 1
+                                   ) %>%
+                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~IBIscoreCut,
+                            title = 'IBI category') %>%
+                  addFullscreenControl()
+              
+              rv$map
+            }
+   
         }
 
     })
-
+    
 
     output$mapdl <- downloadHandler(
         filename = 'IBI_map.png',
@@ -666,37 +707,87 @@ shinyServer(function(input, output, session) {
             ## webshot::webshot('map.html', file = file)
         }
     )
+
+
+    ## * Table of categories
     
+    output$text <- renderUI({
+      if(input$sel_score == 'nps_score'){
+        splitLayout(cellWidths = rep("20%", 5),
+                    cellArgs = list(style='white-space: normal;'),
+                    column(width= 12, 
+                           h5(strong("A")),
+                           h5("≥ 34"),
+                           hr(),
+                           h6(includeMarkdown('text/nps-a.md'))),
+                    column(width= 12, 
+                           h5(strong("B")),
+                           h5("< 34 and ≥ 28"),
+                           hr(),
+                           h6(includeMarkdown('text/nps-b.md'))),
+                    column(width= 12, 
+                           h5(strong("C")),
+                           h5("< 28 and ≥ 18"),
+                           hr(),
+                           h6(includeMarkdown('text/nps-c.md'))),
+                    column(width= 12, 
+                           h5(strong("D")),
+                           h5("< 18"),
+                           hr(),
+                           h6(includeMarkdown('text/nps-d.md'))),
+                    column(width= 12, 
+                           h5(strong("No fish")),
+                           h6(h5("-")),
+                           hr())
+        )
+      } else if(input$sel_score == 'ibi_score')
+        "test"
+    })
+
     
-    output$npsGraph <- renderPlot({
+
+    ## * Scores plot
+    
+    output$scoresPlot <- renderPlot({
       ibi_scores <- ibiData()
       req(ibi_scores)
-      
-      group.colors <- c('A'  = "#00C7A8",
-                        'B'  = "#2C9986", 
-                        'C'  = "#004A6D", 
-                        'D'  = "#BF2F37",
-                        'NA' = '#d4dde1')
-      
-      g <- ggplot(ibi_scores, aes(x = nps_score)) + 
-        geom_histogram(stat = "count", fill = group.colors, alpha = 0.9) + 
-        xlab("NPS-FM category") + 
-        ylab("Number of sites") + 
-        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-        theme_bw() +
-        theme(panel.grid.major.x = element_blank(),
-              panel.grid.minor.x = element_blank(),
-              panel.grid.major.y = element_line(size=.1, color="black"),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank(),
-              axis.line = element_line(),
-              axis.line.y = element_blank(),
-              axis.text.x=element_text(size = 12, face = 'bold', margin = margin(t = 15)),
-              axis.ticks = element_blank()) +
-        theme(plot.margin=unit(c(1, 0.5, 0.5, 0.5),"cm"))+
-        theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
-        theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+
+      if (input$sel_score == 'nps_score') {
+          group.colors <- c('A'  = "#00C7A8",
+                            'B'  = "#2C9986", 
+                            'C'  = "#004A6D", 
+                            'D'  = "#BF2F37")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
+          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
+              xlab("NPS-FM category")
+      } else if (input$sel_score == 'ibi_score') {
+          group.colors <- c('Low quality'    = "#BF2F37",
+                            'Medium quality' = "#004A6D", 
+                            'High quality'   = "#00C7A8")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
+          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
+              xlab("IBI category")
+      }
+      g <- g + 
+          geom_histogram(stat = "count", alpha = 0.9) + 
+          ylab("Number of sites") + 
+          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
+          theme_bw() +
+          theme(panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                panel.grid.major.y = element_line(size=.1, color="black"),
+                panel.grid.major   = element_blank(),
+                panel.grid.minor   = element_blank(),
+                panel.border       = element_blank(),
+                axis.line          = element_line(),
+                axis.line.y        = element_blank(),
+                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+                axis.ticks         = element_blank(),
+                legend.position    = 'none') +
+          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
+          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
       
       g
     })
