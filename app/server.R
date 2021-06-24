@@ -540,17 +540,17 @@ shinyServer(function(input, output, session) {
         site_metrics_all <- d %>%
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
-        qr.1.elev <- qr.construct("metric1", "altitude", data = site_metrics_all)
-        qr.2.elev <- qr.construct("metric2", "altitude", data = site_metrics_all)
-        qr.3.elev <- qr.construct("metric3", "altitude", data = site_metrics_all)
-        qr.4.elev <- qr.construct("metric4", "altitude", data = site_metrics_all)
-        qr.5.elev <- qr.construct("metric5", "altitude", data = site_metrics_all)
+        qr.1.elev <- qr.construct("metric1", "Altitude", data = site_metrics_all)
+        qr.2.elev <- qr.construct("metric2", "Altitude", data = site_metrics_all)
+        qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
+        qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)
+        qr.5.elev <- qr.construct("metric5", "Altitude", data = site_metrics_all)
         
-        qr.1.penet <- qr.construct("metric1", "penet", data = site_metrics_all)
-        qr.2.penet <- qr.construct("metric2", "penet", data = site_metrics_all)
-        qr.3.penet <- qr.construct("metric3", "penet", data = site_metrics_all)
-        qr.4.penet <- qr.construct("metric4", "penet", data = site_metrics_all)
-        qr.5.penet <- qr.construct("metric5", "penet", data = site_metrics_all)
+        qr.1.penet <- qr.construct("metric1", "Penet", data = site_metrics_all)
+        qr.2.penet <- qr.construct("metric2", "Penet", data = site_metrics_all)
+        qr.3.penet <- qr.construct("metric3", "Penet", data = site_metrics_all)
+        qr.4.penet <- qr.construct("metric4", "Penet", data = site_metrics_all)
+        qr.5.penet <- qr.construct("metric5", "Penet", data = site_metrics_all)
         
         ibi_scores <- site_metrics_all %>% 
             add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
@@ -571,8 +571,8 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("date", 'siteID', "ibi_score",
-                                            "ibi_score_cut", "nps_score", "Stratum")
+        ibi_scores <- ibi_scores %>% select("Date", 'SiteID', "IBIscore",
+                                            "IBIscoreCut", "NPSscore", "Stratum")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
@@ -602,23 +602,23 @@ shinyServer(function(input, output, session) {
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
             coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
-            ibi <- merge(ibi, coords, by.x = c('date', 'siteID'), by.y = c('Date', 'SiteID'), all = T)
+            ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
             ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
             ibi <- st_transform(ibi, crs = 4326)
             ibi <- cbind(ibi, st_coordinates(ibi))
             ibi <- as.data.table(ibi)
-            ibi <- ibi[, .(date, siteID, ibi_score, ibi_score_cut, nps_score,
+            ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
                            total_sp_richness, number_non_native, X, Y)]
 
             numcols <- colorNumeric(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
             factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
-            ibi[, nps_score := factor(as.character(nps_score), levels = c('A', 'B', 'C', 'D'))]
+            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D'))]
             
             ibi[, labels := paste0(
-                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", siteID, date),
-                      kable_styling(knitr::kable(data.table(`IBI score`         = ibi_score,
-                                                            `IBI category`      = ibi_score_cut,
-                                                            `NPS category`      = nps_score,
+                      sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
+                      kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
+                                                            `IBI category`      = IBIscoreCut,
+                                                            `NPS category`      = NPSscore,
                                                             `Total sp richness` = total_sp_richness,
                                                             `Non-native spp`   = number_non_native),
                                                  format='html', escape = F)))
@@ -632,8 +632,8 @@ shinyServer(function(input, output, session) {
                                     ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
                                     ) %>%
                 addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 ## fillColor = ~numcols(ibi_score), color = ~numcols(ibi_score),
-                                 fillColor = ~factcols(nps_score), color = ~factcols(nps_score),
+                                 ## fillColor = ~numcols(IBIscore), color = ~numcols(IBIscore),
+                                 fillColor = ~factcols(NPSscore), color = ~factcols(NPSscore),
                                  popup = ~labels %>% lapply(htmltools::HTML),
                                  popupOptions = labelOptions(
                                      style = list("font-weight" = "normal",
@@ -646,9 +646,9 @@ shinyServer(function(input, output, session) {
                                  opacity = 0.8,
                                  weight = 1
                                  ) %>%
-                addLegend(data = ibi, "bottomright", pal = factcols, values = ~nps_score,
+                addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
                           title = 'NPS category')
-                ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~ibi_score,
+                ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~IBIscore,
                 ##           title = 'IBI score')
 
             rv$map
@@ -678,7 +678,7 @@ shinyServer(function(input, output, session) {
                         'D'  = "#BF2F37",
                         'NA' = '#d4dde1')
       
-      g <- ggplot(ibi_scores, aes(x = nps_score)) + 
+      g <- ggplot(ibi_scores, aes(x = NPSscore)) + 
         geom_histogram(stat = "count", fill = group.colors, alpha = 0.9) + 
         xlab("NPS-FM category") + 
         ylab("Number of sites") + 

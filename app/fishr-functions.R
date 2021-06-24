@@ -42,10 +42,10 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics){
     distinct(SpeciesCode, .keep_all = TRUE) %>%
     inner_join(species.ibi.metrics, by = c("SpeciesCode" = "spcode")) %>%  # filtering to only species with metric info. change to left_join to get all.
     summarise(
-      date = first(Date),
-      siteID = first(SiteID),
-      altitude = first(Altitude),
-      penet = first(Penetration),
+      Date = first(Date),
+      SiteID = first(SiteID),
+      Altitude = first(Altitude),
+      Penet = first(Penetration),
       # east = first(east),
       #  north = first(north),
       total_sp_richness = n(),
@@ -98,16 +98,16 @@ add.fish.metrics <- function(.data, q1e = qr.1.elev, q2e = qr.2.elev, q3e = qr.3
                              q2p = qr.2.penet, q3p = qr.3.penet, q4p = qr.4.penet,
                              q5p = qr.5.penet){
   .data %>%
-    mutate(metric1_rating_elev = pmap_dbl(list(x = altitude, y = metric1), qr.score, qr = q1e),
-           metric2_rating_elev = pmap_dbl(list(x = altitude, y = metric2), qr.score, qr = q2e),
-           metric3_rating_elev = pmap_dbl(list(x = altitude, y = metric3), qr.score, qr = q3e),
-           metric4_rating_elev = pmap_dbl(list(x = altitude, y = metric4), qr.score, qr = q4e),
-           metric5_rating_elev = pmap_dbl(list(x = altitude, y = metric5), qr.score, qr = q5e)) %>%
-    mutate(metric1_rating_pene = pmap_dbl(list(x = penet, y = metric1), qr.score, qr = q1p),
-           metric2_rating_pene = pmap_dbl(list(x = penet, y = metric2), qr.score, qr = q2p),
-           metric3_rating_pene = pmap_dbl(list(x = penet, y = metric3), qr.score, qr = q3p),
-           metric4_rating_pene = pmap_dbl(list(x = penet, y = metric4), qr.score, qr = q4p),
-           metric5_rating_pene = pmap_dbl(list(x = penet, y = metric5), qr.score, qr = q5p))
+    mutate(metric1_rating_elev = pmap_dbl(list(x = Altitude, y = metric1), qr.score, qr = q1e),
+           metric2_rating_elev = pmap_dbl(list(x = Altitude, y = metric2), qr.score, qr = q2e),
+           metric3_rating_elev = pmap_dbl(list(x = Altitude, y = metric3), qr.score, qr = q3e),
+           metric4_rating_elev = pmap_dbl(list(x = Altitude, y = metric4), qr.score, qr = q4e),
+           metric5_rating_elev = pmap_dbl(list(x = Altitude, y = metric5), qr.score, qr = q5e)) %>%
+    mutate(metric1_rating_pene = pmap_dbl(list(x = Penet, y = metric1), qr.score, qr = q1p),
+           metric2_rating_pene = pmap_dbl(list(x = Penet, y = metric2), qr.score, qr = q2p),
+           metric3_rating_pene = pmap_dbl(list(x = Penet, y = metric3), qr.score, qr = q3p),
+           metric4_rating_pene = pmap_dbl(list(x = Penet, y = metric4), qr.score, qr = q4p),
+           metric5_rating_pene = pmap_dbl(list(x = Penet, y = metric5), qr.score, qr = q5p))
 
 }
 
@@ -134,7 +134,7 @@ add.fish.metric6 <- function(.data){
 #' @export
 add.fish.ibi <- function(.data){
   .data %>%
-    mutate(ibi_score =
+    mutate(IBIscore =
              metric1_rating_elev +
              metric2_rating_elev +
              metric3_rating_elev +
@@ -156,17 +156,17 @@ add.fish.ibi <- function(.data){
 #' @export
 cut.fish.ibi <- function(.data){
   .data %>%
-    mutate(ibi_score_cut = cut(ibi_score, breaks = c(0, 20, 40, 60), labels = c("Low quality",
+    mutate(IBIscoreCut = cut(IBIscore, breaks = c(0, 20, 40, 60), labels = c("Low quality",
                                                                                 "Medium quality",
                                                                                 "High quality")))
 }
 
 nps <- function(.data){
   .data %>% 
-    mutate(nps_score = case_when(
-      ibi_score >= 34 ~ "A",
-      ibi_score >= 28 ~ "B",
-      ibi_score >= 18 ~ "C",
-      ibi_score < 18 ~ "D"
+    mutate(NPSscore = case_when(
+      IBIscore >= 34 ~ "A",
+      IBIscore >= 28 ~ "B",
+      IBIscore >= 18 ~ "C",
+      IBIscore < 18 ~ "D"
     ))
 }
