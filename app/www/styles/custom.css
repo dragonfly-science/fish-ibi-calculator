@@ -18,6 +18,11 @@ body {
   margin: 0 auto;
 }
 
+#headerDiv {
+  background-image: url('header_Kokopu.png');
+  width: 100%;
+}
+
 /* } */
 input[type="checkbox"][disabled] {
   outline: 1px solid red;

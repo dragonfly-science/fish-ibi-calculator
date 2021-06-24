@@ -30,7 +30,7 @@ shinyUI(
                 titlePanel(
                 windowTitle = 'IBI calculator',
                 title = span(
-                    tags$img(src="header.png", width = '100%')
+                    tags$img(src="header_02.png", width = '100%')
                 )
             )
         ),
@@ -185,8 +185,8 @@ shinyUI(
                             div(style="margin-bottom: 40px;",
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
-                            div(style="display: flex; flex-direction: row; flex-wrap: wrap;",
-                                    span(HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
+                            div(style="display: flex; flex-direction: row; flex-wrap: wrap",
+                                    span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
                                     span(id="select-1", selectInput("download", "", choices = c("NPS-FM category"))),
                                     span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category"))),
                             )
