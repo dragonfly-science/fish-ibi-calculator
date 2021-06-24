@@ -39,7 +39,9 @@ shinyUI(
         mainPanel(
             width = 12, id = 'mainpanel',
             tags$head(
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/custom.css")
+                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/custom.css"),
+                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/buttons.css"),
+                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/tables.css")
                  ),
 
             ## Input widgets

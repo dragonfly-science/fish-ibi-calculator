@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
+
+table.dataTable thead th,
+table.dataTable thead td {
+  background-color: #d4dde1;
+  border-bottom: unset !important;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+table.dataTable thead tr {
+  /* border: 1px solid #607781; */
+}
+table.dataTable tbody {
+  border: 1px solid #607781;
+}
+
+table.dataTable.no-footer {
+  border: unset !important;
+}
+table.dataTable tbody td {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+.dataTables_info,
+.dataTables_paginate {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td + td,
+table tr + tr {
+  border-left: 1px solid #d4dde1;
+}
+table td {
+  border-bottom: 1px solid #d4dde1;
+  padding: 2px !important;
+}
+table thead th + th,
+table thead td + td {
+  border-left: 1px solid #607781;
+  border-collapse: collapse;
+}
+
+td[title="Value should be numeric"] {
+  background-color: rgba(255, 0, 0, 0.05) !important;
+}

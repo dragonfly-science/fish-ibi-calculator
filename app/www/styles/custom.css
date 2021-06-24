@@ -200,71 +200,6 @@ ul {
   font-size: 80px !important;
 }
 
-/** Buttons **/
-
-.btn {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 24px;
-  border-radius: 3px;
-  border-color: #009985;
-  color: #fff;
-  font-weight: bold;
-  background-color: #009985;
-  padding: 14px 50px;
-  max-width: 300px;
-  height: 60px;
-}
-
-.btn:hover {
-  color: #fff !important;
-  background-color: #1B556B;
-}
-
-
-/* .btn:focus,
-.btn:hover,
-.btn:activem,
-.btn:target,
-.btn:visited {
-  border-radius: 5px !important;
-  border-color: #009985 !important;
-  color: #fff !important;
-  font-weight: bold !important;
-  background-color: #1B556B !important;
-} */
-
-#exbtn {
-  background-color: #1B556B;
-  opacity: 0.4;
-  border-color: #1B556B;
-}
-
-#exbtn:hover {
-  opacity: 0.75;
-}
-
-.btn[disabled] {
-  border-radius: 5px;
-  border-color: #aaa;
-  color: #607781 !important;
-  font-weight: normal;
-  background-color: #d4dde1 !important;
-}
-
-button div img.arrow-next {
-  transform: rotate(90deg);
-  margin-left: 5px;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-img.arrow-download {
-  transform: rotate(180deg);
-}
-
 .arrow {
   /* arrow */
   position: relative;
@@ -357,67 +292,6 @@ h6 > li {
 
 #mandfields .state label:before {
   background-color: #fff !important;
-}
-
-table.dataTable thead th,
-table.dataTable thead td {
-  background-color: #d4dde1;
-  border-bottom: unset !important;
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-table.dataTable thead tr {
-  /* border: 1px solid #607781; */
-}
-table.dataTable tbody {
-  border: 1px solid #607781;
-}
-
-table.dataTable.no-footer {
-  border: unset !important;
-}
-table.dataTable tbody td {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-.dataTables_info,
-.dataTables_paginate {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-table td + td,
-table tr + tr {
-  border-left: 1px solid #d4dde1;
-}
-table td {
-  border-bottom: 1px solid #d4dde1;
-  padding: 2px !important;
-}
-table thead th + th,
-table thead td + td {
-  border-left: 1px solid #607781;
-  border-collapse: collapse;
 }
 
 #rescol1,
