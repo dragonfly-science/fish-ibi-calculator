@@ -9,7 +9,6 @@ library(shinyWidgets)
 library(leaflet)
 library(sf)
 ## library(tmap)
-library(leaflet.esri)
 library(leaflet.extras)
 library(kableExtra)
 library(mapview)
@@ -641,26 +640,26 @@ shinyServer(function(input, output, session) {
               c = ~factcols(NPSscore)
               
               rv$map <- leaflet() %>%
-                # addTiles() %>%
-                setView(173.6, -41, zoom = 5) %>% 
-                addEsriBasemapLayer(esriBasemapLayers$Gray, autoLabels = TRUE
-                ) %>%
-                addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 fillColor = fc, color = c,
-                                 popup = ~labels %>% lapply(htmltools::HTML),
-                                 popupOptions = labelOptions(
-                                   style = list("font-weight" = "normal",
-                                                padding = "3px 8px", "color" = 'grey80'),
-                                   textsize = "17px", direction = "auto", sticky = F,
-                                   maxWidth = 700, closeOnClick = T),
-                                 ## radius = ~radius,
-                                 fillOpacity = 0.6,
-                                 radius = 4,
-                                 opacity = 0.8,
-                                 weight = 1
-                ) %>%
-                addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
-                          title = 'NPS category')
+                                        # addTiles() %>%
+                  setView(173.6, -41, zoom = 5) %>%
+                  addProviderTiles(providers$CartoDB.Positron) %>%
+                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                   fillColor = fc, color = c,
+                                   popup = ~labels %>% lapply(htmltools::HTML),
+                                   popupOptions = labelOptions(
+                                       style = list("font-weight" = "normal",
+                                                    padding = "3px 8px", "color" = 'grey80'),
+                                       textsize = "17px", direction = "auto", sticky = F,
+                                       maxWidth = 700, closeOnClick = T),
+                                   ## radius = ~radius,
+                                   fillOpacity = 0.6,
+                                   radius = 4,
+                                   opacity = 0.8,
+                                   weight = 1
+                                   ) %>%
+                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
+                            title = 'NPS category') %>%
+                  addFullscreenControl()
               
               rv$map
               
@@ -671,25 +670,25 @@ shinyServer(function(input, output, session) {
               
               rv$map <- leaflet() %>%
                 # addTiles() %>%
-                setView(173.6, -41, zoom = 5) %>% 
-                addEsriBasemapLayer(esriBasemapLayers$Gray, autoLabels = TRUE
-                ) %>%
-                addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                 fillColor = fc, color = c,
-                                 popup = ~labels %>% lapply(htmltools::HTML),
-                                 popupOptions = labelOptions(
-                                   style = list("font-weight" = "normal",
-                                                padding = "3px 8px", "color" = 'grey80'),
-                                   textsize = "17px", direction = "auto", sticky = F,
-                                   maxWidth = 700, closeOnClick = T),
-                                 ## radius = ~radius,
-                                 fillOpacity = 0.6,
-                                 radius = 4,
-                                 opacity = 0.8,
-                                 weight = 1
-                ) %>%
-                addLegend(data = ibi, "bottomright", pal = factcols, values = ~IBIscoreCut,
-                          title = 'IBI category')
+                  setView(173.6, -41, zoom = 5) %>% 
+                  addProviderTiles(providers$CartoDB.Positron) %>%
+                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                   fillColor = fc, color = c,
+                                   popup = ~labels %>% lapply(htmltools::HTML),
+                                   popupOptions = labelOptions(
+                                       style = list("font-weight" = "normal",
+                                                    padding = "3px 8px", "color" = 'grey80'),
+                                       textsize = "17px", direction = "auto", sticky = F,
+                                       maxWidth = 700, closeOnClick = T),
+                                   ## radius = ~radius,
+                                   fillOpacity = 0.6,
+                                   radius = 4,
+                                   opacity = 0.8,
+                                   weight = 1
+                                   ) %>%
+                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~IBIscoreCut,
+                            title = 'IBI category') %>%
+                  addFullscreenControl()
               
               rv$map
             }
