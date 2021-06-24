@@ -665,7 +665,7 @@ shinyServer(function(input, output, session) {
               rv$map
               
             } else if (input$sel_score == 'ibi_score') {
-              factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986')), domain = NULL)
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
               fc = ~factcols(IBIscoreCut) 
               c = ~factcols(IBIscoreCut)
               
@@ -698,7 +698,21 @@ shinyServer(function(input, output, session) {
 
     })
     
-    output$text <- renderText({
+
+    output$mapdl <- downloadHandler(
+        filename = 'IBI_map.png',
+        ## filename = 'IBI_map.html',
+        content = function(file) {
+            mapshot(rv$map, file = file)
+            ## saveWidget(rv$map, 'map.html', selfcontained=F)
+            ## webshot::webshot('map.html', file = file)
+        }
+    )
+
+
+    ## * Table of categories
+    
+    output$text <- renderUI({
       if(input$sel_score == 'nps_score'){
         splitLayout(cellWidths = rep("20%", 5),
                     cellArgs = list(style='white-space: normal;'),
@@ -731,16 +745,6 @@ shinyServer(function(input, output, session) {
         "test"
     })
 
-
-    output$mapdl <- downloadHandler(
-        filename = 'IBI_map.png',
-        ## filename = 'IBI_map.html',
-        content = function(file) {
-            mapshot(rv$map, file = file)
-            ## saveWidget(rv$map, 'map.html', selfcontained=F)
-            ## webshot::webshot('map.html', file = file)
-        }
-    )
     
 
     ## * Scores plot

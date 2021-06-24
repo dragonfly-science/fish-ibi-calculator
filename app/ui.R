@@ -215,7 +215,7 @@ shinyUI(
                              ),
                     br(), br(),
                     fluidRow(
-                        htmlOutput('text')
+                        uiOutput('text')
                         # splitLayout(cellWidths = rep("20%", 5),
                         #             cellArgs = list(style='white-space: normal;'),
                         #             column(width= 12, 
