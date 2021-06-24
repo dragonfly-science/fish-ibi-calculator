@@ -186,9 +186,12 @@ shinyUI(
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
                             div(style="display: flex; flex-direction: row; flex-wrap: wrap",
-                                    span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
-                                    span(id="select-1", selectInput("download", "", choices = c("NPS-FM category"))),
-                                    span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category"))),
+                                span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
+                                span(id="select-1",
+                                     selectInput("sel_score", "",
+                                                 choices = c("NPS-FM category" = 'nps_score',
+                                                             "IBI score" = 'ibi_score')))## ,
+                                ## span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category")))
                             )
                         ),
                         column(
@@ -204,7 +207,7 @@ shinyUI(
                     ##br(),
                     fluidRow(column(6
                                   , div(class = 'subheader', "Scores across number of sites")
-                                  , withspinner(plotOutput("npsGraph")))
+                                  , withspinner(plotOutput("scoresPlot")))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
                                              column(4, downloadButton('mapdl', 'Download map')))

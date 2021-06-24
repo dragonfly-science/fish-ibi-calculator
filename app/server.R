@@ -124,6 +124,13 @@ callback <- "$(document).contextMenu({
 });"
 
 
+## rv <- list(
+##     reqfields = req_fields,
+##     selfields = data.frame(req = names(req_fields), good = 0L),
+##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
+##     finalTable = NULL
+## )
+
 shinyServer(function(input, output, session) {
 
     shinyjs::disable(selector = '#myFirst li a[data-value=">"]')
@@ -311,6 +318,7 @@ shinyServer(function(input, output, session) {
     
     cleanTable <- reactive({
         req(rv$intable)
+
         d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
                             cols_opt[cols_opt %in% names(rv$intable)])]
 
@@ -668,35 +676,46 @@ shinyServer(function(input, output, session) {
     )
     
     
-    output$npsGraph <- renderPlot({
+    output$scoresPlot <- renderPlot({
       ibi_scores <- ibiData()
       req(ibi_scores)
-      
-      group.colors <- c('A'  = "#00C7A8",
-                        'B'  = "#2C9986", 
-                        'C'  = "#004A6D", 
-                        'D'  = "#BF2F37",
-                        'NA' = '#d4dde1')
-      
-      g <- ggplot(ibi_scores, aes(x = NPSscore)) + 
-        geom_histogram(stat = "count", fill = group.colors, alpha = 0.9) + 
-        xlab("NPS-FM category") + 
-        ylab("Number of sites") + 
-        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-        theme_bw() +
-        theme(panel.grid.major.x = element_blank(),
-              panel.grid.minor.x = element_blank(),
-              panel.grid.major.y = element_line(size=.1, color="black"),
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              panel.border = element_blank(),
-              axis.line = element_line(),
-              axis.line.y = element_blank(),
-              axis.text.x=element_text(size = 12, face = 'bold', margin = margin(t = 15)),
-              axis.ticks = element_blank()) +
-        theme(plot.margin=unit(c(1, 0.5, 0.5, 0.5),"cm"))+
-        theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
-        theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+
+      if (input$sel_score == 'nps_score') {
+          group.colors <- c('A'  = "#00C7A8",
+                            'B'  = "#2C9986", 
+                            'C'  = "#004A6D", 
+                            'D'  = "#BF2F37")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
+          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
+              xlab("NPS-FM category")
+      } else if (input$sel_score == 'ibi_score') {
+          group.colors <- c('Low quality'    = "#BF2F37",
+                            'Medium quality' = "#004A6D", 
+                            'High quality'   = "#00C7A8")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
+          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
+              xlab("IBI category")
+      }
+      g <- g + 
+          geom_histogram(stat = "count", alpha = 0.9) + 
+          ylab("Number of sites") + 
+          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
+          theme_bw() +
+          theme(panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                panel.grid.major.y = element_line(size=.1, color="black"),
+                panel.grid.major   = element_blank(),
+                panel.grid.minor   = element_blank(),
+                panel.border       = element_blank(),
+                axis.line          = element_line(),
+                axis.line.y        = element_blank(),
+                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+                axis.ticks         = element_blank(),
+                legend.position    = 'none') +
+          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
+          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
       
       g
     })
