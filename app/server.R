@@ -10,6 +10,7 @@ library(leaflet)
 library(sf)
 ## library(tmap)
 library(leaflet.esri)
+library(leaflet.extras)
 library(kableExtra)
 library(mapview)
 
@@ -598,6 +599,7 @@ shinyServer(function(input, output, session) {
 
     
     ## * MAP
+    
     output$map <- renderLeaflet({
 
         ibi_scores <- copy(ibiData())
@@ -634,11 +636,11 @@ shinyServer(function(input, output, session) {
 
             ## Create map
             rv$map <- leaflet() %>%
-                addTiles() %>%
                 setView(173.6, -41, zoom = 5) %>% 
-                addEsriBasemapLayer(esriBasemapLayers$Topographic, autoLabels = TRUE
+                addEsriBasemapLayer(esriBasemapLayers$Gray, autoLabels = TRUE
                                     ## , options = providerTileOptions(minZoom = 5, maxZoom = 12)
                                     ) %>%
+                ## addTiles() %>%
                 addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
                                  ## fillColor = ~numcols(IBIscore), color = ~numcols(IBIscore),
                                  fillColor = ~factcols(NPSscore), color = ~factcols(NPSscore),
@@ -655,7 +657,8 @@ shinyServer(function(input, output, session) {
                                  weight = 1
                                  ) %>%
                 addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
-                          title = 'NPS category')
+                          title = 'NPS category') %>%
+                addFullscreenControl()
                 ## addLegend(data = ibi, "bottomright", pal = numcols, values = ~IBIscore,
                 ##           title = 'IBI score')
 
@@ -675,6 +678,8 @@ shinyServer(function(input, output, session) {
         }
     )
     
+
+    ## * Scores plot
     
     output$scoresPlot <- renderPlot({
       ibi_scores <- ibiData()
