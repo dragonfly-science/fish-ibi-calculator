@@ -66,7 +66,7 @@ shinyUI(
                                     6,
                                     fileInputOnlyButton('target_upload',
                                                         buttonLabel =
-                                                            div(class="button-inner", HTML('Upload CSV file&nbsp;&nbsp;'), img(class="arrow-up", src="icons/buttonArrow.svg")),
+                                                            div(class="button-inner", span(id="button-inner-text", 'Upload CSV file'), img(class="arrow-up", src="icons/buttonArrow.svg")),
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
