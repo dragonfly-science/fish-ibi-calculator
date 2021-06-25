@@ -66,7 +66,7 @@ shinyUI(
                                     6,
                                     fileInputOnlyButton('target_upload',
                                                         buttonLabel =
-                                                            div(class="button-inner", HTML('Upload CSV file&nbsp;&nbsp;'), img(class="arrow-up", src="icons/buttonArrow.svg")),
+                                                            div(class="button-inner", span(id="button-inner-text", 'Upload CSV file'), img(class="arrow-up", src="icons/buttonArrow.svg")),
                                                         accept = c("text/csv",
                                                                    "text/comma-separated-values",
                                                                    ".csv"), width='100%')),
@@ -186,9 +186,12 @@ shinyUI(
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
                             div(style="display: flex; flex-direction: row; flex-wrap: wrap",
-                                    span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
-                                    span(id="select-1", selectInput("download", "", choices = c("NPS-FM category"))),
-                                    span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category"))),
+                                span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
+                                span(id="select-1",
+                                     selectInput("sel_score", "",
+                                                 choices = c("NPS-FM category" = 'nps_score',
+                                                             "IBI score" = 'ibi_score')))## ,
+                                ## span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category")))
                             )
                         ),
                         column(
@@ -204,7 +207,7 @@ shinyUI(
                     ##br(),
                     fluidRow(column(6
                                   , div(class = 'subheader', "Scores across number of sites")
-                                  , withspinner(plotOutput("npsGraph")))
+                                  , withspinner(plotOutput("scoresPlot")))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
                                              column(4, downloadButton('mapdl', 'Download map')))
@@ -212,33 +215,34 @@ shinyUI(
                              ),
                     br(), br(),
                     fluidRow(
-                        splitLayout(cellWidths = rep("20%", 5),
-                                    cellArgs = list(style='white-space: normal;'),
-                                    column(width= 12, 
-                                           h5(strong("A")),
-                                           h5("≥ 34"),
-                                           hr(),
-                                           h6(includeMarkdown('text/nps-a.md'))),
-                                    column(width= 12, 
-                                           h5(strong("B")),
-                                           h5("< 34 and ≥ 28"),
-                                           hr(),
-                                           h6(includeMarkdown('text/nps-b.md'))),
-                                    column(width= 12, 
-                                           h5(strong("C")),
-                                           h5("< 28 and ≥ 18"),
-                                           hr(),
-                                           h6(includeMarkdown('text/nps-c.md'))),
-                                    column(width= 12, 
-                                           h5(strong("D")),
-                                           h5("< 18"),
-                                           hr(),
-                                           h6(includeMarkdown('text/nps-d.md'))),
-                                    column(width= 12, 
-                                           h5(strong("No fish")),
-                                           h6(h5("-")),
-                                           hr())
-                                    )
+                        uiOutput('text')
+                        # splitLayout(cellWidths = rep("20%", 5),
+                        #             cellArgs = list(style='white-space: normal;'),
+                        #             column(width= 12, 
+                        #                    h5(strong("A")),
+                        #                    h5("≥ 34"),
+                        #                    hr(),
+                        #                    h6(includeMarkdown('text/nps-a.md'))),
+                        #             column(width= 12, 
+                        #                    h5(strong("B")),
+                        #                    h5("< 34 and ≥ 28"),
+                        #                    hr(),
+                        #                    h6(includeMarkdown('text/nps-b.md'))),
+                        #             column(width= 12, 
+                        #                    h5(strong("C")),
+                        #                    h5("< 28 and ≥ 18"),
+                        #                    hr(),
+                        #                    h6(includeMarkdown('text/nps-c.md'))),
+                        #             column(width= 12, 
+                        #                    h5(strong("D")),
+                        #                    h5("< 18"),
+                        #                    hr(),
+                        #                    h6(includeMarkdown('text/nps-d.md'))),
+                        #             column(width= 12, 
+                        #                    h5(strong("No fish")),
+                        #                    h6(h5("-")),
+                        #                    hr())
+                        #             )
                     ),
                     br(),
                     hr(),
