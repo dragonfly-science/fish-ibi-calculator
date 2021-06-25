@@ -255,7 +255,13 @@ shinyUI(
                     
                     span(
                         br(),br(), br(),
-                        tags$img(src="footer.png", width = '100%')
+                        # tags$img(src="footer.png", width = '100%')
+                        tags$footer(id='footer',
+                            div(class='footer-div',
+                                div(class="footer-img-container", img(class="footer-img", src="mfelogo.png")),
+                                div(class="footer-img-container", img(class="footer-img", src="nzgovlogo.png"))
+                            )
+                        )
                     )
                 )
                 
