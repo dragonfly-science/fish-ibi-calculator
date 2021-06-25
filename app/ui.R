@@ -51,6 +51,9 @@ shinyUI(
                 ## * 1. Upload your file
                 tabPanel(
                     "1. Upload your file",
+                    tags$head(
+                        tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
+                    ),
                     fluidRow(
                         br(),br(),
                         column(
@@ -83,9 +86,11 @@ shinyUI(
                     h3(includeMarkdown('text/page-1-about-title.md')),
                     div(class = 'twocols', h5(includeMarkdown('text/page-1-about.md'))),
                     br(),br(),
-                    span(
-                        tags$img(src="fishing.png", width = '100%'),
-                        h5(includeMarkdown('text/page-1-image-caption.md'))
+                    div(id="outer-img-container",
+                        div(id="inner-img-container",
+                            tags$img(id="home-image",src="electric_fishing.png", width = '100%'),
+                            h5(style="margin-right: auto;", includeMarkdown('text/page-1-image-caption.md'))
+                        )
                     )
                 ),
 
