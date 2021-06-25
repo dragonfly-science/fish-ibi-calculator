@@ -1,0 +1,13 @@
+#outer-img-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#inner-img-container {
+  width: 80%;
+}
+
+#home-image {
+  border-radius: 3px;
+}
