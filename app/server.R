@@ -28,6 +28,10 @@ cols_opt <- c('Easting', 'Northing', 'Location', 'NZreach')
 icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
+ph <- webshot:::find_phantom()
+if (is.null(ph) || ph == '') {
+    webshot::install_phantomjs()
+}
 
 
 rv <- NULL
