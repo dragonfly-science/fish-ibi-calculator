@@ -247,7 +247,7 @@ shinyUI(
                     br(),
                     hr(),
                     br(),
-                    fluidRow(strong("Table of results")),
+                    fluidRow(h5(class="table-header", "Table of results")),
                     br(),
                     fluidRow(withspinner(DT::DTOutput("ibiTable"))),
                     )
