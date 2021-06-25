@@ -740,8 +740,36 @@ shinyServer(function(input, output, session) {
                            h6(h5("-")),
                            hr())
         )
-      } else if(input$sel_score == 'ibi_score')
-        "test"
+      } else if(input$sel_score == 'ibi_score'){
+        splitLayout(cellWidths = rep("25%", 4),
+                    cellArgs = list(style='white-space: normal;'),
+                    column(width= 12, 
+                           h5(strong("High quality")),
+                           h5("> 67%"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-a.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("Medium quality")),
+                           h5("≤ 67 and ≥ 33"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-b.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("Low quality")),
+                           h5("< 33"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-c.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("No fish")),
+                           h5("-"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-d.md'))
+                           )
+        )
+      }
+        
     })
 
     
