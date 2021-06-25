@@ -385,6 +385,22 @@ table thead td + td {
   padding-right: 0px;
 }
 
+#plotdl {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 3px;
+  border-color: #eceff0 !important;
+  color: #607781;
+  font-weight: normal;
+  /* font-size: 1.1em; */
+  background-color: unset;
+  padding: 2px;
+  width: 150px;
+  /* height: 50px; */
+}
 #mapdl {
   font-family: Lato;
   font-style: normal;
@@ -401,6 +417,7 @@ table thead td + td {
   width: 150px;
   /* height: 50px; */
 }
+
 
 button div img.arrow-next {
   transform: rotate(90deg);

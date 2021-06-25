@@ -600,6 +600,65 @@ shinyServer(function(input, output, session) {
         dt
     }, server = F)
 
+
+
+    ## * Scores plot
+    
+    output$scoresPlot <- renderPlot({
+      ibi_scores <- ibiData()
+      req(ibi_scores)
+
+      if (input$sel_score == 'nps_score') {
+          group.colors <- c('A'  = "#00C7A8",
+                            'B'  = "#2C9986", 
+                            'C'  = "#004A6D", 
+                            'D'  = "#BF2F37")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
+          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
+              xlab("NPS-FM category")
+      } else if (input$sel_score == 'ibi_score') {
+          group.colors <- c('Low quality'    = "#BF2F37",
+                            'Medium quality' = "#004A6D", 
+                            'High quality'   = "#00C7A8")
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
+          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
+              xlab("IBI category")
+      }
+      g <- g + 
+          geom_histogram(stat = "count", alpha = 0.9) + 
+          ylab("Number of sites") + 
+          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
+          theme_bw() +
+          theme(panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                panel.grid.major.y = element_line(size=.1, color="black"),
+                panel.grid.major   = element_blank(),
+                panel.grid.minor   = element_blank(),
+                panel.border       = element_blank(),
+                axis.line          = element_line(),
+                axis.line.y        = element_blank(),
+                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+                axis.ticks         = element_blank(),
+                legend.position    = 'none') +
+          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
+          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+
+      rv$scoredistplot <- g
+      g
+    })
+
+    output$plotdl <- downloadHandler(
+        filename = function() fifelse(input$sel_score == 'nps_score',
+                                      'NPS_scores_distribution.png',
+                                      'IBI_scores_distribution.png'),
+        content = function(file) {
+            req(rv$scoredistplot)
+            ggsave(file, plot = rv$scoredistplot, device = "png", width = 7.5, height = 5)
+        }
+    )
+
     
     ## * MAP
     
@@ -610,8 +669,8 @@ shinyServer(function(input, output, session) {
         req(ibi)
         dt <- as.data.table(rv$finalTable)
 
-        print(ibi[1])
-        print(dt[1])
+        ## print(ibi[1])
+        ## print(dt[1])
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
             coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
@@ -700,19 +759,29 @@ shinyServer(function(input, output, session) {
         }
 
     })
-    
+
+    mapdown <- reactive({
+        bounds <- input$map_bounds
+        latRng <- range(bounds$north, bounds$south)
+        lngRng <- range(bounds$east, bounds$west)
+        m <- rv$map %>%
+            setView(lng = (lngRng[1]+lngRng[2])/2, lat = (latRng[1]+latRng[2])/2, zoom = input$map_zoom)
+        m$x$options$fullscreenControl <- NULL # remove fullscreen control (others are removed automatically)
+        m
+    })
 
     output$mapdl <- downloadHandler(
-        filename = 'IBI_map.png',
-        ## filename = 'IBI_map.html',
+        filename = function() fifelse(input$sel_score == 'nps_score',
+                                      'NPS_scores_map.png',
+                                      'IBI_scores_map.png'),
         content = function(file) {
-            mapshot(rv$map, file = file)
-            ## saveWidget(rv$map, 'map.html', selfcontained=F)
-            ## webshot::webshot('map.html', file = file)
+            mapshot(mapdown(), file = file,
+                    remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+                                        "drawToolbar", "easyButton"))
         }
     )
 
-
+    
     ## * Table of categories
     
     output$text <- renderUI({
@@ -778,57 +847,11 @@ shinyServer(function(input, output, session) {
 
     
 
-    ## * Scores plot
-    
-    output$scoresPlot <- renderPlot({
-      ibi_scores <- ibiData()
-      req(ibi_scores)
-
-      if (input$sel_score == 'nps_score') {
-          group.colors <- c('A'  = "#00C7A8",
-                            'B'  = "#2C9986", 
-                            'C'  = "#004A6D", 
-                            'D'  = "#BF2F37")
-          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
-          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
-              xlab("NPS-FM category")
-      } else if (input$sel_score == 'ibi_score') {
-          group.colors <- c('Low quality'    = "#BF2F37",
-                            'Medium quality' = "#004A6D", 
-                            'High quality'   = "#00C7A8")
-          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
-          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
-              xlab("IBI category")
-      }
-      g <- g + 
-          geom_histogram(stat = "count", alpha = 0.9) + 
-          ylab("Number of sites") + 
-          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
-          theme_bw() +
-          theme(panel.grid.major.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
-                panel.grid.major.y = element_line(size=.1, color="black"),
-                panel.grid.major   = element_blank(),
-                panel.grid.minor   = element_blank(),
-                panel.border       = element_blank(),
-                axis.line          = element_line(),
-                axis.line.y        = element_blank(),
-                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
-                axis.ticks         = element_blank(),
-                legend.position    = 'none') +
-          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
-          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
-          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
-      
-      g
-    })
-
     output$download <- downloadHandler(
-      filename = "ibiScore.csv",
-      content = function(fname) {
-        fwrite(ibiData(), fname)
-      })
+        filename = "IBI_scores.csv",
+        content = function(fname) {
+            fwrite(ibiData(), fname)
+        })
     
 })
 

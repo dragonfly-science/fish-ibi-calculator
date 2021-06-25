@@ -210,7 +210,8 @@ shinyUI(
                     hr(), 
                     ##br(),
                     fluidRow(column(6
-                                  , div(class = 'subheader', "Scores across number of sites")
+                                  , fluidRow(column(8, div(class='subheader', "Scores across number of sites")),
+                                             column(4, downloadButton('plotdl', 'Download plot')))
                                   , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),

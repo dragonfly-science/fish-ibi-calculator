@@ -305,7 +305,7 @@ h6 > li {
   padding-right: 0px;
 }
 
-#mapdl {
+#plotdl, #mapdl {
   font-family: Lato;
   font-style: normal;
   font-weight: bold;
