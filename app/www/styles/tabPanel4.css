@@ -22,3 +22,11 @@ div.item {
   font-family: "Merriweather", serif;
   font-weight: 900;
 }
+
+.shiny-spinner-output-container {
+  background-color: #fff;
+}
+
+.key-line {
+  border: 1px solid #607781;
+}

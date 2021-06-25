@@ -206,11 +206,11 @@ shinyUI(
                     ##br(),
                     fluidRow(column(6
                                   , div(class = 'subheader', "Scores across number of sites")
-                                  , withspinner(plotOutput("scoresPlot")))
+                                  , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
                                              column(4, downloadButton('mapdl', 'Download map')))
-                                  , withspinner(leafletOutput('map')))
+                                  , div(class="key-line", withspinner(leafletOutput('map'))))
                              ),
                     br(), br(),
                     fluidRow(
