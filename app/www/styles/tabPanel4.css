@@ -1,3 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
+
+#select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 #select-label {
   margin-right: 40px;
 }
@@ -8,4 +16,17 @@
 
 div.item {
   font-size: 12pt;
+}
+
+.table-header {
+  font-family: "Merriweather", serif;
+  font-weight: 900;
+}
+
+.shiny-spinner-output-container {
+  background-color: #fff;
+}
+
+.key-line {
+  border: 1px solid #607781;
 }

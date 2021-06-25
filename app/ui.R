@@ -51,6 +51,9 @@ shinyUI(
                 ## * 1. Upload your file
                 tabPanel(
                     "1. Upload your file",
+                    tags$head(
+                        tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
+                    ),
                     fluidRow(
                         br(),br(),
                         column(
@@ -83,9 +86,11 @@ shinyUI(
                     h3(includeMarkdown('text/page-1-about-title.md')),
                     div(class = 'twocols', h5(includeMarkdown('text/page-1-about.md'))),
                     br(),br(),
-                    span(
-                        tags$img(src="fishing.png", width = '100%'),
-                        h5(includeMarkdown('text/page-1-image-caption.md'))
+                    div(id="outer-img-container",
+                        div(id="inner-img-container",
+                            tags$img(id="home-image",src="electric_fishing.png", width = '100%'),
+                            h5(style="margin-right: auto;", includeMarkdown('text/page-1-image-caption.md'))
+                        )
                     )
                 ),
 
@@ -101,7 +106,7 @@ shinyUI(
                                br(),
                                h5(includeMarkdown('text/page-2-description.md'))
                                ),
-                        column(3, offset = 2 #, align = 'right'
+                        column(3, offset = 3 #, align = 'right'
                              , disabled(
                                    actionButton('checkData', div(HTML("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
                                )
@@ -185,7 +190,7 @@ shinyUI(
                             div(style="margin-bottom: 40px;",
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
-                            div(style="display: flex; flex-direction: row; flex-wrap: wrap",
+                            div(id="select-container",
                                 span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
                                 span(id="select-1",
                                      selectInput("sel_score", "",
@@ -197,9 +202,8 @@ shinyUI(
                         column(
                             4, align='right',
                             downloadButton('download', 
-                                           label=div(HTML("Download results&nbsp;&nbsp;"),
-                                                     img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important;'),
-                                           icon = icon(""))
+                                           label=span(id="dl-button-label", "Download Results",
+                                                     img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL),
                         )
                     ),
                     br(),
@@ -207,11 +211,11 @@ shinyUI(
                     ##br(),
                     fluidRow(column(6
                                   , div(class = 'subheader', "Scores across number of sites")
-                                  , withspinner(plotOutput("scoresPlot")))
+                                  , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
                                              column(4, downloadButton('mapdl', 'Download map')))
-                                  , withspinner(leafletOutput('map')))
+                                  , div(class="key-line", withspinner(leafletOutput('map'))))
                              ),
                     br(), br(),
                     fluidRow(
@@ -247,7 +251,7 @@ shinyUI(
                     br(),
                     hr(),
                     br(),
-                    fluidRow(strong("Table of results")),
+                    fluidRow(h5(class="table-header", "Table of results")),
                     br(),
                     fluidRow(withspinner(DT::DTOutput("ibiTable"))),
                     )
