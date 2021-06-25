@@ -101,7 +101,7 @@ shinyUI(
                                br(),
                                h5(includeMarkdown('text/page-2-description.md'))
                                ),
-                        column(3, offset = 2 #, align = 'right'
+                        column(3, offset = 3 #, align = 'right'
                              , disabled(
                                    actionButton('checkData', div(HTML("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
                                )
@@ -197,9 +197,8 @@ shinyUI(
                         column(
                             4, align='right',
                             downloadButton('download', 
-                                           label=div(HTML("Download results&nbsp;&nbsp;"),
-                                                     img(class='arrow-download', src='icons/buttonArrow.svg'), style='display: inline-block !important;'),
-                                           icon = icon(""))
+                                           label=span(id="dl-button-label", "Download Results",
+                                                     img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL),
                         )
                     ),
                     br(),
