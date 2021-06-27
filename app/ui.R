@@ -252,7 +252,7 @@ shinyUI(
                     br(),
                     hr(),
                     br(),
-                    fluidRow(h5(class="table-header", "Table of results")),
+                    fluidRow(h5(class="subheader", "Table of results")),
                     br(),
                     fluidRow(withspinner(DT::DTOutput("ibiTable"))),
                     )
@@ -262,9 +262,15 @@ shinyUI(
                         br(),br(), br(),
                         # tags$img(src="footer.png", width = '100%')
                         tags$footer(id='footer',
-                            div(class='footer-div',
-                                div(class="footer-img-container", img(class="footer-img", src="mfelogo.png")),
+                            fluidRow(align = "center", id = "footer-div",
+                                column(1, div()),
+                                column(2, align = "center", 
+                                div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", img(class="footer-img", src="mfelogo.png")))
+                                ),
+                                column(2, offset = 6,
                                 div(class="footer-img-container", img(class="footer-img", src="nzgovlogo.png"))
+                                ),
+                                column(1, div())
                             )
                         )
                     )
