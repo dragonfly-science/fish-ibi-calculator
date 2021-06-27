@@ -193,6 +193,7 @@ shinyServer(function(input, output, session) {
         rv[['ignoredrows']] <- NULL
         rv[['finalTable']] <- NULL
         df <- read.csv('data/trial.csv', header = TRUE, stringsAsFactors = F)
+        ## df <- read.csv('~/dragonfly/antipodean-albatross-ipm/raw-data/data_2021-01-27/antips_surv.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -258,7 +259,7 @@ shinyServer(function(input, output, session) {
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
                             options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
-                                         , paging = nrow(d)>15, pageLength = 15
+                                         , paging = nrow(d)>15, pageLength = 15, scrollX = T
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
                                            )
@@ -471,7 +472,7 @@ shinyServer(function(input, output, session) {
             class = 'nowrap hover compact nostripe',
             options = list(autoWidth = FALSE, scrollCollapse=TRUE
                          , paging = nrow(d)>15, pageLength = 15, lengthChange = F
-                         , searching = FALSE, ordering = FALSE
+                         , searching = FALSE, ordering = FALSE, scrollX = T
                          , rowCallback = JS(tabjs)
                          , columnDefs = list(list(className = 'dt-left', targets = '_all'),
                                              list(visible=FALSE,
