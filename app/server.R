@@ -28,6 +28,10 @@ cols_opt <- c('Easting', 'Northing', 'Location', 'NZreach')
 icons <- c("exclamation-triangle", "check-circle")
 cols <- c('red', 'green')
 
+ph <- webshot:::find_phantom()
+if (is.null(ph) || ph == '') {
+    webshot::install_phantomjs()
+}
 
 
 rv <- NULL
@@ -596,6 +600,76 @@ shinyServer(function(input, output, session) {
         dt
     }, server = F)
 
+
+
+    ## * Scores plot
+    
+    output$scoresPlot <- renderPlot({
+      ibi_scores <- ibiData()
+      req(ibi_scores)
+
+      ibi_scores$NPSscore[is.na(ibi_scores$NPSscore)] <- 'Unknown'
+      ibi_scores$NPSscore <- factor(as.character(ibi_scores$NPSscore),
+                                    levels = c('A', 'B', 'C', 'D', 'Unknown'))
+
+      ibi_scores$IBIscoreCut <- as.character(ibi_scores$IBIscoreCut)
+      ibi_scores$IBIscoreCut[is.na(ibi_scores$IBIscoreCut)] <- 'Unknown'
+      ibi_scores$IBIscoreCut <- factor(ibi_scores$IBIscoreCut,
+                                       levels = c('Low quality', 'Medium quality', 'High quality', 'Unknown'))
+      
+      if (input$sel_score == 'nps_score') {
+          group.colors <- c('A'       = "#00C7A8",
+                            'B'       = "#2C9986", 
+                            'C'       = "#004A6D", 
+                            'D'       = "#BF2F37",
+                            'Unknown' = '#d4dde1')
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
+          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
+              xlab("NPS-FM category")
+      } else if (input$sel_score == 'ibi_score') {
+          group.colors <- c('Low quality'    = "#BF2F37",
+                            'Medium quality' = "#004A6D", 
+                            'High quality'   = "#00C7A8",
+                            'Unknown'        = '#d4dde1')
+          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
+          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
+              xlab("IBI category")
+      }
+      g <- g + 
+          geom_histogram(stat = "count", alpha = 0.9) + 
+          ylab("Number of sites") + 
+          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
+          theme_bw() +
+          theme(panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                panel.grid.major.y = element_line(size=.1, color="black"),
+                panel.grid.major   = element_blank(),
+                panel.grid.minor   = element_blank(),
+                panel.border       = element_blank(),
+                axis.line          = element_line(),
+                axis.line.y        = element_blank(),
+                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+                axis.ticks         = element_blank(),
+                legend.position    = 'none') +
+          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
+          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+
+      rv$scoredistplot <- g
+      g
+    })
+
+    output$plotdl <- downloadHandler(
+        filename = function() fifelse(input$sel_score == 'nps_score',
+                                      'NPS_scores_distribution.png',
+                                      'IBI_scores_distribution.png'),
+        content = function(file) {
+            req(rv$scoredistplot)
+            ggsave(file, plot = rv$scoredistplot, device = "png", width = 7.5, height = 5)
+        }
+    )
+
     
     ## * MAP
     
@@ -606,8 +680,8 @@ shinyServer(function(input, output, session) {
         req(ibi)
         dt <- as.data.table(rv$finalTable)
 
-        print(ibi[1])
-        print(dt[1])
+        ## print(ibi[1])
+        ## print(dt[1])
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
             coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
@@ -619,11 +693,14 @@ shinyServer(function(input, output, session) {
             ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
                            total_sp_richness, number_non_native, X, Y)]
             
-            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D'))]
-            ibi[, IBIscoreCute := factor(as.character(IBIscoreCut), levels = c('Low quality',
-                                                                               'Medium quality',
-                                                                               'High quality'))]
-            
+            ibi[is.na(NPSscore), NPSscore := 'Unknown']
+            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
+            ibi[, IBIscoreCut := as.character(IBIscoreCut)]
+            ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
+            ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
+                                                                 'Medium quality',
+                                                                 'High quality',
+                                                                 'Unknown'))]
             ibi[, labels := paste0(
               sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
               kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
@@ -635,80 +712,103 @@ shinyServer(function(input, output, session) {
               , by = 1:nrow(ibi)]
             
             if (input$sel_score == 'nps_score') {
-              factcols <- colorFactor(rev(c('#BF2F37', '#004A6D', '#2C9986', '#00C7A8')), domain = NULL)
-              fc = ~factcols(NPSscore) 
-              c = ~factcols(NPSscore)
-              
-              rv$map <- leaflet() %>%
-                                        # addTiles() %>%
-                  setView(173.6, -41, zoom = 5) %>%
-                  addProviderTiles(providers$CartoDB.Positron) %>%
-                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                   fillColor = fc, color = c,
-                                   popup = ~labels %>% lapply(htmltools::HTML),
-                                   popupOptions = labelOptions(
-                                       style = list("font-weight" = "normal",
-                                                    padding = "3px 8px", "color" = 'grey80'),
-                                       textsize = "17px", direction = "auto", sticky = F,
-                                       maxWidth = 700, closeOnClick = T),
-                                   ## radius = ~radius,
-                                   fillOpacity = 0.6,
-                                   radius = 4,
-                                   opacity = 0.8,
-                                   weight = 1
-                                   ) %>%
-                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~NPSscore,
-                            title = 'NPS category') %>%
-                  addFullscreenControl()
-              
-              rv$map
-              
+                
+                factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+                fc = ~factcols(NPSscore) 
+                c = ~factcols(NPSscore)
+
+                npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
+                                   color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
+                npss <- npss[as.character(label) %in% ibi$NPSscore]
+                
+                rv$map <- leaflet() %>%
+                    setView(173.6, -41, zoom = 5) %>%
+                    addProviderTiles(providers$CartoDB.Positron) %>%
+                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                     fillColor = fc, color = c,
+                                     popup = ~labels %>% lapply(htmltools::HTML),
+                                     popupOptions = labelOptions(
+                                         style = list("font-weight" = "normal",
+                                                      padding = "3px 8px", "color" = 'grey80'),
+                                         textsize = "17px", direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T),
+                                     ## radius = ~radius,
+                                     fillOpacity = 1,
+                                     radius = 4,
+                                     opacity = 1,
+                                     weight = 1
+                                     ) %>%
+                    addLegend(data = ibi, "bottomright",
+                              colors = paste0(npss$color, "; width: 10px; height: 10px; border-radius: 50%"),
+                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
+                              title = 'NPS category', opacity = 1) %>%
+                    addFullscreenControl()
+                
+                rv$map
+                
             } else if (input$sel_score == 'ibi_score') {
-              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986'), domain = NULL)
-              fc = ~factcols(IBIscoreCut) 
-              c = ~factcols(IBIscoreCut)
-              
-              rv$map <- leaflet() %>%
-                # addTiles() %>%
-                  setView(173.6, -41, zoom = 5) %>% 
-                  addProviderTiles(providers$CartoDB.Positron) %>%
-                  addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                   fillColor = fc, color = c,
-                                   popup = ~labels %>% lapply(htmltools::HTML),
-                                   popupOptions = labelOptions(
-                                       style = list("font-weight" = "normal",
-                                                    padding = "3px 8px", "color" = 'grey80'),
-                                       textsize = "17px", direction = "auto", sticky = F,
-                                       maxWidth = 700, closeOnClick = T),
-                                   ## radius = ~radius,
-                                   fillOpacity = 0.6,
-                                   radius = 4,
-                                   opacity = 0.8,
-                                   weight = 1
-                                   ) %>%
-                  addLegend(data = ibi, "bottomright", pal = factcols, values = ~IBIscoreCut,
-                            title = 'IBI category') %>%
-                  addFullscreenControl()
-              
-              rv$map
+
+                factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+                fc <- ~factcols(IBIscoreCut) 
+                c <- ~factcols(IBIscoreCut)
+                ibis <- data.table(label = c(levels(ibi_scores$IBIscoreCut), 'Unknown'),
+                                   color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
+                ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
+                
+                rv$map <- leaflet() %>%
+                                        # addTiles() %>%
+                    setView(173.6, -41, zoom = 5) %>% 
+                    addProviderTiles(providers$CartoDB.Positron) %>%
+                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                     fillColor = fc, color = c,
+                                     popup = ~labels %>% lapply(htmltools::HTML),
+                                     popupOptions = labelOptions(
+                                         style = list("font-weight" = "normal",
+                                                      padding = "3px 8px", "color" = 'grey80'),
+                                         textsize = "17px", direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T),
+                                     ## radius = ~radius,
+                                     fillOpacity = 1,
+                                     radius = 4,
+                                     opacity = 1,
+                                     weight = 1
+                                     ) %>%
+                    addLegend(data = ibi, "bottomright",
+                              colors = paste0(ibis$color,
+                                              "; width: 10px; height: 10px; border-radius: 50%"),
+                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
+                              title = 'IBI category', opacity = 1) %>%
+                    addFullscreenControl()
+                
+                rv$map
             }
    
         }
 
     })
-    
+
+    mapdown <- reactive({
+        bounds <- input$map_bounds
+        latRng <- range(bounds$north, bounds$south)
+        lngRng <- range(bounds$east, bounds$west)
+        m <- rv$map %>%
+            setView(lng = (lngRng[1]+lngRng[2])/2, lat = (latRng[1]+latRng[2])/2, zoom = input$map_zoom)
+        m$x$options$fullscreenControl <- NULL # remove fullscreen control (others are removed automatically)
+        m
+    })
 
     output$mapdl <- downloadHandler(
-        filename = 'IBI_map.png',
-        ## filename = 'IBI_map.html',
+        filename = function() fifelse(input$sel_score == 'nps_score',
+                                      'NPS_scores_map.png',
+                                      'IBI_scores_map.png'),
         content = function(file) {
-            mapshot(rv$map, file = file)
-            ## saveWidget(rv$map, 'map.html', selfcontained=F)
-            ## webshot::webshot('map.html', file = file)
+            mapshot(mapdown(), file = file,
+                    remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+                                        "drawToolbar", "easyButton"))
         }
     )
 
-
+    
     ## * Table of categories
     
     output$text <- renderUI({
@@ -740,63 +840,45 @@ shinyServer(function(input, output, session) {
                            h6(h5("-")),
                            hr())
         )
-      } else if(input$sel_score == 'ibi_score')
-        "test"
-    })
-
-    
-
-    ## * Scores plot
-    
-    output$scoresPlot <- renderPlot({
-      ibi_scores <- ibiData()
-      req(ibi_scores)
-
-      if (input$sel_score == 'nps_score') {
-          group.colors <- c('A'  = "#00C7A8",
-                            'B'  = "#2C9986", 
-                            'C'  = "#004A6D", 
-                            'D'  = "#BF2F37")
-          group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
-          g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
-              xlab("NPS-FM category")
-      } else if (input$sel_score == 'ibi_score') {
-          group.colors <- c('Low quality'    = "#BF2F37",
-                            'Medium quality' = "#004A6D", 
-                            'High quality'   = "#00C7A8")
-          group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
-          g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
-              xlab("IBI category")
+      } else if(input$sel_score == 'ibi_score'){
+        splitLayout(cellWidths = rep("25%", 4),
+                    cellArgs = list(style='white-space: normal;'),
+                    column(width= 12, 
+                           h5(strong("High quality")),
+                           h5("> 67%"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-a.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("Medium quality")),
+                           h5("≤ 67 and ≥ 33"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-b.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("Low quality")),
+                           h5("< 33"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-c.md'))
+                           ),
+                    column(width= 12, 
+                           h5(strong("No fish")),
+                           h5("-"),
+                           hr(),
+                           # h6(includeMarkdown('text/nps-d.md'))
+                           )
+        )
       }
-      g <- g + 
-          geom_histogram(stat = "count", alpha = 0.9) + 
-          ylab("Number of sites") + 
-          scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-          scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
-          theme_bw() +
-          theme(panel.grid.major.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
-                panel.grid.major.y = element_line(size=.1, color="black"),
-                panel.grid.major   = element_blank(),
-                panel.grid.minor   = element_blank(),
-                panel.border       = element_blank(),
-                axis.line          = element_line(),
-                axis.line.y        = element_blank(),
-                axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
-                axis.ticks         = element_blank(),
-                legend.position    = 'none') +
-          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
-          theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
-          theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
-      
-      g
+        
     })
+
+    
 
     output$download <- downloadHandler(
-      filename = "ibiScore.csv",
-      content = function(fname) {
-        fwrite(ibiData(), fname)
-      })
+        filename = "IBI_scores.csv",
+        content = function(fname) {
+            fwrite(ibiData(), fname)
+        })
     
 })
 

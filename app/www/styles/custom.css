@@ -305,7 +305,7 @@ h6 > li {
   padding-right: 0px;
 }
 
-#mapdl {
+#plotdl, #mapdl {
   font-family: Lato;
   font-style: normal;
   font-weight: bold;
@@ -329,8 +329,8 @@ h6 > li {
   margin-bottom: 35px;
 }
 
-.shiny-spinner-output-container {
-  background-color: #fff;
+.legend i {
+    vertical-align: unset;
 }
 
 #footer {
