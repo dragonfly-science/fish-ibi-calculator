@@ -17,7 +17,8 @@
   padding-bottom: 14px;
   padding-left: 20%;
   padding-right: 20%;
-  width: 260px;
+  width: 100%;
+  max-width: 250px;
   height: 60px;
 }
 
