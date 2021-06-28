@@ -174,7 +174,7 @@ shinyServer(function(input, output, session) {
         if (is.null(inFile))
             return(NULL)
         rv[['intable']] <- NULL
-        rv[['ignoredrows']] <- NULL
+        rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session) {
     observeEvent(input$exbtn, {
         df <- NULL
         rv[['intable']] <- NULL
-        rv[['ignoredrows']] <- NULL
+        rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
@@ -367,6 +367,13 @@ shinyServer(function(input, output, session) {
                 d[c, 'SpeciesCode_issues'] <- 1L
                 d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
             }
+            ## *** Check existence in species_ibi_metrics
+            c <- !(tolower(d$SpeciesCode) %in% species_ibi_metrics$spcode)
+            if (any(c)) {
+                d[c, 'SpeciesCode_warnings'] <- 1L
+                d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'
+            }
+            
         }
         ## ** Altitude
         if ('Altitude' %in% names(d)) {
@@ -433,8 +440,15 @@ shinyServer(function(input, output, session) {
                                     c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
                                               which(names(d) == v)-1L,
                                               which(names(d) == paste0(v, '_txt'))-1L),
-                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#ff000044\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
+                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#eebabd\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
                                               which(names(d) == paste0(v, '_issues'))-1L,
+                                              which(names(d) == v)-1L))
+                                } else if (any(d[[paste0(v, '_warnings')]] %in% 1L)) {
+                                    c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+                                              which(names(d) == v)-1L,
+                                              which(names(d) == paste0(v, '_wtxt'))-1L),
+                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#93edf9\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
+                                              which(names(d) == paste0(v, '_warnings'))-1L,
                                               which(names(d) == v)-1L))
                                 }
                             }))),
@@ -447,8 +461,10 @@ shinyServer(function(input, output, session) {
     dataissues <- reactive({
         d <- rv$finalTable
         req(d)
-        if (any(grepl('_issues$', names(d))) &&
-            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
+        if ((any(grepl('_issues$', names(d))) &&
+            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) | 
+            (any(grepl('_warnings$', names(d))) &&
+             sum(sapply(d[, grep('_warnings$', names(d), val=T)], function(x) any(x %in% 1)))) > 0) {
             return(1)
         } else {
             return(0)
@@ -464,6 +480,12 @@ shinyServer(function(input, output, session) {
             d[, site_issue := any(with_issue %in% T), .(SiteID, Date)]
             rv$ignoredrows <- sum(d$site_issue == T)
             d <- d[site_issue == F, -c('with_issue', 'site_issue'), with = F]
+        }
+        if (any(grepl('_warnings$', names(d)))) {
+            d[, with_warnings := rowSums(.SD, na.rm=T) > 0,
+              .SDcols = patterns('_warnings$')]
+            rv$ignoredrows <- rv$ignoredrows + sum(d$with_warnings == T)
+            d <- d[with_warnings == F, -c('with_warnings'), with=F]
         }
         rv$finalTable <- as.data.frame(d)
     }, label = 'Ignore visits with issues')
@@ -481,8 +503,8 @@ shinyServer(function(input, output, session) {
         req(d)
         print(head(d))
         if (any(grepl('_issues$', names(d))) &&
-            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
-            d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0,]
+            sum(sapply(d[, grep('_issues$|_warnings$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
+            d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) > 0,]
             tabjs <- table_js()
         } else {
             tabjs <- NULL
@@ -496,7 +518,8 @@ shinyServer(function(input, output, session) {
                          , rowCallback = JS(tabjs)
                          , columnDefs = list(list(className = 'dt-left', targets = '_all'),
                                              list(visible=FALSE,
-                                                  targets=grep('_issues$|_txt$', names(d))-1L))
+                                                  targets=grep('_issues$|_txt$|_warnings$|_wtxt$',
+                                                               names(d))-1L))
                            )
         )
         dt
@@ -509,8 +532,8 @@ shinyServer(function(input, output, session) {
     output$issuesTxt <- renderText({
         d <- rv$finalTable
         req(d)
-        n.rows.noissues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) == 0)
-        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) == 0)
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
         n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
 
         sprintf('%s<br>%i valid rows%s',
@@ -531,7 +554,7 @@ shinyServer(function(input, output, session) {
     output$issueImg <- renderImage({
         d <- rv$finalTable
         req(d)
-        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
         if (n.issues > 0) {
             list(src = 'data/warning.png',
                  width = '100px', height = '100px',
@@ -546,7 +569,7 @@ shinyServer(function(input, output, session) {
     output$issuesSubTxt <- renderText({
         d <- rv$finalTable
         req(d)
-        n.issues <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T))
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
         if (n.issues > 0) {
             return('Please correct the following issues and re-upload the file')
         } else {
