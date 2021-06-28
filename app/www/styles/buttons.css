@@ -18,7 +18,7 @@
   padding-left: 20%;
   padding-right: 20%;
   width: 100%;
-  max-width: 300px;
+  max-width: 250px;
   height: 60px;
 }
 
@@ -72,8 +72,23 @@ button div img.arrow-next {
 
 img.arrow-download {
   transform: rotate(180deg);
+  margin-left: 5px;
 }
 
 .shiny-input-container label {
   width: 100%;
+}
+
+.shiny-download-link {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+#dl-button-label {
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
 }

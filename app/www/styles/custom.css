@@ -18,12 +18,6 @@ body {
   margin: 0 auto;
 }
 
-#headerDiv {
-  background-image: url("header_Kokopu.png");
-  width: 100%;
-}
-
-/* } */
 input[type="checkbox"][disabled] {
   outline: 1px solid red;
 }
@@ -305,6 +299,7 @@ h6 > li {
   padding-right: 0px;
 }
 
+#plotdl,
 #mapdl {
   font-family: Lato;
   font-style: normal;
@@ -329,6 +324,88 @@ h6 > li {
   margin-bottom: 35px;
 }
 
-.shiny-spinner-output-container {
-  background-color: #fff;
+.legend i {
+  vertical-align: unset;
+}
+
+#header {
+  position: relative;
+  width: 100%;
+  max-height: 220px;
+  min-height: 120px;
+  padding-bottom: 15.64%;
+  background-image: url(../images/header_Kokopu.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#header-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 15px;
+  width: 100%;
+  height: 100%;
+  max-height: 220px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-col {
+  width: 33.33%;
+}
+
+#title-container {
+  text-align: center;
+}
+
+#main-title {
+  font-family: "Merriweather", serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 26pt;
+  color: #fff;
+}
+
+.header-img {
+  width: 100%;
+  max-width: 248px;
+  margin-left: 15%;
+}
+
+.cr-text {
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: #d4dde1;
+  opacity: 0.5;
+}
+
+#footer {
+  position: relative;
+  width: 100%;
+  max-height: 200px;
+  padding-bottom: 13.89%;
+  background-color: #1b556b;
+}
+
+#footer-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-height: 200px;
+}
+
+.footer-img {
+  width: 100%;
 }
