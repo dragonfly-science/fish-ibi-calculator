@@ -143,7 +143,7 @@ shinyServer(function(input, output, session) {
         reqfields = req_fields,
         selfields = data.frame(req = names(req_fields), good = 0L),
         intable = NULL, tablefields = NULL, tablefields_ori = NULL,
-        finalTable = NULL
+        finalTable = NULL, test = NULL
     )
 
     observe({
@@ -252,14 +252,16 @@ shinyServer(function(input, output, session) {
     output$dtable <- renderDT({
         d <- rv[['intable']]
         nms <- names(d)
+        print(names(d))
+        
         dt <- DT::datatable(d
                           , callback = JS(callback)
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
                             options = list(autoWidth = TRUE, lengthChange = F
-                                         , fillContainer = T, class = 'display'
-                                         , paging = nrow(d)>15, pageLength = 15, scrollX = FALSE
+                                         ## , fillContainer = T, class = 'display', deferRender = T
+                                         , paging = nrow(d)>15, pageLength = 15, scrollX = TRUE
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
                                            )
@@ -267,9 +269,15 @@ shinyServer(function(input, output, session) {
         sf <- rv[['selfields']]
         goodfields <- sf[sf$good == 1, 'req']
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
+        rv$test <- rnorm(1)
         dt
-    }, server = FALSE)
-    
+    }, server = TRUE)
+    ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
+
+    ## observeEvent(rv$test, {
+    ##     reloadData(proxy, resetPaging = F)
+    ## })
+
     output$logtxt <- renderPrint({
         req(rv)
         cat('input$selfield=\n')
@@ -337,21 +345,48 @@ shinyServer(function(input, output, session) {
             }
             ## *** Check for non-numeric values
             suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
-            if (any(c)) {
+            if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value should be numeric'
             }
             ## *** Check for negative values
             suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
-            if (any(c)) {
+            if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value should be positive'
             }
             ## *** Check for excessive values
             suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
-            if (any(c)) {
+            if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value too high'
+            }
+        }
+        ## ** Altitude
+        if ('Altitude' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$Altitude)
+            if (any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value is missing'
+            }
+            ## *** Check for non-numeric values
+            suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
+            if (!all(is.na(c)) && any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value should be numeric'
+            }
+            ## *** Check for negative values
+            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
+            if (!all(is.na(c)) && any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value should be positive'
+            }
+            ## *** Check for excessive values
+            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
+            if (!all(is.na(c)) && any(c)) {
+                d[c, 'Altitude_issues'] <- 1L
+                d[c, 'Altitude_txt']    <- 'Value too high'
             }
         }
         ## ** SpeciesCode
@@ -374,35 +409,7 @@ shinyServer(function(input, output, session) {
                 d[c, 'SpeciesCode_warnings'] <- 1L
                 d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'
             }
-            
-        }
-        ## ** Altitude
-        if ('Altitude' %in% names(d)) {
-            ## *** Check for missing values
-            c <- is.na(d$Altitude)
-            if (any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value is missing'
-            }
-            ## *** Check for non-numeric values
-            suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
-            if (any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value should be numeric'
-            }
-            ## *** Check for negative values
-            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
-            if (any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value should be positive'
-            }
-            ## *** Check for excessive values
-            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
-            if (any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value too high'
-            }
-        }
+        }        
         ## ** SiteID
         if ('SiteID' %in% names(d)) {
             ## *** Check for missing values
@@ -632,7 +639,7 @@ shinyServer(function(input, output, session) {
     output$ibiTable <- renderDT({
         ibi_scores <- ibiData()
         req(ibi_scores)
-        ibi_scores <- ibi_scores %>% select("Date", 'SiteID', "IBIscore",
+        ibi_scores <- ibi_scores %>% select('SiteID', "Date", "IBIscore",
                                             "IBIscoreCut", "NPSscore")
         
         dt <- DT::datatable(
@@ -642,7 +649,7 @@ shinyServer(function(input, output, session) {
                          paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
                          searching = FALSE, ordering = FALSE,
                          columnDefs = list(list(
-                           className = 'dt-left', targets = 1:5
+                           className = 'dt-left', targets = 0:4
                          ))
                            )
         )        

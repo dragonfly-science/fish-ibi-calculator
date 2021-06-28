@@ -124,7 +124,7 @@ shinyUI(
                              , uiOutput('mandfields')
                                )
                     ),
-                    ## , column(4, box(width = 12, verbatimTextOutput('logtxt'))) # Comment-out this line if not testing
+                    ## fluidRow(verbatimTextOutput('logtxt')), # Comment-out this line if not testing
                     br(), br(),
                     fluidRow(
                         tags$head(
@@ -140,7 +140,8 @@ shinyUI(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                                       )
                              ),
-                        div(class='table-container', withspinner(DT::DTOutput("dtable")))
+                        ## div(class='table-container', withspinner(DT::DTOutput("dtable")))
+                        withspinner(DT::DTOutput("dtable"))
                     )
                 ),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -182,7 +183,7 @@ shinyUI(
                         )
                     ),
                     br(), br(),
-                    fluidRow(div(class="table-container", withspinner(DT::DTOutput("newTable"))))
+                    withspinner(DT::DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -264,7 +265,7 @@ shinyUI(
                     br(),
                     fluidRow(h5(class="subheader", "Table of results")),
                     br(),
-                    div(class='table-container', fluidRow(withspinner(DT::DTOutput("ibiTable"))))
+                    fluidRow(withspinner(DT::DTOutput("ibiTable")))
                     )
                     ),
                     
