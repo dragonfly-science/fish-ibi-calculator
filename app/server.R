@@ -192,8 +192,7 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- NULL
         rv[['ignoredrows']] <- NULL
         rv[['finalTable']] <- NULL
-        df <- read.csv('data/trial.csv', header = TRUE, stringsAsFactors = F)
-        ## df <- read.csv('~/dragonfly/antipodean-albatross-ipm/raw-data/data_2021-01-27/antips_surv.csv', header = TRUE, stringsAsFactors = F)
+        df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -336,19 +335,19 @@ shinyServer(function(input, output, session) {
                 d[c, 'Penetration_txt']    <- 'Value is missing'
             }
             ## *** Check for non-numeric values
-            c <- !grepl('^[0-9.]+$', d$Penetration)
+            suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
             if (any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value should be numeric'
             }
             ## *** Check for negative values
-            c <- !is.na(d$Penetration) & d$Penetration < 0
+            suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
             if (any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value should be positive'
             }
             ## *** Check for excessive values
-            c <- grepl('^[0-9.]+$', d$Penetration) & d$Penetration > 2000
+            suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
             if (any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
                 d[c, 'Penetration_txt']    <- 'Value too high'
@@ -378,22 +377,40 @@ shinyServer(function(input, output, session) {
                 d[c, 'Altitude_txt']    <- 'Value is missing'
             }
             ## *** Check for non-numeric values
-            c <- is.na(as.numeric(d$Altitude))
+            suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
             if (any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
                 d[c, 'Altitude_txt']    <- 'Value should be numeric'
             }
             ## *** Check for negative values
-            c <- !is.na(d$Altitude) & d$Altitude < 0
+            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
             if (any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
                 d[c, 'Altitude_txt']    <- 'Value should be positive'
             }
             ## *** Check for excessive values
-            c <- !is.na(d$Altitude) & d$Altitude > 3600
+            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
             if (any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
                 d[c, 'Altitude_txt']    <- 'Value too high'
+            }
+        }
+        ## ** SiteID
+        if ('SiteID' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$SiteID)
+            if (any(c)) {
+                d[c, 'SiteID_issues'] <- 1L
+                d[c, 'SiteID_txt']    <- 'Value is missing'
+            }
+        }
+        ## ** Date
+        if ('Date' %in% names(d)) {
+            ## *** Check for missing values
+            c <- is.na(d$Date)
+            if (any(c)) {
+                d[c, 'Date_issues'] <- 1L
+                d[c, 'Date_txt']    <- 'Value is missing'
             }
         }
 
@@ -439,14 +456,17 @@ shinyServer(function(input, output, session) {
     }, label = 'Data with issues?')
 
     observeEvent(input$remIssuesBtn, {
-        d <- cleanTable()
+        d <- as.data.table(cleanTable())
         req(d)
         if (any(grepl('_issues$', names(d)))) {
-            rv$ignoredrows <- sum(rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) > 0)
-            d <- d[rowSums(d[, grep('_issues$', names(d), val=T)], na.rm=T) == 0,]
+            d[, with_issue := rowSums(.SD, na.rm=T) > 0,
+              .SDcols = patterns('_issues$')]
+            d[, site_issue := any(with_issue %in% T), .(SiteID, Date)]
+            rv$ignoredrows <- sum(d$site_issue == T)
+            d <- d[site_issue == F, -c('with_issue', 'site_issue'), with = F]
         }
-        rv$finalTable <- d
-    }, label = 'Ignore rows with issues')
+        rv$finalTable <- as.data.frame(d)
+    }, label = 'Ignore visits with issues')
     
     observe({
         d <- cleanTable()
@@ -498,7 +518,7 @@ shinyServer(function(input, output, session) {
                        sprintf('%i data issues were found', n.issues)),
                 n.rows.noissues,
                 ifelse(n.ignoredrows == 0, '',
-                       sprintf('<br>(%s rows with issues were excluded)', n.ignoredrows)))
+                       sprintf('<br>(%s rows were excluded)', n.ignoredrows)))
     })
     output$issuesIcon <- renderText({
         if (dataissues()) {
@@ -544,6 +564,7 @@ shinyServer(function(input, output, session) {
     ## * IBI scores
     
     ibiData <- reactive({
+
         d <- rv$finalTable
         req(d)
 
@@ -576,7 +597,9 @@ shinyServer(function(input, output, session) {
             cut.fish.ibi() %>% 
             nps()
 
-        ibi_scores
+        ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
+        
+        return(as.data.frame(ibi_scores))
     })
 
     
@@ -685,7 +708,7 @@ shinyServer(function(input, output, session) {
         ## print(dt[1])
         if (all(c('Easting', 'Northing') %in% names(dt))) {
             
-            coords <- dt[, .(x = mean(Easting), y = mean(Northing)), .(Date, SiteID)]
+            coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
             ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
             ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
             ibi <- st_transform(ibi, crs = 4326)
