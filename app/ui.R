@@ -24,15 +24,25 @@ shinyUI(
     fluidPage(
 
         useShinydashboard(),
-        title = 'IBI calculator',
-        ## Header
-        tags$header(id = 'headerDiv',
-                titlePanel(
-                windowTitle = 'IBI calculator',
-                title = span(
-                    tags$img(src="header_02.png", width = '100%')
-                )
-            )
+        title = 'IBI Calculator',
+        titlePanel(
+            windowTitle = 'IBI calculator',
+            title = NULL
+        ),
+        tags$header(id="header",
+            fluidRow(id="header-div",
+                column(4, class='header-col header-img-container',
+                    (tags$a(href="https://environment.govt.nz/", img(class='header-img', src="images/MFELogo.png")))
+            ),
+                column(4, class='header-col', id="title-container",
+                    h1(
+                        id="main-title", 
+                        "Fish IBI Calculator"
+                    ),
+                ),
+                column(4, class='header-col')
+            ),
+            div(class='cr-text', p('© Rod Morris'))
         ),
         useShinyjs(),  # Set up shinyjs
         
@@ -88,7 +98,7 @@ shinyUI(
                     br(),br(),
                     div(id="outer-img-container",
                         div(id="inner-img-container",
-                            tags$img(id="home-image",src="electric_fishing.png", width = '100%'),
+                            tags$img(id="home-image",src="images/electric_fishing.png", width = '100%'),
                             h5(style="margin-right: auto;", includeMarkdown('text/page-1-image-caption.md'))
                         )
                     )
@@ -252,7 +262,7 @@ shinyUI(
                     br(),
                     hr(),
                     br(),
-                    fluidRow(h5(class="table-header", "Table of results")),
+                    fluidRow(h5(class="subheader", "Table of results")),
                     br(),
                     fluidRow(withspinner(DT::DTOutput("ibiTable"))),
                     )
@@ -260,7 +270,18 @@ shinyUI(
                     
                     span(
                         br(),br(), br(),
-                        tags$img(src="footer.png", width = '100%')
+                        tags$footer(id='footer',
+                            fluidRow(align = "center", id = "footer-div",
+                                column(1, div()),
+                                column(2, align = "center", 
+                                div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", img(class="footer-img", src="images/MFELogo.png")))
+                                ),
+                                column(2, offset = 6,
+                                div(class="footer-img-container", img(class="footer-img", src="images/nzgovlogo.png"))
+                                ),
+                                column(1, div())
+                            )
+                        )
                     )
                 )
                 
