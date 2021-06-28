@@ -32,7 +32,7 @@ shinyUI(
         tags$header(id="header",
             fluidRow(id="header-div",
                 column(4, class='header-col header-img-container',
-                    (tags$a(href="https://environment.govt.nz/", img(class='header-img', src="images/MFELogo.png")))
+                    (tags$a(href="https://environment.govt.nz/", target="_blank" , img(class='header-img', src="images/MFELogo.png")))
             ),
                 column(4, class='header-col', id="title-container",
                     h1(
@@ -274,7 +274,7 @@ shinyUI(
                             fluidRow(align = "center", id = "footer-div",
                                 column(1, div()),
                                 column(2, align = "center", 
-                                div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", img(class="footer-img", src="images/MFELogo.png")))
+                                div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", target="_blank", img(class="footer-img", src="images/MFELogo.png")))
                                 ),
                                 column(2, offset = 6,
                                 div(class="footer-img-container", img(class="footer-img", src="images/nzgovlogo.png"))
