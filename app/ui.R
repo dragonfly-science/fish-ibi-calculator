@@ -130,7 +130,7 @@ shinyUI(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                                       )
                              ),
-                        DT::DTOutput("dtable")
+                        withspinner(DT::DTOutput("dtable"))
                     )
                 ),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -172,7 +172,7 @@ shinyUI(
                         )
                     ),
                     br(), br(),
-                    fluidRow(DT::DTOutput("newTable"))
+                    fluidRow(withspinner(DT::DTOutput("newTable")))
                 ),
                 ## tabPanel('>'),
                 tabPanel(img(src='icons/arrow.svg')),

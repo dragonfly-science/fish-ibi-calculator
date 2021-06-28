@@ -257,7 +257,8 @@ shinyServer(function(input, output, session) {
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
-                            options = list(autoWidth = FALSE, scrollCollapse=TRUE, lengthChange = F
+                            options = list(autoWidth = TRUE, lengthChange = F
+                                         , fillContainer = T, class = 'display'
                                          , paging = nrow(d)>15, pageLength = 15, scrollX = T
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
@@ -513,6 +514,7 @@ shinyServer(function(input, output, session) {
             d, rownames = F, selection = 'none', width = 600,
             class = 'nowrap hover compact nostripe',
             options = list(autoWidth = FALSE, scrollCollapse=TRUE
+                         , deferRender = T, fillContainer = T, class = 'display'
                          , paging = nrow(d)>15, pageLength = 15, lengthChange = F
                          , searching = FALSE, ordering = FALSE, scrollX = T
                          , rowCallback = JS(tabjs)
@@ -631,7 +633,7 @@ shinyServer(function(input, output, session) {
         ibi_scores <- ibiData()
         req(ibi_scores)
         ibi_scores <- ibi_scores %>% select("Date", 'SiteID', "IBIscore",
-                                            "IBIscoreCut", "NPSscore", "Stratum")
+                                            "IBIscoreCut", "NPSscore")
         
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
