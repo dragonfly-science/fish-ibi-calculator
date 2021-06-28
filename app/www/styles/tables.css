@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
 
+.table-container {
+  overflow-x: scroll;
+}
+
 table.dataTable thead th,
 table.dataTable thead td {
   background-color: #d4dde1;

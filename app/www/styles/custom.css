@@ -131,6 +131,15 @@ hr {
   border-top: 1px solid #d4dde1 !important;
 }
 
+.subheader {
+  font-family: "Merriweather", serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 24px;
+  margin-bottom: 35px;
+}
+
 /** Tab panels **/
 
 .nav-tabs {
@@ -315,18 +324,11 @@ h6 > li {
   width: 150px;
 }
 
-.subheader {
-  font-family: "Merriweather", serif;
-  font-style: normal;
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 24px;
-  margin-bottom: 35px;
-}
-
 .legend i {
   vertical-align: unset;
 }
+
+/* header & footer styling */
 
 #header {
   position: relative;

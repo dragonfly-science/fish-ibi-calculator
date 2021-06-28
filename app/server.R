@@ -259,7 +259,7 @@ shinyServer(function(input, output, session) {
                             class = 'nowrap hover compact nostripe',
                             options = list(autoWidth = TRUE, lengthChange = F
                                          , fillContainer = T, class = 'display'
-                                         , paging = nrow(d)>15, pageLength = 15, scrollX = T
+                                         , paging = nrow(d)>15, pageLength = 15, scrollX = FALSE
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
                                            )
@@ -516,7 +516,7 @@ shinyServer(function(input, output, session) {
             options = list(autoWidth = FALSE, scrollCollapse=TRUE
                          , deferRender = T, fillContainer = T, class = 'display'
                          , paging = nrow(d)>15, pageLength = 15, lengthChange = F
-                         , searching = FALSE, ordering = FALSE, scrollX = T
+                         , searching = FALSE, ordering = FALSE, scrollX = F
                          , rowCallback = JS(tabjs)
                          , columnDefs = list(list(className = 'dt-left', targets = '_all'),
                                              list(visible=FALSE,
@@ -638,7 +638,7 @@ shinyServer(function(input, output, session) {
         dt <- DT::datatable(
             ibi_scores, rownames = F, selection = 'none', width = 600,
             class = 'nowrap hover compact stripe',
-            options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = ncol(ibi_scores)>15,
+            options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = FALSE,
                          paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
                          searching = FALSE, ordering = FALSE,
                          columnDefs = list(list(
