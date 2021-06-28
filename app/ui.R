@@ -140,7 +140,7 @@ shinyUI(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"
                                       )
                              ),
-                        withspinner(DT::DTOutput("dtable"))
+                        div(class='table-container', withspinner(DT::DTOutput("dtable")))
                     )
                 ),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -182,7 +182,7 @@ shinyUI(
                         )
                     ),
                     br(), br(),
-                    fluidRow(withspinner(DT::DTOutput("newTable")))
+                    fluidRow(div(class="table-container", withspinner(DT::DTOutput("newTable"))))
                 ),
                 ## tabPanel('>'),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -201,8 +201,8 @@ shinyUI(
                                 h2(includeMarkdown('text/page-4-title.md'))
                             ),
                             div(id="select-container",
-                                span(id="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
-                                span(id="select-1",
+                                span(class="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
+                                span(class="select-menu",
                                      selectInput("sel_score", "",
                                                  choices = c("NPS-FM category" = 'nps_score',
                                                              "IBI score" = 'ibi_score')))## ,
@@ -264,7 +264,7 @@ shinyUI(
                     br(),
                     fluidRow(h5(class="subheader", "Table of results")),
                     br(),
-                    fluidRow(withspinner(DT::DTOutput("ibiTable"))),
+                    div(class='table-container', fluidRow(withspinner(DT::DTOutput("ibiTable"))))
                     )
                     ),
                     

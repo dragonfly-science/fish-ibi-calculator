@@ -1,16 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
 
-#select-container {
+.select-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-#select-label {
+.select-label {
   margin-right: 40px;
 }
 
-#select-1 {
+.select-menu {
   margin-right: 30px;
 }
 
