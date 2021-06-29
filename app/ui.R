@@ -118,7 +118,7 @@ shinyUI(
                                ),
                         column(3, offset = 3 #, align = 'right'
                              , disabled(
-                                   actionButton('checkData', div(HTML("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
+                                   actionButton('checkData', div(class='button-inner', span("Check input data"), img(class='arrow-next', src='icons/buttonArrow.svg')))
                                )
                              , br(), br(), br()
                              , uiOutput('mandfields')

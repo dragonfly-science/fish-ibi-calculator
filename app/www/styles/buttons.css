@@ -27,19 +27,6 @@
   background-color: #1b556b;
 }
 
-/* .btn:focus,
-.btn:hover,
-.btn:activem,
-.btn:target,
-.btn:visited {
-  border-radius: 5px !important;
-  border-color: #009985 !important;
-  color: #fff !important;
-  font-weight: bold !important;
-  background-color: #1B556B !important;
-} */
-
-/* secondary button on homepage */
 #exbtn {
   background-color: #1b556b;
   opacity: 0.4;
