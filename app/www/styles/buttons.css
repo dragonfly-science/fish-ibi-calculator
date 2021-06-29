@@ -46,13 +46,20 @@
 }
 
 #button-inner-text {
-  vertical-align: middle;
+  align-self: center;
   margin-right: 8px;
+}
+
+.button-inner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button div img.arrow-next {
   transform: rotate(90deg);
-  margin-left: 5px;
+  margin-left: 8px;
   margin-top: auto;
   margin-bottom: auto;
 }

@@ -176,7 +176,10 @@ shinyUI(
                                # br(),br(),
                                column(
                                    6,
-                                   actionButton('to4btn', 'Calculate IBI score')
+                                   actionButton('to4btn', div(class="button-inner",
+                                    span('Calculate IBI score'), 
+                                    img(class='arrow-next', src='icons/buttonArrow.svg')
+                                   ))
                                ## , actionButton('testbtn', 'Test')
                                )
                             )
