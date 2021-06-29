@@ -259,8 +259,8 @@ shinyServer(function(input, output, session) {
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
-                            options = list(autoWidth = TRUE, lengthChange = F
-                                         , fillContainer = T, deferRender = T #, class = 'display', deferRender = T
+                            options = list(autoWidth = FALSE, lengthChange = F
+                                         , fillContainer = T, deferRender = T, class = 'display'
                                          , paging = nrow(d)>15, pageLength = 15, scrollX = TRUE
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
