@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
 
-.table-container {
-  overflow-x: scroll;
+.dataTables_wrapper {
+  background-color: #eceff0;
 }
 
 table.dataTable thead th,
