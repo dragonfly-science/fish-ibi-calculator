@@ -65,3 +65,27 @@ table thead td + td {
 td[title="Value should be numeric"] {
   background-color: rgba(255, 0, 0, 0.05) !important;
 }
+
+/* .dataTables_scrollHeadInner{ */
+/* overflow:auto; */
+/* width:100%; */
+/* position:relative; */
+/* } */
+/* .dataTables_scrollHeadInner table { */
+/* overflow:auto; */
+/* width:100%; */
+/* position:relative; */
+/* } */
+
+/* #dtable { */
+/* overflow:auto; */
+/* width:100%; */
+/* position:relative; */
+/* } */
+
+/* .dataTables_scrollHeadInner{ */
+/*   width:100% !important; */
+/* } */
+/* .dataTables_scrollHeadInner table{ */
+/*   width:100% !important; */
+/* } */

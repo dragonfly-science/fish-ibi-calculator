@@ -125,8 +125,17 @@ callback <- "$(document).contextMenu({
       }
     }
   }
-});"
+});
+table.columns.adjust().draw();
+table.columns.adjust().draw();
+"
 
+## ;
+## $('#dtable').DataTable({
+##   \"initComplete\": function (settings, json) {  
+##     $(\"#dtable\").wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");
+##   },
+## })
 
 ## rv <- list(
 ##     reqfields = req_fields,
@@ -252,24 +261,30 @@ shinyServer(function(input, output, session) {
     output$dtable <- renderDT({
         d <- rv[['intable']]
         nms <- names(d)
-        print(names(d))
+        ## print(names(d))
         
         dt <- DT::datatable(d
                           , callback = JS(callback)
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
-                            options = list(autoWidth = FALSE, lengthChange = F
-                                         , fillContainer = T, deferRender = T, class = 'display'
-                                         , paging = nrow(d)>15, pageLength = 15, scrollX = TRUE
+                            options = list(lengthChange = F
+                                           ## , fillContainer = T, deferRender = T, class = 'display'
+                                           , deferLoading = nrow(d)
+                                         , paging = nrow(d)>15, pageLength = 15, scrollX = T
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
+                                         ## , initComplete = I("function (settings, json) {table.wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");}")
+                                         ## , initComplete = I("table.draw()")
+                                         ## , initComplete = JS("function (settings, json) {table.columns.adjust();}")
+                                         ## , scroller = T
                                            )
+                            ## , extensions = c('Scroller')
                             )
         sf <- rv[['selfields']]
         goodfields <- sf[sf$good == 1, 'req']
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
-        rv$test <- rnorm(1)
+        ## rv$test <- rnorm(1)
         dt
     }, server = TRUE)
     ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
