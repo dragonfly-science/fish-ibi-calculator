@@ -141,7 +141,7 @@ shinyUI(
                                       )
                              ),
                         ## div(class='table-container', withspinner(DT::DTOutput("dtable")))
-                        withspinner(DT::DTOutput("dtable"))
+                        fluidRow(column(12, align='center', withspinner(DT::DTOutput("dtable"))))
                     )
                 ),
                 tabPanel(img(src='icons/arrow.svg')),

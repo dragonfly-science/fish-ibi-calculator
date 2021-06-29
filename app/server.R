@@ -260,7 +260,7 @@ shinyServer(function(input, output, session) {
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
                             options = list(autoWidth = TRUE, lengthChange = F
-                                         , fillContainer = T #, class = 'display', deferRender = T
+                                         , fillContainer = T, deferRender = T #, class = 'display', deferRender = T
                                          , paging = nrow(d)>15, pageLength = 15, scrollX = TRUE
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
