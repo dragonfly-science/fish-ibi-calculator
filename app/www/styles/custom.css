@@ -125,6 +125,10 @@ hr {
   border-top: 1px solid #d4dde1 !important;
 }
 
+p strong {
+  font-weight: 900;
+}
+
 /** Tab panels **/
 
 .nav-tabs {
