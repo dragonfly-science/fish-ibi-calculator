@@ -42,7 +42,7 @@ shinyUI(
                 ),
                 column(4, class='header-col')
             ),
-            div(class='cr-text', p('© Rod Morris'))
+            a(class='cr-text', href='https://www.rodmorris.co.nz/', p('© Rod Morris'))
         ),
         useShinyjs(),  # Set up shinyjs
         
