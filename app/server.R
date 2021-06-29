@@ -242,10 +242,10 @@ shinyServer(function(input, output, session) {
             sf[sf$req == pair[1], 'good'] <- 1L
             rv[['selfields']] <- sf
             d <- isolate(rv[['intable']])
-            if (pair[1] %in% names(d)) {
+            if (pair[1] != pair[2] & pair[1] %in% names(d)) {
                 names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
             }
-            if (pair[2] %in% names(d)) {
+            if (pair[1] != pair[2] & pair[2] %in% names(d)) {
                 names(d)[names(d) == pair[2]] <- pair[1]
                 rv[['tablefields']] <- names(d)
             }
@@ -268,15 +268,16 @@ shinyServer(function(input, output, session) {
                           , colnames = rv[['tablefields']], rownames = F,
                             selection = 'none', width = 600,
                             class = 'nowrap hover compact nostripe',
-                            options = list(lengthChange = F
+                            options = list(lengthChange = F, autoWidth = T
                                            ## , fillContainer = T, deferRender = T, class = 'display'
-                                           , deferLoading = nrow(d)
+                                           , deferRender = T
+                                           ## , deferLoading = nrow(d)
                                          , paging = nrow(d)>15, pageLength = 15, scrollX = T
                                          , searching = FALSE, ordering = FALSE
                                          , columnDefs = list(list(className = 'dt-left', targets = '_all'))
                                          ## , initComplete = I("function (settings, json) {table.wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");}")
                                          ## , initComplete = I("table.draw()")
-                                         ## , initComplete = JS("function (settings, json) {table.columns.adjust();}")
+                                         ## , initComplete = JS("function (settings, json) {table.columns.adjust().draw();}")
                                          ## , scroller = T
                                            )
                             ## , extensions = c('Scroller')
@@ -286,7 +287,7 @@ shinyServer(function(input, output, session) {
         dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
         ## rv$test <- rnorm(1)
         dt
-    }, server = TRUE)
+    }, server = FALSE)
     ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
 
     ## observeEvent(rv$test, {
