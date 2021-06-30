@@ -189,7 +189,7 @@ shinyUI(
                         )
                     ),
                     br(), br()
-                    , withspinner(reactableOutput("newTable2"))
+                    , withspinner(reactableOutput("newTable"))
                     ## , withspinner(DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
