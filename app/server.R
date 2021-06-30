@@ -19,7 +19,7 @@ load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
 source('fishr-functions.R')
 
-cols_needed <- c('Date', 'SiteID', 'Penetration', 
+cols_needed <- c('SiteID', 'Date', 'Penetration', 
                  'Altitude', 'SpeciesCode')
 
 req_fields <- rep(0, length(cols_needed))
@@ -91,6 +91,9 @@ shinyServer(function(input, output, session) {
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
+        fields <- data.table(ori = names(df), good = names(df) %in% c(cols_needed, cols_opt))
+        fields[, match := fifelse(ori %in% c(cols_needed, cols_opt), ori, '')]
+        rv[['fieldsmatching']] <- as.data.frame(fields)
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
@@ -107,6 +110,9 @@ shinyServer(function(input, output, session) {
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
+        fields <- data.table(ori = names(df), good = names(df) %in% c(cols_needed, cols_opt))
+        fields[, match := fifelse(ori %in% c(cols_needed, cols_opt), ori, '')]
+        rv[['fieldsmatching']] <- as.data.frame(fields)
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
@@ -128,24 +134,34 @@ shinyServer(function(input, output, session) {
                                                        animation = 'pulse'))
         })
 
-    ## * Renaming fields from context menu
+    ## * Assigment of field roles from context menu
     observeEvent(input$selfield, {
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
+            ## pair <- c('SiteID', 'card')
+            ## pair <- c('Northing', 'Easting')
             sf <- isolate(rv[['selfields']])
+            fm <- as.data.table(isolate(rv[['fieldsmatching']]))
+            if (pair[1] %in% fm$match) {
+                fm[match == pair[1], `:=`(good = F, match = '')]
+                sf[sf$req == pair[1], 'good'] <- 0L
+            }
+            fm[ori == pair[2], `:=`(good = T, match = pair[1])]
+            rv[['fieldsmatching']] <- as.data.frame(fm)
+            
             sf[sf$req == pair[1], 'good'] <- 1L
             rv[['selfields']] <- sf
-            d <- isolate(rv[['intable']])
-            if (pair[1] != pair[2] & pair[1] %in% names(d)) {
-                names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
-            }
-            if (pair[1] != pair[2] & pair[2] %in% names(d)) {
-                names(d)[names(d) == pair[2]] <- pair[1]
-                rv[['tablefields']] <- names(d)
-            }
-            sf$good <- ifelse(sf$req %in% names(d), 1, 0)
-            rv[['selfields']] <- sf
-            rv[['intable']] <- d
+            ## d <- isolate(rv[['intable']])
+            ## if (pair[1] != pair[2] & pair[1] %in% names(d)) {
+            ##     names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
+            ## }
+            ## if (pair[1] != pair[2] & pair[2] %in% names(d)) {
+            ##     names(d)[names(d) == pair[2]] <- pair[1]
+            ##     rv[['tablefields']] <- names(d)
+            ## }
+            ## sf$good <- ifelse(sf$req %in% names(d), 1, 0)
+            ## rv[['selfields']] <- sf
+            ## rv[['intable']] <- d
         }
     }, label = 'Fields renaming')
 
@@ -154,23 +170,26 @@ shinyServer(function(input, output, session) {
 
     output$dtable <- renderReactable({
         d <- rv[['intable']]
-        reactable(d, highlight=T, compact=T, wrap=F)
+        fm <- rv[['fieldsmatching']]
+        cols <- sapply(fm$ori, function(m) {
+            colDef(header = function(value) {
+                sub <- div(style = "color: #2C9986; font-size: 1em", fm$match[fm$ori == m])
+                div(class='field', title = value, value, sub)
+            })
+        }, simplify = F)
+        reactable(d, highlight=T, compact=T, wrap=F,
+                  columns = cols,
+                  defaultColDef = colDef(align = 'left'))
     })
 
     output$logtxt <- renderPrint({
         req(rv)
-        cat('input$selfield=\n')
-        print(input$selfield)
         cat('\n\nrv$selfields=\n')
         print(rv$selfields)
         cat('\n\nnames(rv$intable)=\n')
         print(names(rv[['intable']]))
-        cat('\n\ntablefields=\n')
-        print(rv[['tablefields']])
-        ## str(rv[['intable']])
-        cat('\n\nok=\n')
-        d <- rv[['selfields']]
-        print(d[d$req==cols_needed[1], 'good'] + 1L)
+        print(rv$fieldsmatching)
+        print(head(rv$finalTable))
     })
     
     # button to go from tab 2 to 3
@@ -211,9 +230,13 @@ shinyServer(function(input, output, session) {
     cleanTable <- reactive({
         req(rv$intable)
 
-        d <- rv$intable[, c(cols_needed[cols_needed %in% names(rv$intable)],
-                            cols_opt[cols_opt %in% names(rv$intable)])]
-
+        fm <- rv$fieldsmatching
+        d <- rv$intable
+        cols <- fm$ori[fm$good == T]
+        goodcols <- intersect(c(cols_needed, cols_opt), fm$match[fm$good==T])
+        d <- rv$intable[, fm$ori[match(goodcols, fm$match)]]
+        names(d) <- goodcols
+        
         ## ** Penetration
         if ('Penetration' %in% names(d)) {
             ## *** Check for missing values
@@ -361,6 +384,11 @@ shinyServer(function(input, output, session) {
             d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) > 0,]
         }
         print(d[1,])
+
+        cols2hide <- sapply(grep('_issues$|_warnings$|_txt$|_wtxt$', names(d), val=T), function(x) {
+            colDef(show = FALSE)
+        }, simplify = F)
+        
         dt <- reactable(
             d, highlight=T, compact=T, wrap=F,
             defaultColDef = colDef(
@@ -408,9 +436,7 @@ shinyServer(function(input, output, session) {
                     }
                     v
                 }),
-            columns = sapply(grep('_issues$|_warnings$|_txt$|_wtxt$', names(d), val=T), function(x) {
-                colDef(show = FALSE)
-            }, simplify = F)
+            columns = cols2hide
         )
         dt
     })
