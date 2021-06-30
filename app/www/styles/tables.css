@@ -77,6 +77,151 @@ td[title="Value should be numeric"] {
 /* position:relative; */
 /* } */
 
+#dtable {
+    overflow: auto;
+    width: 100%;
+    position: relative;
+}
+
+#dtable td {
+    white-space: nowrap;
+}
+
+#dtable thead th,
+#dtable thead td {
+  background-color: #d4dde1;
+  border-bottom: unset !important;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+#dtable tbody {
+  border: 1px solid #607781;
+}
+
+#dtable.no-footer {
+  border: unset !important;
+}
+#dtable tbody td {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+#dtable_info,
+#dtable_paginate {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+}
+
+
+/* #dtable rt-td { */
+/*     white-space: nowrap; */
+/* } */
+
+#dtable rt-thead rt-th,
+#dtable rt-thead rt-td {
+  background-color: #d4dde1;
+  border-bottom: unset !important;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+#dtable rt-tbody {
+  border: 1px solid #607781;
+}
+
+#dtable.no-footer {
+  border: unset !important;
+}
+#dtable rt-tbody rt-td {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+#dtable_info,
+#dtable_paginate {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+}
+
+
+.ReactTable rt-table rt-thead rt-th,
+.ReactTable rt-table rt-thead rt-td {
+  background-color: #d4dde1;
+  border-bottom: unset !important;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+.ReactTable rt-table rt-tbody {
+  border: 1px solid #607781;
+}
+
+.ReactTable rt-table.no-footer {
+  border: unset !important;
+}
+rt-table rt-tbody rt-td {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+.ReactTable {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+  padding-left: 15px !important;
+}
+
+.ReactTable rt-table_info,
+.ReactTable rt-table_paginate {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #003147;
+}
+
 /* #dtable { */
 /* overflow:auto; */
 /* width:100%; */
@@ -89,3 +234,43 @@ td[title="Value should be numeric"] {
 /* .dataTables_scrollHeadInner table{ */
 /*   width:100% !important; */
 /* } */
+
+
+/* .tippy-content { */
+/*     font-size: 1.8em; */
+/* } */
+
+.cellwarning {
+    background-color: #93edf9;
+    color: '#003547';
+    font-weight: normal;
+}
+.cellerror {
+    background-color: #eebabd;
+    color: '#003547';
+    font-weight: normal;
+}
+
+
+CellWithComment{
+  position:relative;
+}
+
+.CellComment{
+    display:none;
+    position:absolute;
+    z-index:100;
+    border:1px;
+    background-color:  #BF2F37;
+    border-style:solid;
+    border-width:1px;
+    border-color: #BF2F37;
+    padding:3px;
+    color: white;
+    top:20px;
+    left:20px;
+}
+.CellWithComment:hover span.CellComment{
+    display:block;
+}
+

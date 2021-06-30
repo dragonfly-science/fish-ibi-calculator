@@ -6,6 +6,7 @@ library(shinyWidgets)
 library(shinycssloaders)
 library(data.table)
 library(leaflet)
+library(reactable)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
@@ -53,7 +54,7 @@ shinyUI(
                      tags$link(rel = "stylesheet", type = "text/css", href = "styles/buttons.css"),
                      tags$link(rel = "stylesheet", type = "text/css", href = "styles/tables.css")
                  ),
-
+            tags$script(src = 'headers.js'),
             ## Input widgets
             tabsetPanel(
                 type = 'tabs', id = 'myFirst',
@@ -141,7 +142,9 @@ shinyUI(
                                       )
                              ),
                         ## div(class='table-container', withspinner(DT::DTOutput("dtable")))
-                        fluidRow(column(12, align='center', withspinner(DT::DTOutput("dtable"))))
+                        ## fluidRow(column(12, align='center', withspinner(DT::DTOutput("dtable"))))
+                        ## fluidRow(column(12, align='center', withspinner(tableOutput("dtable"))))
+                        fluidRow(column(12, align='center', withspinner(reactableOutput("dtable"))))
                     )
                 ),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -185,8 +188,9 @@ shinyUI(
                             )
                         )
                     ),
-                    br(), br(),
-                    withspinner(DT::DTOutput("newTable"))
+                    br(), br()
+                    , withspinner(reactableOutput("newTable2"))
+                    ## , withspinner(DTOutput("newTable"))
                 ),
                 ## tabPanel('>'),
                 tabPanel(img(src='icons/arrow.svg')),
@@ -268,7 +272,7 @@ shinyUI(
                     br(),
                     fluidRow(h5(class="subheader", "Table of results")),
                     br(),
-                    fluidRow(withspinner(DT::DTOutput("ibiTable")))
+                    fluidRow(withspinner(reactableOutput("ibiTable")))
                     )
                     ),
                     

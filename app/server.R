@@ -12,6 +12,8 @@ library(sf)
 library(leaflet.extras)
 library(kableExtra)
 library(mapview)
+library(reactable)
+library(tippy)
 
 load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
@@ -41,94 +43,94 @@ rv <- NULL
 ## df <- read.csv('data/trial.csv', stringsAsFactors=F)
 ## df <- read.csv('data/demo-table.csv', stringsAsFactors=F)
 
-callback <- "$(document).contextMenu({
-    selector: '#dtable th',
-    trigger: 'right',
-    items: {
-        // <input type=\"radio\">
-        menuHeading1: {
-          type: 'html',
-          html: '<h4><strong>Match header with one of these:</strong></h4>'
-        },
-        Date: {
-            name: \"Date\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Date',
-        },
-        SiteID: {
-            name: \"SiteID\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'SiteID',
-        },
-        Penetration: {
-            name: \"Penetration\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Penetration'
-        },
-        SpeciesCode: {
-            name: \"Species code\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'SpeciesCode'
-        },
-        Altitude: {
-            name: \"Altitude\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Altitude'
-        },
-        sep1: \"---------\",
-        // <optional>
-        menuHeading2: {
-          type: 'html',
-          html: '<h4><strong>Optional location</strong> (needed for map)</h4>'
-        },
-        Easting: {
-            name: \"Easting (opt)\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Easting'
-        },
-        Northing: {
-            name: \"Northing (opt)\", 
-            type: 'radio', 
-            radio: 'radio', 
-            value: 'Northing'
-        },
-        Location: {
-            name: \"Location (opt)\",
-            type: 'radio',
-            radio: 'radio',
-            value: 'Location'
-        },
-        NZreach: {
-            name: \"NZreach (opt)\",
-            type: 'radio',
-            radio: 'radio',
-            value: 'NZreach'
-        }
-    },
-  events: {
-    show: function(opt) {
-      var $this = this;
-      $.contextMenu.setInputValues(opt, $this.data());
-    },
-    hide: function(opt) {
-      var $this = this;
-      var data = $.contextMenu.getInputValues(opt, $this.data());
-      var $th = opt.$trigger;
-      if (typeof data.radio !== \"undefined\") {
-        Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
-      }
-    }
-  }
-});
-table.columns.adjust().draw();
-table.columns.adjust().draw();
-"
+## callback <- "$(document).contextMenu({
+##     selector: '#dtable th',
+##     trigger: 'right',
+##     items: {
+##         // <input type=\"radio\">
+##         menuHeading1: {
+##           type: 'html',
+##           html: '<h4><strong>Match header with one of these:</strong></h4>'
+##         },
+##         Date: {
+##             name: \"Date\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'Date',
+##         },
+##         SiteID: {
+##             name: \"SiteID\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'SiteID',
+##         },
+##         Penetration: {
+##             name: \"Penetration\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'Penetration'
+##         },
+##         SpeciesCode: {
+##             name: \"Species code\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'SpeciesCode'
+##         },
+##         Altitude: {
+##             name: \"Altitude\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'Altitude'
+##         },
+##         sep1: \"---------\",
+##         // <optional>
+##         menuHeading2: {
+##           type: 'html',
+##           html: '<h4><strong>Optional location</strong> (needed for map)</h4>'
+##         },
+##         Easting: {
+##             name: \"Easting (opt)\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'Easting'
+##         },
+##         Northing: {
+##             name: \"Northing (opt)\", 
+##             type: 'radio', 
+##             radio: 'radio', 
+##             value: 'Northing'
+##         },
+##         Location: {
+##             name: \"Location (opt)\",
+##             type: 'radio',
+##             radio: 'radio',
+##             value: 'Location'
+##         },
+##         NZreach: {
+##             name: \"NZreach (opt)\",
+##             type: 'radio',
+##             radio: 'radio',
+##             value: 'NZreach'
+##         }
+##     },
+##   events: {
+##     show: function(opt) {
+##       var $this = this;
+##       $.contextMenu.setInputValues(opt, $this.data());
+##     },
+##     hide: function(opt) {
+##       var $this = this;
+##       var data = $.contextMenu.getInputValues(opt, $this.data());
+##       var $th = opt.$trigger;
+##       if (typeof data.radio !== \"undefined\") {
+##         Shiny.onInputChange(\"selfield\", data.radio + \"=\" + $th.text());
+##       }
+##     }
+##   }
+## });
+## table.columns.adjust().draw();
+## table.columns.adjust().draw();
+## "
 
 ## ;
 ## $('#dtable').DataTable({
@@ -258,40 +260,85 @@ shinyServer(function(input, output, session) {
 
     ## * Raw input table
     # data table on page 2
-    output$dtable <- renderDT({
-        d <- rv[['intable']]
-        nms <- names(d)
-        ## print(names(d))
-        
-        dt <- DT::datatable(d
-                          , callback = JS(callback)
-                          , colnames = rv[['tablefields']], rownames = F,
-                            selection = 'none', width = 600,
-                            class = 'nowrap hover compact nostripe',
-                            options = list(lengthChange = F, autoWidth = T
-                                           ## , fillContainer = T, deferRender = T, class = 'display'
-                                           , deferRender = T
-                                           ## , deferLoading = nrow(d)
-                                         , paging = nrow(d)>15, pageLength = 15, scrollX = T
-                                         , searching = FALSE, ordering = FALSE
-                                         , columnDefs = list(list(className = 'dt-left', targets = '_all'))
-                                         ## , initComplete = I("function (settings, json) {table.wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");}")
-                                         ## , initComplete = I("table.draw()")
-                                         ## , initComplete = JS("function (settings, json) {table.columns.adjust().draw();}")
-                                         ## , scroller = T
-                                           )
-                            ## , extensions = c('Scroller')
-                            )
-        sf <- rv[['selfields']]
-        goodfields <- sf[sf$good == 1, 'req']
-        dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
-        ## rv$test <- rnorm(1)
-        dt
-    }, server = FALSE)
-    ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
+    ## output$dtable <- renderTable({
+    ##     d <- rv[['intable']]
+    ##     d <- d[1:15, ]
+    ##     names(d) <- rv[['tablefields']]
+    ##     ## print(names(d))
+    ##     d
+    ## },
+    ## width = 600, spacing = 's', align = 'l', rownames = F, na = ''
+    ## )
 
-    ## observeEvent(rv$test, {
-    ##     reloadData(proxy, resetPaging = F)
+    output$dtable <- renderReactable({
+        d <- rv[['intable']]
+        reactable(d, highlight=T, compact=T, wrap=F)
+    })
+    
+    ## hover = T
+    ##     dt <- DT::datatable(d
+    ##                       , callback = JS(callback)
+    ##                       , colnames = rv[['tablefields']], rownames = F,
+    ##                         selection = 'none', width = 600,
+    ##                         class = 'nowrap hover compact nostripe',
+    ##                         options = list(lengthChange = F, autoWidth = T
+    ##                                        ## , fillContainer = T, deferRender = T, class = 'display'
+    ##                                        , deferRender = T
+    ##                                        ## , deferLoading = nrow(d)
+    ##                                      , paging = nrow(d)>15, pageLength = 15, scrollX = T
+    ##                                      , searching = FALSE, ordering = FALSE
+    ##                                      , columnDefs = list(list(className = 'dt-left', targets = '_all'))
+    ##                                      ## , initComplete = I("function (settings, json) {table.wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");}")
+    ##                                      ## , initComplete = I("table.draw()")
+    ##                                      ## , initComplete = JS("function (settings, json) {table.columns.adjust().draw();}")
+    ##                                      ## , scroller = T
+    ##                                        )
+    ##                         ## , extensions = c('Scroller')
+    ##                         )
+    ##     sf <- rv[['selfields']]
+    ##     goodfields <- sf[sf$good == 1, 'req']
+    ##     dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
+    ##     ## rv$test <- rnorm(1)
+    ##     dt
+    ## }, server = FALSE)
+    ## ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
+
+
+    
+    ## output$dtable <- renderDT({
+    ##     d <- rv[['intable']]
+    ##     nms <- names(d)
+    ##     ## print(names(d))
+    ##     dt <- DT::datatable(d
+    ##                       ## , callback = JS(callback)
+    ##                       , colnames = rv[['tablefields']], rownames = F,
+    ##                         selection = 'none', width = 600,
+    ##                         class = 'nowrap hover compact nostripe',
+    ##                         options = list(lengthChange = F, autoWidth = T
+    ##                                        ## , fillContainer = T, deferRender = T, class = 'display'
+    ##                                        , deferRender = T
+    ##                                        ## , deferLoading = nrow(d)
+    ##                                      , paging = nrow(d)>15, pageLength = 15, scrollX = T
+    ##                                      , searching = FALSE, ordering = FALSE
+    ##                                      , columnDefs = list(list(className = 'dt-left', targets = '_all'))
+    ##                                      ## , initComplete = I("function (settings, json) {table.wrap(\"<div style='overflow:auto; width:100%;position:relative;'></div>\");}")
+    ##                                      ## , initComplete = I("table.draw()")
+    ##                                      , initComplete = JS("function (settings, json) {$('#dtable').table.columns.adjust().draw();}")
+    ##                                      ## , scroller = T
+    ##                                        )
+    ##                         ## , extensions = c('Scroller')
+    ##                         )
+    ##     sf <- rv[['selfields']]
+    ##     goodfields <- sf[sf$good == 1, 'req']
+    ##     dt <- dt %>% formatStyle(columns = goodfields, backgroundColor = "#00C7A811")
+    ##     ## rv$test <- rnorm(1)
+    ##     dt
+    ## }, server = FALSE)
+    ## ## proxy <- dataTableProxy('dtable', deferUntilFlush = T)
+    
+    ## observeEvent(input$bt, {
+    ##     session$sendCustomMessage('refr', NULL)
+    ##      ## reloadData(proxy, resetPaging = F)
     ## })
 
     output$logtxt <- renderPrint({
@@ -450,38 +497,6 @@ shinyServer(function(input, output, session) {
     })
 
 
-    table_js <- reactive({
-        d <- cleanTable()
-        req(d)
-        
-        ## ** Javascript bit for cell colour and tooltip
-        if (any(c(cols_needed, cols_opt) %in% names(d))) {
-                paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
-                        as.vector(unlist(sapply(
-                            setdiff(cols_needed[cols_needed %in% names(d)], 'Date'),
-                            function(v) {
-                                if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
-                                    c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
-                                              which(names(d) == v)-1L,
-                                              which(names(d) == paste0(v, '_txt'))-1L),
-                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#eebabd\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
-                                              which(names(d) == paste0(v, '_issues'))-1L,
-                                              which(names(d) == v)-1L))
-                                } else if (any(d[[paste0(v, '_warnings')]] %in% 1L)) {
-                                    c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
-                                              which(names(d) == v)-1L,
-                                              which(names(d) == paste0(v, '_wtxt'))-1L),
-                                      sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#93edf9\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
-                                              which(names(d) == paste0(v, '_warnings'))-1L,
-                                              which(names(d) == v)-1L))
-                                }
-                            }))),
-                        "}"), collapse='\n')
-        }
-        
-    })
-
-    
     dataissues <- reactive({
         d <- rv$finalTable
         req(d)
@@ -520,36 +535,132 @@ shinyServer(function(input, output, session) {
         rv$finalTable <- d
     })
     
+    ## table_js <- reactive({
+    ##     d <- cleanTable()
+    ##     req(d)
+        
+    ##     ## ** Javascript bit for cell colour and tooltip
+    ##     if (any(c(cols_needed, cols_opt) %in% names(d))) {
+    ##             paste(c("function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {",
+    ##                     as.vector(unlist(sapply(
+    ##                         setdiff(cols_needed[cols_needed %in% names(d)], 'Date'),
+    ##                         function(v) {
+    ##                             if (any(d[[paste0(v, '_issues')]] %in% 1L)) {
+    ##                                 c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+    ##                                           which(names(d) == v)-1L,
+    ##                                           which(names(d) == paste0(v, '_txt'))-1L),
+    ##                                   sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#eebabd\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
+    ##                                           which(names(d) == paste0(v, '_issues'))-1L,
+    ##                                           which(names(d) == v)-1L))
+    ##                             } else if (any(d[[paste0(v, '_warnings')]] %in% 1L)) {
+    ##                                 c(sprintf("$('td:eq(%i)', nRow).attr('title', aData[%i]);",
+    ##                                           which(names(d) == v)-1L,
+    ##                                           which(names(d) == paste0(v, '_wtxt'))-1L),
+    ##                                   sprintf("if (aData[%i] == 1) $('td:eq(%i)', nRow).css(\"background-color\", \"#93edf9\").css(\"color\", \"#003547\").css(\"font-weight\", \"normal\")",
+    ##                                           which(names(d) == paste0(v, '_warnings'))-1L,
+    ##                                           which(names(d) == v)-1L))
+    ##                             }
+    ##                         }))),
+    ##                     "}"), collapse='\n')
+    ##     }
+        
+    ## })
+    
     ## * Cleaned table on page 3
     
-    output$newTable <- renderDT({
+    ## output$newTable <- renderDT({
+    ##     d <- rv$finalTable
+    ##     req(d)
+    ##     print(head(d))
+    ##     if (any(grepl('_issues$', names(d))) &&
+    ##         sum(sapply(d[, grep('_issues$|_warnings$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
+    ##         d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) > 0,]
+    ##         tabjs <- table_js()
+    ##     } else {
+    ##         tabjs <- NULL
+    ##     }
+    ##     dt <- DT::datatable(
+    ##         d, rownames = F, selection = 'none', width = 600,
+    ##         class = 'nowrap hover compact nostripe',
+    ##         options = list(autoWidth = FALSE, scrollCollapse=TRUE
+    ##                      , deferRender = T, fillContainer = T, class = 'display'
+    ##                      , paging = nrow(d)>15, pageLength = 15, lengthChange = F
+    ##                      , searching = FALSE, ordering = FALSE, scrollX = F
+    ##                      , rowCallback = JS(tabjs)
+    ##                      , columnDefs = list(list(className = 'dt-left', targets = '_all'),
+    ##                                          list(visible=FALSE,
+    ##                                               targets=grep('_issues$|_txt$|_warnings$|_wtxt$',
+    ##                                                            names(d))-1L))
+    ##                        )
+    ##     )
+    ##     dt
+    ## }, server = F)
+
+    output$newTable2 <- renderReactable({
         d <- rv$finalTable
         req(d)
-        print(head(d))
         if (any(grepl('_issues$', names(d))) &&
             sum(sapply(d[, grep('_issues$|_warnings$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
             d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) > 0,]
-            tabjs <- table_js()
-        } else {
-            tabjs <- NULL
         }
-        dt <- DT::datatable(
-            d, rownames = F, selection = 'none', width = 600,
-            class = 'nowrap hover compact nostripe',
-            options = list(autoWidth = FALSE, scrollCollapse=TRUE
-                         , deferRender = T, fillContainer = T, class = 'display'
-                         , paging = nrow(d)>15, pageLength = 15, lengthChange = F
-                         , searching = FALSE, ordering = FALSE, scrollX = F
-                         , rowCallback = JS(tabjs)
-                         , columnDefs = list(list(className = 'dt-left', targets = '_all'),
-                                             list(visible=FALSE,
-                                                  targets=grep('_issues$|_txt$|_warnings$|_wtxt$',
-                                                               names(d))-1L))
-                           )
+        print(d[1,])
+        dt <- reactable(
+            d, highlight=T, compact=T, wrap=F,
+            defaultColDef = colDef(
+                align = 'left', html = T,
+                class = function(value, index, name) {
+                    if ((paste0(name,'_warnings') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_warnings')]) &&
+                        d[index, paste0(name,'_warnings')] > 0) |
+                        (paste0(name,'_issues') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_issues')]) &&
+                        d[index, paste0(name,'_issues')] > 0)) 
+                        return('CellWithComment')
+                },
+                style = function(value, index, name) {
+                    if (paste0(name,'_warnings') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_warnings')]) &&
+                        d[index, paste0(name,'_warnings')] > 0) {
+                        return(list(background='#93edf9', color='#003547', fontWeight='normal'))
+                    }
+                    if (paste0(name,'_issues') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_issues')]) &&
+                        d[index, paste0(name,'_issues')] > 0) {
+                        return(list(background='#eebabd', color='#003547', fontWeight='normal'))
+                    }
+                },
+                cell = function(value, index, name) {
+                    if (is.na(value))
+                        value <- ''
+                    ##     v <- '<tr><td>&nbsp;</td></tr>'
+                    ## } else v <- value
+                    v <- value
+                    if (paste0(name,'_warnings') %in% names(d) &&
+                        paste0(name,'_wtxt') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_warnings')]) &&
+                        d[index, paste0(name,'_warnings')] > 0) {
+                        v <- sprintf('%s <span class="CellComment">%s</span>',
+                                     value, d[index, paste0(name,'_wtxt')])
+                        ## v <- tippy(v, d[index, paste0(name,'_wtxt')], arrow=T, animation='scale'
+                                 ## , trigger='click', hideOnClick=F
+                    }
+                    if (paste0(name,'_issues') %in% names(d) &&
+                        paste0(name,'_txt') %in% names(d) &&
+                        !is.na(d[index, paste0(name,'_issues')]) &&
+                        d[index, paste0(name,'_issues')] > 0) {
+                        v <- sprintf('%s <span class="CellComment">%s</span>',
+                                     value, d[index, paste0(name,'_txt')])
+                        ## v <- tippy(v, d[index, paste0(name,'_txt')], arrow=T, animation='scale'
+                                 ## , trigger='click', hideOnClick=F
+                    }
+                    v
+                }),
+            columns = sapply(grep('_issues$|_warnings$|_txt$|_wtxt$', names(d), val=T), function(x) {
+                colDef(show = FALSE)
+            }, simplify = F)
         )
         dt
-    }, server = FALSE)
-
+    })
 
 
     ## * Feedback on issues
@@ -652,25 +763,27 @@ shinyServer(function(input, output, session) {
 
     
     ## * Table of IBI scores
-    output$ibiTable <- renderDT({
+    output$ibiTable <- renderReactable({
         ibi_scores <- ibiData()
         req(ibi_scores)
         ibi_scores <- ibi_scores %>% select('SiteID', "Date", "IBIscore",
                                             "IBIscoreCut", "NPSscore")
+
+        dt <- reactable(ibi_scores, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
         
-        dt <- DT::datatable(
-            ibi_scores, rownames = F, selection = 'none', width = 600,
-            class = 'nowrap hover compact stripe',
-            options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = FALSE,
-                         paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
-                         searching = FALSE, ordering = FALSE,
-                         columnDefs = list(list(
-                           className = 'dt-left', targets = 0:4
-                         ))
-                           )
-        )        
+        ## dt <- DT::datatable(
+        ##     ibi_scores, rownames = F, selection = 'none', width = 600,
+        ##     class = 'nowrap hover compact stripe',
+        ##     options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = FALSE,
+        ##                  paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
+        ##                  searching = FALSE, ordering = FALSE,
+        ##                  columnDefs = list(list(
+        ##                    className = 'dt-left', targets = 0:4
+        ##                  ))
+        ##                    )
+        ## )        
         dt
-    }, server = F)
+    })
 
 
 
