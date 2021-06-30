@@ -125,6 +125,10 @@ hr {
   border-top: 1px solid #d4dde1 !important;
 }
 
+p strong {
+  font-weight: 900;
+}
+
 /** Tab panels **/
 
 .nav-tabs {
@@ -275,16 +279,23 @@ h6 > li {
 }
 
 .pretty.p-icon .state .icon {
-  top: calc((0% - (100% - 0.4em)) - 8%) !important;
+  top: calc((0% - (100% - 0.5em)) - 8%) !important;
 }
 
 #mandfields input[type="checkbox"]:not(:checked) {
   background-color: #fff !important;
   background: #fff !important;
+  border: 0;
 }
 
 #mandfields .state label:before {
   background-color: #fff !important;
+  border: 0;
+}
+
+#mandfields .state label span {
+  margin-left: 10px;
+  padding-bottom: 2px;
 }
 
 #rescol1,
@@ -364,7 +375,7 @@ h6 > li {
 .cr-text {
   position: absolute;
   bottom: 2px;
-  right: 5px;
+  right: 15px;
   font-family: Lato;
   font-style: normal;
   font-weight: 500;

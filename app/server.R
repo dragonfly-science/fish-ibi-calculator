@@ -590,7 +590,7 @@ shinyServer(function(input, output, session) {
                 axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
                 axis.ticks         = element_blank(),
                 legend.position    = 'none') +
-          theme(plot.margin = unit(c(1, 0.5, 0.5, 0.5),"cm"))+
+          theme(plot.margin = unit(c(2, 0.5, 0.5, 0.5),"cm"))+
           theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
           theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
 
@@ -671,13 +671,13 @@ shinyServer(function(input, output, session) {
                                          textsize = "17px", direction = "auto", sticky = F,
                                          maxWidth = 700, closeOnClick = T),
                                      ## radius = ~radius,
-                                     fillOpacity = 1,
+                                     fillOpacity = 0.7,
                                      radius = 4,
                                      opacity = 1,
                                      weight = 1
                                      ) %>%
                     addLegend(data = ibi, "bottomright",
-                              colors = paste0(npss$color, "; width: 10px; height: 10px; border-radius: 50%"),
+                              colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
                               labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
                               title = 'NPS category', opacity = 1) %>%
                     addFullscreenControl()
