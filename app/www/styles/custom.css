@@ -304,21 +304,6 @@ h6 > li {
   padding-right: 0px;
 }
 
-#plotdl,
-#mapdl {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 20px;
-  border-radius: 3px;
-  border-color: #eceff0 !important;
-  color: #607781;
-  font-weight: normal;
-  background-color: unset;
-  padding: 2px;
-  width: 150px;
-}
 
 .legend i {
   vertical-align: unset;

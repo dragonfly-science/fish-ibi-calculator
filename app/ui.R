@@ -19,6 +19,12 @@ fileInputOnlyButton <- function(..., label="") {
     temp
 }
 
+mydownloadbutton <- function(outputId, label = "Download", class = NULL, ...,
+                             icon = shiny::icon("arrow-down")) {
+    aTag <- tags$a(id = outputId, class = paste("btn btn-default shiny-download-link", class),
+                   href = "", target = "_blank", download = NA, label, shiny:::validateIcon(icon), ...)
+}
+
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
 shinyUI(
@@ -165,7 +171,7 @@ shinyUI(
                                        column(9, h2(htmlOutput('issuesTxt')))
                                    ),
                                    br(),
-                                   h5(textOutput('issuesSubTxt'))
+                                   h5(htmlOutput('issuesSubTxt'))
                                ),
                                ),
                         column(
@@ -230,11 +236,11 @@ shinyUI(
                     ##br(),
                     fluidRow(column(6
                                   , fluidRow(column(8, div(class='subheader', "Scores across number of sites")),
-                                             column(4, downloadButton('plotdl', 'Download plot')))
+                                             column(4, mydownloadbutton('plotdl', 'Download plot')))
                                   , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                            , column(6
                                   , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
-                                             column(4, downloadButton('mapdl', 'Download map')))
+                                             column(4, mydownloadbutton('mapdl', 'Download map')))
                                   , div(class="key-line", withspinner(leafletOutput('map'))))
                              ),
                     br(), br(),

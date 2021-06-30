@@ -139,7 +139,9 @@ CellWithComment {
   color: white;
   top: 20px;
   left: 20px;
+  /* opacity: 1; */
 }
 .CellWithComment:hover span.CellComment {
-  display: block;
+    display: block;
+    /* opacity: 1; */
 }

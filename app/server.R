@@ -413,12 +413,12 @@ shinyServer(function(input, output, session) {
                     if (paste0(name,'_warnings') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_warnings')]) &&
                         d[index, paste0(name,'_warnings')] > 0) {
-                        return(list(background='#93edf9', color='#003547', fontWeight='normal'))
+                        return(list(background='#1F3B7133', color='#003547', fontWeight='normal'))
                     }
                     if (paste0(name,'_issues') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_issues')]) &&
                         d[index, paste0(name,'_issues')] > 0) {
-                        return(list(background='#eebabd', color='#003547', fontWeight='normal'))
+                        return(list(background='#BF2F3733', color='#003547', fontWeight='normal'))
                     }
                 },
                 cell = function(value, index, name) {
@@ -493,7 +493,7 @@ shinyServer(function(input, output, session) {
         req(d)
         n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
         if (n.issues > 0) {
-            return('Please correct the following issues and re-upload the file')
+            return('Please correct the following issues and re-upload the file, or exclude the issues, which would remove the individual records for issues of non-fish codes, or whole visits for other issues.')
         } else {
             return('The table below will be used as it is to calculate the IBI scores')
         }

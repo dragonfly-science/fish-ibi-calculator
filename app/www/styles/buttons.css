@@ -86,3 +86,25 @@ img.arrow-download {
   margin-right: auto;
   vertical-align: middle;
 }
+
+#plotdl,
+#mapdl {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 3px;
+  border-color: #eceff0 !important;
+  color: #607781;
+  font-weight: normal;
+  background-color: unset;
+  padding: 2px;
+  width: 150px;
+}
+
+#plotdl:hover,
+#mapdl:hover {
+    color: #1b556b !important;
+    text-decoration: underline;
+}
