@@ -1,39 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
 
-.dataTables_wrapper {
-  background-color: #eceff0;
-}
-
-table.dataTable thead th,
-table.dataTable thead td {
-  background-color: #d4dde1;
-  border-bottom: unset !important;
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-table.dataTable tbody {
-  border: 1px solid #607781;
-}
-
-table.dataTable.no-footer {
-  border: unset !important;
-}
-table.dataTable tbody td {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -85,6 +51,7 @@ td[title="Value should be numeric"] {
   color: #003147;
   padding-left: 15px !important;
   border-right: 1px solid rgba(96, 119, 129, 0.6);
+  border-collapse: collapse;
 }
 
 .ReactTable {
