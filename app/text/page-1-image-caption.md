@@ -1,1 +1,1 @@
-Caption goes here
+Fish sampling using Backpack Electrofishing Method.
