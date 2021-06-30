@@ -189,6 +189,7 @@ shinyUI(
                         )
                     ),
                     br(), br()
+                    ## , fluidRow(verbatimTextOutput('logtxt')) # Comment-out this line if not testing
                     , withspinner(reactableOutput("newTable"))
                     ## , withspinner(DTOutput("newTable"))
                 ),

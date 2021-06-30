@@ -1,5 +1,5 @@
 $(document).contextMenu({
-    selector: '#dtable span.rt-th-content',
+    selector: '#dtable .field',
     trigger: 'right',
     items: {
         // <input type="radio">
