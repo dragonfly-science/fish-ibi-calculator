@@ -34,16 +34,6 @@ table.dataTable tbody td {
   padding-left: 15px !important;
 }
 
-.dataTables_info,
-.dataTables_paginate {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -66,29 +56,10 @@ td[title="Value should be numeric"] {
   background-color: rgba(255, 0, 0, 0.05) !important;
 }
 
-/* .dataTables_scrollHeadInner{ */
-/* overflow:auto; */
-/* width:100%; */
-/* position:relative; */
-/* } */
-/* .dataTables_scrollHeadInner table { */
-/* overflow:auto; */
-/* width:100%; */
-/* position:relative; */
-/* } */
+/* React table */
 
-#dtable {
-  overflow: auto;
-  width: 100%;
-  position: relative;
-}
-
-#dtable td {
-  white-space: nowrap;
-}
-
-#dtable thead th,
-#dtable thead td {
+.ReactTable .rt-table .rt-thead .rt-th,
+.ReactTable .rt-table .rt-thead .rt-td {
   background-color: #d4dde1;
   border-bottom: unset !important;
   font-family: Lato;
@@ -100,14 +71,12 @@ td[title="Value should be numeric"] {
   padding-left: 15px !important;
 }
 
-#dtable tbody {
-  border: 1px solid #607781;
+.ReactTable .rt-tr .rt-align-left,
+.ReactTable .rt-tr .rt-align-right {
+  border-right: 1px solid rgba(96, 119, 129, 0.6);
 }
 
-#dtable.no-footer {
-  border: unset !important;
-}
-#dtable tbody td {
+.rt-table .rt-tbody .rt-td {
   font-family: Lato;
   font-style: normal;
   font-weight: normal;
@@ -115,91 +84,9 @@ td[title="Value should be numeric"] {
   line-height: 30px;
   color: #003147;
   padding-left: 15px !important;
+  border-right: 1px solid rgba(96, 119, 129, 0.6);
 }
 
-#dtable_info,
-#dtable_paginate {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-}
-
-/* #dtable rt-td { */
-/*     white-space: nowrap; */
-/* } */
-
-#dtable rt-thead rt-th,
-#dtable rt-thead rt-td {
-  background-color: #d4dde1;
-  border-bottom: unset !important;
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-#dtable rt-tbody {
-  border: 1px solid #607781;
-}
-
-#dtable.no-footer {
-  border: unset !important;
-}
-#dtable rt-tbody rt-td {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-#dtable_info,
-#dtable_paginate {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-}
-
-.ReactTable rt-table rt-thead rt-th,
-.ReactTable rt-table rt-thead rt-td {
-  background-color: #d4dde1;
-  border-bottom: unset !important;
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
-
-.ReactTable rt-table rt-tbody {
-  border: 1px solid #607781;
-}
-
-.ReactTable rt-table.no-footer {
-  border: unset !important;
-}
-rt-table rt-tbody rt-td {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #003147;
-  padding-left: 15px !important;
-}
 .ReactTable {
   font-family: Lato;
   font-style: normal;
@@ -221,14 +108,36 @@ rt-table rt-tbody rt-td {
   color: #003147;
 }
 
-.ReactTable .pagination-bottom {
-  background-color: #eceff0;
-}
-
-.ReactTable .rt-tr-group,
-.ReactTable .rt-tr {
+.ReactTable .rt-tr-group {
   background-color: #fff;
 }
+
+/* paginate */
+
+.rt-pagination {
+  margin-top: 30px;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.rt-pagination .rt-page-button {
+  height: 100%;
+}
+
+.rt-page-button:hover {
+  color: #fff;
+  font-weight: 800;
+  background-color: #1b556b;
+}
+
+.rt-page-button-current {
+  background-color: #d4dde1;
+}
+
+/* interactive cells */
 
 .cellwarning {
   background-color: #93edf9;
