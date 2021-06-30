@@ -78,13 +78,13 @@ td[title="Value should be numeric"] {
 /* } */
 
 #dtable {
-    overflow: auto;
-    width: 100%;
-    position: relative;
+  overflow: auto;
+  width: 100%;
+  position: relative;
 }
 
 #dtable td {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 #dtable thead th,
@@ -126,7 +126,6 @@ td[title="Value should be numeric"] {
   line-height: 30px;
   color: #003147;
 }
-
 
 /* #dtable rt-td { */
 /*     white-space: nowrap; */
@@ -172,7 +171,6 @@ td[title="Value should be numeric"] {
   color: #003147;
 }
 
-
 .ReactTable rt-table rt-thead rt-th,
 .ReactTable rt-table rt-thead rt-td {
   background-color: #d4dde1;
@@ -210,10 +208,11 @@ rt-table rt-tbody rt-td {
   line-height: 30px;
   color: #003147;
   padding-left: 15px !important;
+  background-color: #eceff0;
 }
 
-.ReactTable rt-table_info,
-.ReactTable rt-table_paginate {
+.ReactTable .rt-table_info,
+.ReactTable .rt-table_paginate {
   font-family: Lato;
   font-style: normal;
   font-weight: normal;
@@ -222,55 +221,44 @@ rt-table rt-tbody rt-td {
   color: #003147;
 }
 
-/* #dtable { */
-/* overflow:auto; */
-/* width:100%; */
-/* position:relative; */
-/* } */
+.ReactTable .pagination-bottom {
+  background-color: #eceff0;
+}
 
-/* .dataTables_scrollHeadInner{ */
-/*   width:100% !important; */
-/* } */
-/* .dataTables_scrollHeadInner table{ */
-/*   width:100% !important; */
-/* } */
-
-
-/* .tippy-content { */
-/*     font-size: 1.8em; */
-/* } */
+.ReactTable .rt-tr-group,
+.ReactTable .rt-tr {
+  background-color: #fff;
+}
 
 .cellwarning {
-    background-color: #93edf9;
-    color: '#003547';
-    font-weight: normal;
+  background-color: #93edf9;
+  color: "#003547";
+  font-weight: normal;
 }
 .cellerror {
-    background-color: #eebabd;
-    color: '#003547';
-    font-weight: normal;
+  background-color: #eebabd;
+  color: "#003547";
+  font-weight: normal;
 }
 
-
-CellWithComment{
-  position:relative;
+CellWithComment {
+  position: relative;
 }
 
-.CellComment{
-    display:none;
-    position:absolute;
-    z-index:100;
-    border:1px;
-    background-color:  #BF2F37;
-    border-style:solid;
-    border-width:1px;
-    border-color: #BF2F37;
-    padding:3px;
-    color: white;
-    top:20px;
-    left:20px;
+.CellComment {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  border: 1px;
+  background-color: #bf2f37;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bf2f37;
+  padding: 3px;
+  color: white;
+  top: 20px;
+  left: 20px;
 }
-.CellWithComment:hover span.CellComment{
-    display:block;
+.CellWithComment:hover span.CellComment {
+  display: block;
 }
-
