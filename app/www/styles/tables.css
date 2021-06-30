@@ -81,12 +81,18 @@ td[title="Value should be numeric"] {
 /* paginate */
 
 .rt-pagination {
+  height: 60px;
+  align-items: center;
   margin-top: 30px;
   font-family: Lato;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
   line-height: 24px;
+}
+
+.rt-pagination-nav {
+  height: 100%;
 }
 
 .rt-pagination .rt-page-button {
