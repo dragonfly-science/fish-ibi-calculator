@@ -804,13 +804,13 @@ shinyServer(function(input, output, session) {
                                          textsize = "17px", direction = "auto", sticky = F,
                                          maxWidth = 700, closeOnClick = T),
                                      ## radius = ~radius,
-                                     fillOpacity = 1,
+                                     fillOpacity = 0.7,
                                      radius = 4,
                                      opacity = 1,
                                      weight = 1
                                      ) %>%
                     addLegend(data = ibi, "bottomright",
-                              colors = paste0(npss$color, "; width: 10px; height: 10px; border-radius: 50%"),
+                              colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
                               labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
                               title = 'NPS category', opacity = 1) %>%
                     addFullscreenControl()
