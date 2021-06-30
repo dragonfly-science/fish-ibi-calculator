@@ -122,22 +122,28 @@ shinyServer(function(input, output, session) {
 
     ## * List of required fields
     output$mandfields <- renderUI({
+        fm <- rv$fieldsmatching
         prettyCheckboxGroup(inputId='mandfields',  label = 'Mandatory fields:', choices = cols_needed,
                             shape = 'round', icon = icon('check'), animation = 'pulse',
-                            selected = intersect(cols_needed, names(rv$intable)))
+                            selected = intersect(cols_needed, fm$match[fm$good==T]))
     })
     observe({
+        fm <- rv$fieldsmatching
         updatePrettyCheckboxGroup(session, inputId='mandfields', label = 'Mandatory fields:',
                                   choices = cols_needed,
-                                  selected = intersect(cols_needed, names(rv$intable)),
+                                  selected = intersect(cols_needed, fm$match[fm$good==T]),
                                   prettyOptions = list(shape = 'round', icon = icon('check'),
                                                        animation = 'pulse'))
         })
 
     ## * Assigment of field roles from context menu
+    
     observeEvent(input$selfield, {
         if (!is.null(input$selfield)) {
             pair <- strsplit(input$selfield, '=')[[1]]
+            if (pair[1] == 'None') {
+                pair[1] <- ''
+            }
             ## pair <- c('SiteID', 'card')
             ## pair <- c('Northing', 'Easting')
             sf <- isolate(rv[['selfields']])
@@ -174,7 +180,7 @@ shinyServer(function(input, output, session) {
         cols <- sapply(fm$ori, function(m) {
             colDef(header = function(value) {
                 sub <- div(style = "color: #2C9986; font-size: 1em", fm$match[fm$ori == m])
-                div(class='field', title = value, value, sub)
+                div(div(class='field', value), sub)
             })
         }, simplify = F)
         reactable(d, highlight=T, compact=T, wrap=F,
@@ -183,7 +189,8 @@ shinyServer(function(input, output, session) {
     })
 
     output$logtxt <- renderPrint({
-        req(rv)
+        cat('input$selfield=\n')
+        print(input$selfield)
         cat('\n\nrv$selfields=\n')
         print(rv$selfields)
         cat('\n\nnames(rv$intable)=\n')

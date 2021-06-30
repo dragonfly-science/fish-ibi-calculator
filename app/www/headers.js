@@ -66,7 +66,14 @@ $(document).contextMenu({
             type: 'radio',
             radio: 'radio',
             value: 'NZreach'
-        }
+        },
+	sep2: "---------",
+	None: {
+	    name: "[Remove]",
+	    type: 'radio',
+	    radio: 'radio',
+	    value: 'None'
+	}
     },
   events: {
     show: function(opt) {
