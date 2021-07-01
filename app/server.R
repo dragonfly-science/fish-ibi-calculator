@@ -784,7 +784,7 @@ shinyServer(function(input, output, session) {
     
     output$text <- renderUI({
       if(input$sel_score == 'nps_score'){
-        splitLayout(cellWidths = rep("20%", 5),
+        splitLayout(cellWidths = rep("25%", 4),
                     cellArgs = list(style='white-space: normal;'),
                     column(width= 12, 
                            h5(strong("A")),
@@ -805,14 +805,10 @@ shinyServer(function(input, output, session) {
                            h5(strong("D")),
                            h5("< 18"),
                            hr(),
-                           h6(includeMarkdown('text/nps-d.md'))),
-                    column(width= 12, 
-                           h5(strong("No fish")),
-                           h6(h5("-")),
-                           hr())
+                           h6(includeMarkdown('text/nps-d.md')))
         )
       } else if(input$sel_score == 'ibi_score'){
-        splitLayout(cellWidths = rep("25%", 4),
+        splitLayout(cellWidths = rep("33%", 3),
                     cellArgs = list(style='white-space: normal;'),
                     column(width= 12, 
                            h5(strong("High quality")),
@@ -831,12 +827,6 @@ shinyServer(function(input, output, session) {
                            h5("< 33"),
                            hr(),
                            # h6(includeMarkdown('text/nps-c.md'))
-                           ),
-                    column(width= 12, 
-                           h5(strong("No fish")),
-                           h5("-"),
-                           hr(),
-                           # h6(includeMarkdown('text/nps-d.md'))
                            )
         )
       }
