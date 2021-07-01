@@ -88,6 +88,7 @@ shinyServer(function(input, output, session) {
         rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
+        ## df <- read.csv('~/Downloads/transaction-report.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -146,6 +147,7 @@ shinyServer(function(input, output, session) {
             }
             ## pair <- c('SiteID', 'card')
             ## pair <- c('Northing', 'Easting')
+            ## pair <- c('SiteID', 'Instrument.code')
             sf <- isolate(rv[['selfields']])
             fm <- as.data.table(isolate(rv[['fieldsmatching']]))
             if (pair[1] %in% fm$match) {
@@ -241,7 +243,7 @@ shinyServer(function(input, output, session) {
         d <- rv$intable
         cols <- fm$ori[fm$good == T]
         goodcols <- intersect(c(cols_needed, cols_opt), fm$match[fm$good==T])
-        d <- rv$intable[, fm$ori[match(goodcols, fm$match)]]
+        d <- rv$intable[, fm$ori[match(goodcols, fm$match)], drop=F]
         names(d) <- goodcols
         
         ## ** Penetration
