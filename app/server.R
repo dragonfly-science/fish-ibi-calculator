@@ -45,6 +45,7 @@ rv <- NULL
 ##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
 ##     finalTable = NULL
 ## )
+input <- list(target_upload=list(datapath='~/Downloads/WhitesBayIBI.csv'))
 
 shinyServer(function(input, output, session) {
 
@@ -521,7 +522,7 @@ shinyServer(function(input, output, session) {
         site_metrics_all <- d %>%
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
-        qr.1.elev <- qr.construct("metric1", "Altitude", data = site_metrics_all)
+        qr.1.elev <- qr.construct(y="metric1", x="Altitude", data = site_metrics_all)
         qr.2.elev <- qr.construct("metric2", "Altitude", data = site_metrics_all)
         qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
         qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)

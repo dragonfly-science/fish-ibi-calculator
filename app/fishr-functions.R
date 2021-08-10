@@ -68,7 +68,14 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics){
 #'
 #'why is site_metrics_all being specified here, look at the intro vignette re this
 qr.construct <- function(y, x, data = site_metrics_all){
-  rq(paste(y, x, sep = " ~ "), tau = c(1/3, 2/3), data = data)
+    q <- NULL
+    tryCatch({
+        q <- rq(paste(y, x, sep = " ~ "), tau = c(1/3, 2/3), data = data, method = 'br')
+    }, error = function(e) warning('Quantile regression failed with `br` method. Will try with `sfn`'))
+    if (is.null(q)) {
+        q <- rq(paste(y, x, sep = " ~ "), tau = c(1/3, 2/3), data = data, method = 'sfn')
+    }
+    q
 }
 
 #' Score metrics according to quantile regression
