@@ -45,7 +45,6 @@ rv <- NULL
 ##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
 ##     finalTable = NULL
 ## )
-input <- list(target_upload=list(datapath='~/Downloads/WhitesBayIBI.csv'))
 
 shinyServer(function(input, output, session) {
 
