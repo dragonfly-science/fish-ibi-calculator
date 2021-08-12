@@ -8,7 +8,6 @@ library(ggplot2)
 library(shinyWidgets)
 library(leaflet)
 library(sf)
-## library(tmap)
 library(leaflet.extras)
 library(kableExtra)
 library(mapview)
@@ -17,6 +16,8 @@ library(tippy)
 
 load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
+load('data/nz-fitted-quantiles.rdata', v=T)
+
 source('fishr-functions.R')
 
 cols_needed <- c('SiteID', 'Date', 'Penetration', 
@@ -108,6 +109,7 @@ shinyServer(function(input, output, session) {
         rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
+        ##  df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -363,6 +365,7 @@ shinyServer(function(input, output, session) {
 
     observeEvent(input$remIssuesBtn, {
         d <- as.data.table(cleanTable())
+        ## d <- as.data.table(d)
         req(d)
         if (any(grepl('_issues$', names(d)))) {
             d[, with_issue := rowSums(.SD, na.rm=T) > 0,
@@ -393,7 +396,7 @@ shinyServer(function(input, output, session) {
         req(d)
         if (any(grepl('_issues$', names(d))) &&
             sum(sapply(d[, grep('_issues$|_warnings$', names(d), val=T)], function(x) any(x %in% 1))) > 0) {
-            d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) > 0,]
+            d <- d[rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T) > 0,]
         }
         print(d[1,])
 
@@ -459,8 +462,8 @@ shinyServer(function(input, output, session) {
     output$issuesTxt <- renderText({
         d <- rv$finalTable
         req(d)
-        n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T) == 0)
-        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
+        n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T) == 0)
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
         n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
 
         sprintf('%s<br>%i valid rows%s',
@@ -481,7 +484,7 @@ shinyServer(function(input, output, session) {
     output$issueImg <- renderImage({
         d <- rv$finalTable
         req(d)
-        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
         if (n.issues > 0) {
             list(src = 'data/warning.png',
                  width = '100px', height = '100px',
@@ -496,7 +499,7 @@ shinyServer(function(input, output, session) {
     output$issuesSubTxt <- renderText({
         d <- rv$finalTable
         req(d)
-        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T)], na.rm=T))
+        n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
         if (n.issues > 0) {
             return('Please correct the following issues and re-upload the file, or exclude the issues, which would remove the individual records for issues of non-fish codes, or whole visits for other issues.')
         } else {
@@ -524,18 +527,6 @@ shinyServer(function(input, output, session) {
         site_metrics_all <- d %>%
             prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
         
-        qr.1.elev <- qr.construct(y="metric1", x="Altitude", data = site_metrics_all)
-        qr.2.elev <- qr.construct("metric2", "Altitude", data = site_metrics_all)
-        qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
-        qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)
-        qr.5.elev <- qr.construct("metric5", "Altitude", data = site_metrics_all)
-        
-        qr.1.penet <- qr.construct("metric1", "Penet", data = site_metrics_all)
-        qr.2.penet <- qr.construct("metric2", "Penet", data = site_metrics_all)
-        qr.3.penet <- qr.construct("metric3", "Penet", data = site_metrics_all)
-        qr.4.penet <- qr.construct("metric4", "Penet", data = site_metrics_all)
-        qr.5.penet <- qr.construct("metric5", "Penet", data = site_metrics_all)
-        
         ibi_scores <- site_metrics_all %>% 
             add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
                              q4e=qr.4.elev, q5e=qr.5.elev,
@@ -562,17 +553,6 @@ shinyServer(function(input, output, session) {
 
         dt <- reactable(ibi_scores, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
         
-        ## dt <- DT::datatable(
-        ##     ibi_scores, rownames = F, selection = 'none', width = 600,
-        ##     class = 'nowrap hover compact stripe',
-        ##     options = list(autoWidth = TRUE, scrollCollapse=TRUE, scrollX = FALSE,
-        ##                  paging = nrow(ibi_scores)>15, pageLength = 15, lengthChange = F,
-        ##                  searching = FALSE, ordering = FALSE,
-        ##                  columnDefs = list(list(
-        ##                    className = 'dt-left', targets = 0:4
-        ##                  ))
-        ##                    )
-        ## )        
         dt
     })
 
