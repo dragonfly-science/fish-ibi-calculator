@@ -302,6 +302,9 @@ shinyServer(function(input, output, session) {
         }
         ## ** SpeciesCode
         if ('SpeciesCode' %in% names(d)) {
+
+            d$SpeciesCode <- tolower(d$SpeciesCode)
+
             ## *** Check for missing values
             c <- is.na(d$SpeciesCode)
             if (any(c)) {
@@ -309,13 +312,13 @@ shinyServer(function(input, output, session) {
                 d[c, 'SpeciesCode_txt']    <- 'Value is missing'
             }
             ## *** Check for existence
-            c <- !(tolower(d$SpeciesCode) %in% fish_names[['NZFFD code']])
+            c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
             if (any(c)) {
                 d[c, 'SpeciesCode_issues'] <- 1L
                 d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
             }
             ## *** Check existence in species_ibi_metrics
-            c <- !(tolower(d$SpeciesCode) %in% species_ibi_metrics$spcode)
+            c <- !(d$SpeciesCode %in% species_ibi_metrics$spcode)
             if (any(c)) {
                 d[c, 'SpeciesCode_warnings'] <- 1L
                 d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'
