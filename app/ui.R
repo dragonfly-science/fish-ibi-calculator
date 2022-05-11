@@ -183,7 +183,7 @@ shinyUI(
                                     id='rescol2', align = 'right',
                                     actionButton('remIssuesBtn', 'Exclude issues'),
                                     br(),br(),
-                                    downloadButton('downloadissues', 
+                                    downloadButton('downloadissues', class = "shinyjs-disabled",
                                            label=span(id="dl-button-label", "Download Issues",
                                                      img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL)
                                ),

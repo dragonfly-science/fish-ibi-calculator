@@ -90,6 +90,7 @@ shinyServer(function(input, output, session) {
         rv[['finalTable']] <- NULL
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         ## df <- read.csv('~/Downloads/transaction-report.csv', header = TRUE, stringsAsFactors = F)
+   
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -99,6 +100,10 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
+        disable('downloadissues')
+        shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
+        shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
+        shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
     }, label='File upload')
@@ -109,7 +114,13 @@ shinyServer(function(input, output, session) {
         rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
-        ##  df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
+        ## setDT(df)
+        ## df <- df[!is.na(Penetration)]
+        ## fwrite(df, 'test-data-no-errors.csv')
+        ## df <- df[!(SpeciesCode %in% c("parcur","galaxi","galdep","galgra","gobiom","galcob","salmo","galgol","galspd","galpul","galmar","galeld","galsps","galano","angrei","parane","hyrmen","nospec","anguil","cypcar"))]
+        ## fwrite(df, 'test-data-no-warnings.csv')
+        ## df <- read.csv('test-data-no-warnings.csv', header = TRUE, stringsAsFactors = F)
+        ## df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -119,6 +130,10 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
+        disable('downloadissues')
+        shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
+        shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
+        shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
     }, label = 'Demo loading')
@@ -223,6 +238,7 @@ shinyServer(function(input, output, session) {
       if(dataissues()) {
         disable('to4btn')
         enable('remIssuesBtn')
+        enable('downloadissues')
       } else {
         enable('to4btn')
         disable('remIssuesBtn')
@@ -345,7 +361,9 @@ shinyServer(function(input, output, session) {
             }
         }
 
-        d$.row <- seq_len(nrow(d))
+        d$OriginalRow <- seq_len(nrow(d))
+        setcolorder(d, 'OriginalRow')
+        
         d
         
     })
@@ -354,10 +372,9 @@ shinyServer(function(input, output, session) {
     dataissues <- reactive({
         d <- rv$finalTable
         req(d)
-        if ((any(grepl('_issues$', names(d))) &&
-            sum(sapply(d[, grep('_issues$', names(d), val=T), drop=F], function(x) any(x %in% 1)))) | 
-            (any(grepl('_warnings$', names(d))) &&
-             sum(sapply(d[, grep('_warnings$', names(d), val=T), drop=F], function(x) any(x %in% 1)))) > 0) {
+        withissue   <- apply(d[, grep('_issues$',   names(d), val=T), drop=F], 1, function(x) any(x %in% 1))
+        withwarning <- apply(d[, grep('_warnings$', names(d), val=T), drop=F], 1, function(x) any(x %in% 1))
+        if (any(withissue | withwarning)) {
             return(1)
         } else {
             return(0)
@@ -368,15 +385,15 @@ shinyServer(function(input, output, session) {
     filename = "IBI_data_issues.csv",
     content = function(fname) {
       d <- cleanTable()
-      withissues <- apply(d[, grep('_issues$', names(d), val = T), drop=F], 1, function(x) any(x %in% 1))
+      withissues <- apply(d[, grep('_issues$|_warnings$', names(d), val = T), drop=F], 1, function(x) any(x %in% 1))
       di <- d[withissues, ]
       di$issues <- apply(di[, grep('_txt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
       di$warnings <- apply(di[, grep('_wtxt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
       di <- di[, -grep('_issues$|_txt$|_warnings$|_wtxt$', names(d))]
-      setcolorder(di, c('.row'))
+      setcolorder(di, c('OriginalRow'))
       di$issues[di$issues == 'NA'] <- NA
       di$warnings[di$warnings == 'NA'] <- NA
-      setnames(di, c('.row', 'issues', 'warnings'), c('OriginalRow', 'Issues', 'Warnings'), skip_absent = T)
+      setnames(di, c('issues', 'warnings'), c('Issues', 'Warnings'), skip_absent = T)
       fwrite(di, fname, na = '')
     })
   
@@ -403,8 +420,6 @@ shinyServer(function(input, output, session) {
     observe({
         d <- cleanTable()
         req(d)
-        setcolorder(d, '.row')
-        setnames(d, '.row', 'OriginalRow')
         rv$finalTable <- d
     })
     
@@ -458,14 +473,14 @@ shinyServer(function(input, output, session) {
                         paste0(name,'_wtxt') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_warnings')]) &&
                         d[index, paste0(name,'_warnings')] > 0) {
-                        v <- sprintf('%s <span class="CellComment">%s</span>',
+                        v <- sprintf('%s <span class="CellCommentWarn">Warning: %s</span>',
                                      value, d[index, paste0(name,'_wtxt')])
                     }
                     if (paste0(name,'_issues') %in% names(d) &&
                         paste0(name,'_txt') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_issues')]) &&
                         d[index, paste0(name,'_issues')] > 0) {
-                        v <- sprintf('%s <span class="CellComment">%s</span>',
+                        v <- sprintf('%s <span class="CellCommentError">Error: %s</span>',
                                      value, d[index, paste0(name,'_txt')])
                     }
                     v
