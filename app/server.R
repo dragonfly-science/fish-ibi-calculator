@@ -345,6 +345,7 @@ shinyServer(function(input, output, session) {
             }
         }
 
+        d$.row <- seq_len(nrow(d))
         d
         
     })
@@ -354,15 +355,31 @@ shinyServer(function(input, output, session) {
         d <- rv$finalTable
         req(d)
         if ((any(grepl('_issues$', names(d))) &&
-            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) | 
+            sum(sapply(d[, grep('_issues$', names(d), val=T), drop=F], function(x) any(x %in% 1)))) | 
             (any(grepl('_warnings$', names(d))) &&
-             sum(sapply(d[, grep('_warnings$', names(d), val=T)], function(x) any(x %in% 1)))) > 0) {
+             sum(sapply(d[, grep('_warnings$', names(d), val=T), drop=F], function(x) any(x %in% 1)))) > 0) {
             return(1)
         } else {
             return(0)
         }
     }, label = 'Data with issues?')
 
+  output$downloadissues <- downloadHandler(
+    filename = "IBI_data_issues.csv",
+    content = function(fname) {
+      d <- cleanTable()
+      withissues <- apply(d[, grep('_issues$', names(d), val = T), drop=F], 1, function(x) any(x %in% 1))
+      di <- d[withissues, ]
+      di$issues <- apply(di[, grep('_txt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
+      di$warnings <- apply(di[, grep('_wtxt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
+      di <- di[, -grep('_issues$|_txt$|_warnings$|_wtxt$', names(d))]
+      setcolorder(di, c('.row'))
+      di$issues[di$issues == 'NA'] <- NA
+      di$warnings[di$warnings == 'NA'] <- NA
+      setnames(di, c('.row', 'issues', 'warnings'), c('OriginalRow', 'Issues', 'Warnings'), skip_absent = T)
+      fwrite(di, fname, na = '')
+    })
+  
     observeEvent(input$remIssuesBtn, {
         d <- as.data.table(cleanTable())
         ## d <- as.data.table(d)
