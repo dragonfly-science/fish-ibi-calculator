@@ -403,6 +403,8 @@ shinyServer(function(input, output, session) {
     observe({
         d <- cleanTable()
         req(d)
+        setcolorder(d, '.row')
+        setnames(d, '.row', 'OriginalRow')
         rv$finalTable <- d
     })
     
