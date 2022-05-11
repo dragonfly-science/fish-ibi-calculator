@@ -254,25 +254,25 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Penetration)
             if (any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Value is missing'
+                d[c, 'Penetration_txt']    <- 'Penetration is missing'
             }
             ## *** Check for non-numeric values
             suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Value should be numeric'
+                d[c, 'Penetration_txt']    <- 'Penetration should be numeric'
             }
             ## *** Check for negative values
             suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Value should be positive'
+                d[c, 'Penetration_txt']    <- 'Penetration should be positive'
             }
             ## *** Check for excessive values
             suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Value too high'
+                d[c, 'Penetration_txt']    <- 'Penetration too high'
             }
         }
         ## ** Altitude
@@ -281,25 +281,25 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Altitude)
             if (any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value is missing'
+                d[c, 'Altitude_txt']    <- 'Altitude is missing'
             }
             ## *** Check for non-numeric values
             suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value should be numeric'
+                d[c, 'Altitude_txt']    <- 'Altitude should be numeric'
             }
             ## *** Check for negative values
             suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value should be positive'
+                d[c, 'Altitude_txt']    <- 'Altitude should be positive'
             }
             ## *** Check for excessive values
             suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Value too high'
+                d[c, 'Altitude_txt']    <- 'Altitude too high'
             }
         }
         ## ** SpeciesCode
@@ -311,7 +311,7 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$SpeciesCode)
             if (any(c)) {
                 d[c, 'SpeciesCode_issues'] <- 1L
-                d[c, 'SpeciesCode_txt']    <- 'Value is missing'
+                d[c, 'SpeciesCode_txt']    <- 'Species is missing'
             }
             ## *** Check for existence
             c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
@@ -332,7 +332,7 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$SiteID)
             if (any(c)) {
                 d[c, 'SiteID_issues'] <- 1L
-                d[c, 'SiteID_txt']    <- 'Value is missing'
+                d[c, 'SiteID_txt']    <- 'Site ID is missing'
             }
         }
         ## ** Date
@@ -341,7 +341,7 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Date)
             if (any(c)) {
                 d[c, 'Date_issues'] <- 1L
-                d[c, 'Date_txt']    <- 'Value is missing'
+                d[c, 'Date_txt']    <- 'Date is missing'
             }
         }
 
