@@ -36,6 +36,7 @@ shinyUI(
             windowTitle = 'IBI calculator',
             title = NULL
         ),
+        tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
         tags$header(id="header",
             fluidRow(id="header-div",
                 column(4, class='header-col header-img-container',
