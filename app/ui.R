@@ -36,7 +36,6 @@ shinyUI(
             windowTitle = 'IBI calculator',
             title = NULL
         ),
-        tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
         tags$header(id="header",
             fluidRow(id="header-div",
                 column(4, class='header-col header-img-container',
@@ -181,11 +180,7 @@ shinyUI(
                                 column(
                                     6,
                                     id='rescol2', align = 'right',
-                                    actionButton('remIssuesBtn', 'Exclude issues'),
-                                    br(),br(),
-                                    downloadButton('downloadissues', class = "shinyjs-disabled",
-                                           label=span(id="dl-button-label", "Download Issues",
-                                                     img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL)
+                               actionButton('remIssuesBtn', 'Exclude issues')
                                ),
                                # br(),br(),
                                column(

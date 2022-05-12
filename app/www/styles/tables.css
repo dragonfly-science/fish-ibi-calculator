@@ -126,22 +126,7 @@ CellWithComment {
   position: relative;
 }
 
-.CellCommentWarn {
-  display: none;
-  position: absolute;
-  z-index: 100;
-  border: 1px;
-  background-color: #084553;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #084553;
-  padding: 3px;
-  color: white;
-  top: 20px;
-  left: 20px;
-  /* opacity: 1; */
-}
-.CellCommentError {
+.CellComment {
   display: none;
   position: absolute;
   z-index: 100;
@@ -156,19 +141,7 @@ CellWithComment {
   left: 20px;
   /* opacity: 1; */
 }
-
-
-.CellWithComment:hover span.CellCommentWarn {
-    display: block;
-    /* opacity: 1; */
-}
-
 .CellWithComment:hover span.CellComment {
-    display: block;
-    /* opacity: 1; */
-}
-
-.CellWithComment:hover span.CellCommentError {
     display: block;
     /* opacity: 1; */
 }

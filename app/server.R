@@ -90,7 +90,6 @@ shinyServer(function(input, output, session) {
         rv[['finalTable']] <- NULL
         df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
         ## df <- read.csv('~/Downloads/transaction-report.csv', header = TRUE, stringsAsFactors = F)
-   
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -100,10 +99,6 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
-        disable('downloadissues')
-        shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
-        shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
-        shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
     }, label='File upload')
@@ -114,13 +109,7 @@ shinyServer(function(input, output, session) {
         rv[['ignoredrows']] <- 0L
         rv[['finalTable']] <- NULL
         df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
-        ## setDT(df)
-        ## df <- df[!is.na(Penetration)]
-        ## fwrite(df, 'test-data-no-errors.csv')
-        ## df <- df[!(SpeciesCode %in% c("parcur","galaxi","galdep","galgra","gobiom","galcob","salmo","galgol","galspd","galpul","galmar","galeld","galsps","galano","angrei","parane","hyrmen","nospec","anguil","cypcar"))]
-        ## fwrite(df, 'test-data-no-warnings.csv')
-        ## df <- read.csv('test-data-no-warnings.csv', header = TRUE, stringsAsFactors = F)
-        ## df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
+        ##  df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
         fields <- isolate(rv[['selfields']])
         fields$good <- ifelse(fields$req %in% names(df), 1, 0)
         rv[['selfields']] <- fields
@@ -130,10 +119,6 @@ shinyServer(function(input, output, session) {
         rv[['intable']] <- df
         rv[['tablefields']] <- names(df)
         rv[['tablefields_ori']] <- names(df)
-        disable('downloadissues')
-        shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
-        shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
-        shinyjs::disable(selector = '#myFirst li a[data-value="4. Calculate IBI score"]')
         updateTabsetPanel(session, "myFirst",
                           selected = "2. Match headers")
     }, label = 'Demo loading')
@@ -238,7 +223,6 @@ shinyServer(function(input, output, session) {
       if(dataissues()) {
         disable('to4btn')
         enable('remIssuesBtn')
-        enable('downloadissues')
       } else {
         enable('to4btn')
         disable('remIssuesBtn')
@@ -270,25 +254,25 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Penetration)
             if (any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration is missing'
+                d[c, 'Penetration_txt']    <- 'Value is missing'
             }
             ## *** Check for non-numeric values
             suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration should be numeric'
+                d[c, 'Penetration_txt']    <- 'Value should be numeric'
             }
             ## *** Check for negative values
             suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration should be positive'
+                d[c, 'Penetration_txt']    <- 'Value should be positive'
             }
             ## *** Check for excessive values
             suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration too high'
+                d[c, 'Penetration_txt']    <- 'Value too high'
             }
         }
         ## ** Altitude
@@ -297,25 +281,25 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Altitude)
             if (any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude is missing'
+                d[c, 'Altitude_txt']    <- 'Value is missing'
             }
             ## *** Check for non-numeric values
             suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude should be numeric'
+                d[c, 'Altitude_txt']    <- 'Value should be numeric'
             }
             ## *** Check for negative values
             suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude should be positive'
+                d[c, 'Altitude_txt']    <- 'Value should be positive'
             }
             ## *** Check for excessive values
             suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
             if (!all(is.na(c)) && any(c)) {
                 d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude too high'
+                d[c, 'Altitude_txt']    <- 'Value too high'
             }
         }
         ## ** SpeciesCode
@@ -327,7 +311,7 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$SpeciesCode)
             if (any(c)) {
                 d[c, 'SpeciesCode_issues'] <- 1L
-                d[c, 'SpeciesCode_txt']    <- 'Species is missing'
+                d[c, 'SpeciesCode_txt']    <- 'Value is missing'
             }
             ## *** Check for existence
             c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
@@ -348,7 +332,7 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$SiteID)
             if (any(c)) {
                 d[c, 'SiteID_issues'] <- 1L
-                d[c, 'SiteID_txt']    <- 'Site ID is missing'
+                d[c, 'SiteID_txt']    <- 'Value is missing'
             }
         }
         ## ** Date
@@ -357,13 +341,10 @@ shinyServer(function(input, output, session) {
             c <- is.na(d$Date)
             if (any(c)) {
                 d[c, 'Date_issues'] <- 1L
-                d[c, 'Date_txt']    <- 'Date is missing'
+                d[c, 'Date_txt']    <- 'Value is missing'
             }
         }
 
-        d$OriginalRow <- seq_len(nrow(d))
-        setcolorder(d, 'OriginalRow')
-        
         d
         
     })
@@ -372,31 +353,16 @@ shinyServer(function(input, output, session) {
     dataissues <- reactive({
         d <- rv$finalTable
         req(d)
-        withissue   <- apply(d[, grep('_issues$',   names(d), val=T), drop=F], 1, function(x) any(x %in% 1))
-        withwarning <- apply(d[, grep('_warnings$', names(d), val=T), drop=F], 1, function(x) any(x %in% 1))
-        if (any(withissue | withwarning)) {
+        if ((any(grepl('_issues$', names(d))) &&
+            sum(sapply(d[, grep('_issues$', names(d), val=T)], function(x) any(x %in% 1)))) | 
+            (any(grepl('_warnings$', names(d))) &&
+             sum(sapply(d[, grep('_warnings$', names(d), val=T)], function(x) any(x %in% 1)))) > 0) {
             return(1)
         } else {
             return(0)
         }
     }, label = 'Data with issues?')
 
-  output$downloadissues <- downloadHandler(
-    filename = "IBI_data_issues.csv",
-    content = function(fname) {
-      d <- cleanTable()
-      withissues <- apply(d[, grep('_issues$|_warnings$', names(d), val = T), drop=F], 1, function(x) any(x %in% 1))
-      di <- d[withissues, ]
-      di$issues <- apply(di[, grep('_txt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
-      di$warnings <- apply(di[, grep('_wtxt$', names(di), val = T), drop=F], 1, paste, collapse = '; ')
-      di <- di[, -grep('_issues$|_txt$|_warnings$|_wtxt$', names(d))]
-      setcolorder(di, c('OriginalRow'))
-      di$issues[di$issues == 'NA'] <- NA
-      di$warnings[di$warnings == 'NA'] <- NA
-      setnames(di, c('issues', 'warnings'), c('Issues', 'Warnings'), skip_absent = T)
-      fwrite(di, fname, na = '')
-    })
-  
     observeEvent(input$remIssuesBtn, {
         d <- as.data.table(cleanTable())
         ## d <- as.data.table(d)
@@ -473,14 +439,14 @@ shinyServer(function(input, output, session) {
                         paste0(name,'_wtxt') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_warnings')]) &&
                         d[index, paste0(name,'_warnings')] > 0) {
-                        v <- sprintf('%s <span class="CellCommentWarn">Warning: %s</span>',
+                        v <- sprintf('%s <span class="CellComment">%s</span>',
                                      value, d[index, paste0(name,'_wtxt')])
                     }
                     if (paste0(name,'_issues') %in% names(d) &&
                         paste0(name,'_txt') %in% names(d) &&
                         !is.na(d[index, paste0(name,'_issues')]) &&
                         d[index, paste0(name,'_issues')] > 0) {
-                        v <- sprintf('%s <span class="CellCommentError">Error: %s</span>',
+                        v <- sprintf('%s <span class="CellComment">%s</span>',
                                      value, d[index, paste0(name,'_txt')])
                     }
                     v
