@@ -7,6 +7,7 @@ library(shinycssloaders)
 library(data.table)
 library(leaflet)
 library(reactable)
+library(sass)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
@@ -26,6 +27,17 @@ mydownloadbutton <- function(outputId, label = "Download", class = NULL, ...,
 }
 
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
+
+## Compile the scss into css
+sass::sass(
+  sass_file('www/styles/main.scss'),
+  output = 'www/styles/main.css',
+  options = sass_options(
+    output_path = 'www/styles/main.css',
+    output_style = "compressed",
+    source_map_embed = TRUE
+  )
+)
 
 shinyUI(
     fluidPage(
@@ -57,9 +69,10 @@ shinyUI(
         mainPanel(
             width = 12, id = 'mainpanel',
             tags$head(
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/custom.css"),
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/buttons.css"),
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/tables.css")
+            
+                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/main.css")
+                     # tags$link(rel = "stylesheet", type = "text/css", href = "styles/buttons.css"),
+                     # tags$link(rel = "stylesheet", type = "text/css", href = "styles/tables.css")
                  ),
             tags$script(src = 'headers.js'),
             ## Input widgets
@@ -69,9 +82,9 @@ shinyUI(
                 ## * 1. Upload your file
                 tabPanel(
                     "1. Upload your file",
-                    tags$head(
-                        tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
-                    ),
+                    # tags$head(
+                    #     tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
+                    # ),
                     fluidRow(
                         br(),br(),
                         column(
@@ -210,9 +223,9 @@ shinyUI(
                 ## * 4. Calculate IBI score
                 tabPanel(
                     "4. Calculate IBI score",
-                    tags$head(
-                        tags$link(rel="stylesheet", type="text/css", href="styles/tabPanel4.css")
-                    ),
+                    # tags$head(
+                    #     tags$link(rel="stylesheet", type="text/css", href="styles/tabPanel4.css")
+                    # ),
                     br(),br(),
                     fluidRow(
                         column(

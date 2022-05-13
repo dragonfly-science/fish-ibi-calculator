@@ -26,3 +26,12 @@ div.item {
   border: 1px solid #cccccc;
   box-sizing: content-box;
 }
+
+.maptip {
+  font-family: Lato;
+  &--header {
+    padding: 1rem;
+    border-bottom: 1px solid #cccccc;
+    font-weight: bold;
+  }
+}

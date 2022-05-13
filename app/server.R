@@ -692,14 +692,30 @@ shinyServer(function(input, output, session) {
                                                                  'High quality',
                                                                  'Unknown'))]
             ibi[, labels := paste0(
-              sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
-              kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
-                                                    `IBI category`      = IBIscoreCut,
-                                                    `NPS category`      = NPSscore,
-                                                    `Total sp richness` = total_sp_richness,
-                                                    `Non-native spp`   = number_non_native),
-                                         format='html', escape = F)))
-              , by = 1:nrow(ibi)]
+              sprintf(
+                '<div class="maptip">
+                  <div class="maptip--header">
+                    <strong>Site ID: %s</strong><br/>
+                  </div>
+                  <strong>Date: %s</strong><br/>
+                  <strong>IBI score: %s</strong><br/>
+                  <strong>IBI category: %s</strong><br/>
+                  <strong>NPS category: %s</strong><br/>
+                  <strong>Total sp richness: %s</strong><br/>
+                  <strong>Non-native ssp: %s</strong><br/>
+                </div>', 
+                SiteID, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
+              )
+                      
+                      
+              # kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
+              #                                       `IBI category`      = IBIscoreCut,
+              #                                       `NPS category`      = NPSscore,
+              #                                       `Total sp richness` = total_sp_richness,
+              #                                       `Non-native spp`   = number_non_native),
+              #                            format='html', escape = F))
+            )
+            , by = 1:nrow(ibi)]
             
             if (input$sel_score == 'nps_score') {
                 
