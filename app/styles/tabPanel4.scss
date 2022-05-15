@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
+
+.select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.select-label {
+  margin-right: 40px;
+}
+
+.select-menu {
+  margin-right: 30px;
+}
+
+div.item {
+  font-size: 12pt;
+}
+
+.shiny-spinner-output-container {
+  background-color: #fff;
+}
+
+.key-line {
+  border: 1px solid #cccccc;
+  box-sizing: content-box;
+}
+
+.leaflet-popup-content {
+  margin: 0rem;
+}
+
+.maptip {
+  font-family: Lato;
+  font-size: 12px;
+  min-width: 300px;
+  &--header {
+    padding: 1rem;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__siteID {
+      font-size: 16px;
+      font-weight: 700;
+      color: $mfe-blue;
+    }
+    &__swatch {
+      width: 25px;
+      height: 25px;
+      border-radius: 2000px;
+      opacity: 0.8;
+    }
+  }
+  &--main {
+    padding: 1rem;
+  }
+  &--row {
+    display: flex;
+    width: 100%;
+    &__left {
+      width: 50%;
+    }
+    &__right {
+      width: 50%;
+      font-weight: 700;
+      color: $mfe-blue;
+    }
+  }
+}

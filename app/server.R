@@ -691,29 +691,42 @@ shinyServer(function(input, output, session) {
                                                                  'Medium quality',
                                                                  'High quality',
                                                                  'Unknown'))]
+            ibi[, Colour := factor(NPSscore, levels= c('blue', 'green', 'red', 'orange', 'grey'))]
+            
+            ## Raw HTML for the map tooltip/label
             ibi[, labels := paste0(
               sprintf(
                 '<div class="maptip">
                   <div class="maptip--header">
-                    <strong>Site ID: %s</strong><br/>
+                    <div>
+                      Site ID:<br/>
+                      <span class="maptip--header__siteID">%s</span>
+                    </div>
+                    <div class="maptip--header__swatch" style="background-color: %s; border: 2px solid blue"></div>
                   </div>
-                  <strong>Date: %s</strong><br/>
-                  <strong>IBI score: %s</strong><br/>
-                  <strong>IBI category: %s</strong><br/>
-                  <strong>NPS category: %s</strong><br/>
-                  <strong>Total sp richness: %s</strong><br/>
-                  <strong>Non-native ssp: %s</strong><br/>
+                  <div class="maptip--main">
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">NPS category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                  </div>
                 </div>', 
-                SiteID, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
+                SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
               )
-                      
-                      
-              # kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
-              #                                       `IBI category`      = IBIscoreCut,
-              #                                       `NPS category`      = NPSscore,
-              #                                       `Total sp richness` = total_sp_richness,
-              #                                       `Non-native spp`   = number_non_native),
-              #                            format='html', escape = F))
             )
             , by = 1:nrow(ibi)]
             
