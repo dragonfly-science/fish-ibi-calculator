@@ -884,11 +884,8 @@ shinyServer(function(input, output, session) {
                 rv$map
             }
    
->>>>>>> 37b44faeaa630e74c36efd8997f1a388df243267
         }
         
-      }
-
     })
 
     mapdown <- reactive({
