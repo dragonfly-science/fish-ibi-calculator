@@ -695,7 +695,8 @@ shinyServer(function(input, output, session) {
               factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
               ibi[, Colour := factcols(NPSscore)]
             } else {
-              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(IBIscoreCut)]
             }
             
             ## Raw HTML for the map tooltip/label
@@ -752,7 +753,7 @@ shinyServer(function(input, output, session) {
                                      fillColor = fc, color = c,
                                      popup = ~labels %>% lapply(htmltools::HTML),
                                      popupOptions = labelOptions(
-                                         textsize = "17px", direction = "auto", sticky = F,
+                                         direction = "auto", sticky = F,
                                          maxWidth = 700, closeOnClick = T, closeButton = F),
                                      ## radius = ~radius,
                                      fillOpacity = 0.7,
@@ -785,10 +786,8 @@ shinyServer(function(input, output, session) {
                                      fillColor = fc, color = c,
                                      popup = ~labels %>% lapply(htmltools::HTML),
                                      popupOptions = labelOptions(
-                                         style = list("font-weight" = "normal",
-                                                      padding = "3px 8px", "color" = 'grey80'),
-                                         textsize = "17px", direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T),
+                                         direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T, closeButton = FALSE),
                                      ## radius = ~radius,
                                      fillOpacity = 1,
                                      radius = 4,
