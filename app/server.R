@@ -380,9 +380,9 @@ shinyServer(function(input, output, session) {
     ## ft <- as.data.table(copy(rv$finalTable))
     req(d)
     e_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_txt$'), value.name = 'issue')[
-      , type := 'error']
+    , type := 'error']
     w_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_wtxt$'), value.name = 'issue')[
-      , type := 'warning']
+    , type := 'warning']
     long0 <- rbind(e_long, w_long)
     long0
   })
@@ -457,12 +457,12 @@ shinyServer(function(input, output, session) {
     print(input$issue_type)
     req(input$issue_type)
     if (dataissues() %in% 1) {
-    if (input$issue_type != 'All issues') {
-      iids <- ft[long[issue %in% input$issue_type], on = 'OriginalRow'][, sort(unique(OriginalRow))]
-    } else {
-      iids <- ft[long[!is.na(issue)], on = 'OriginalRow'][, sort(unique(OriginalRow))]
-    }
-    dsel <- ft[match(iids, OriginalRow)]
+      if (input$issue_type != 'All issues') {
+        iids <- ft[long[issue %in% input$issue_type], on = 'OriginalRow'][, sort(unique(OriginalRow))]
+      } else {
+        iids <- ft[long[!is.na(issue)], on = 'OriginalRow'][, sort(unique(OriginalRow))]
+      }
+      dsel <- ft[match(iids, OriginalRow)]
     } else {
       dsel <- copy(rv$finalTable)
     }
@@ -562,65 +562,65 @@ shinyServer(function(input, output, session) {
   
 
   ## ** Feedback on issues
+  
+  output$issuesTxt <- renderText({
+    d <- rv$finalTable
+    req(d)
+    setDF(d)
+    n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T) == 0)
+    n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
+    n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
+
+    sprintf('%s<br>%i valid rows%s',
+            ifelse(n.issues == 0, 'No issues found',
+                   sprintf('%i data issues were found', n.issues)),
+            n.rows.noissues,
+            ifelse(n.ignoredrows == 0, '',
+                   sprintf('<br>(%s rows were excluded)', n.ignoredrows)))
+  })
+
+  
+  output$issuesIcon <- renderText({
+    if (dataissues()) {
+      as.character(icon('exclamation-triangle', class='dangerico'))
+    } else {
+      as.character(icon('check-square', class='nodangerico'))
+    }
+  })
+
+  
+  output$issueImg <- renderImage({
+    d <- rv$finalTable
+    req(d)
+    n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
+    if (n.issues > 0) {
+      list(src = 'data/warning.png',
+           width = '100px', height = '100px',
+           alt = 'Warning')
+    } else {
+      list(src = 'data/check.png',
+           width = '100px', height = '100px',
+           alt = 'All good')
+    }
+  }, deleteFile=F)
+
+  
+  output$issuesSubTxt <- renderText({
+    d <- rv$finalTable
+    req(d)
+    n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
+    if (n.issues > 0) {
+      return('Please correct the following issues and re-upload the file, or exclude the issues, which would remove the individual records for issues of non-fish codes, or whole visits for other issues.')
+    } else {
+      return('The table below will be used as it is to calculate the IBI scores')
+    }
+  })
+
+  observeEvent(input$testbtn, {
+    print(cleanTable())
+    print(rv$finalTable)
     
-    output$issuesTxt <- renderText({
-      d <- rv$finalTable
-      req(d)
-      setDF(d)
-      n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T) == 0)
-      n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
-      n.ignoredrows <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
-
-      sprintf('%s<br>%i valid rows%s',
-              ifelse(n.issues == 0, 'No issues found',
-                     sprintf('%i data issues were found', n.issues)),
-              n.rows.noissues,
-              ifelse(n.ignoredrows == 0, '',
-                     sprintf('<br>(%s rows were excluded)', n.ignoredrows)))
-    })
-
-  
-    output$issuesIcon <- renderText({
-      if (dataissues()) {
-        as.character(icon('exclamation-triangle', class='dangerico'))
-      } else {
-        as.character(icon('check-square', class='nodangerico'))
-      }
-    })
-
-  
-    output$issueImg <- renderImage({
-      d <- rv$finalTable
-      req(d)
-      n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
-      if (n.issues > 0) {
-        list(src = 'data/warning.png',
-             width = '100px', height = '100px',
-             alt = 'Warning')
-      } else {
-        list(src = 'data/check.png',
-             width = '100px', height = '100px',
-             alt = 'All good')
-      }
-    }, deleteFile=F)
-
-  
-    output$issuesSubTxt <- renderText({
-      d <- rv$finalTable
-      req(d)
-      n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
-      if (n.issues > 0) {
-        return('Please correct the following issues and re-upload the file, or exclude the issues, which would remove the individual records for issues of non-fish codes, or whole visits for other issues.')
-      } else {
-        return('The table below will be used as it is to calculate the IBI scores')
-      }
-    })
-
-    observeEvent(input$testbtn, {
-      print(cleanTable())
-      print(rv$finalTable)
-      
-    })
+  })
 
   observeEvent(input$to4btn, {
     updateTabsetPanel(session, "myFirst",
@@ -628,161 +628,161 @@ shinyServer(function(input, output, session) {
   }, label = 'Go to page 4')
   
 
-    ## * IBI scores =========================================================================
+  ## * IBI scores =========================================================================
+  
+  ibiData <- reactive({
+
+    d <- rv$finalTable
+    req(d)
+
+    d$Altitude <- as.numeric(d$Altitude)
+    d$Penetration <- as.numeric(d$Penetration)
     
-    ibiData <- reactive({
-
-      d <- rv$finalTable
-      req(d)
-
-      d$Altitude <- as.numeric(d$Altitude)
-      d$Penetration <- as.numeric(d$Penetration)
-      
-      site_metrics_all <- d %>%
-        prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
-      
-      ibi_scores <- site_metrics_all %>% 
-        add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
-                         q4e=qr.4.elev, q5e=qr.5.elev,
-                         q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
-                         q4p=qr.4.penet, q5p=qr.5.penet
-                         ) %>% 
-        add.fish.metric6() %>% 
-        add.fish.ibi() %>% 
-        cut.fish.ibi() %>% 
-        nps()
-
-      ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
-      
-      return(as.data.frame(ibi_scores))
-    })
-
+    site_metrics_all <- d %>%
+      prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
     
-    ## * Table of IBI scores
-    output$ibiTable <- renderReactable({
-      ibi_scores <- ibiData()
-      req(ibi_scores)
-      ibi_scores <- ibi_scores %>% select('SiteID', "Date", "IBIscore",
-                                          "IBIscoreCut", "NPSscore")
+    ibi_scores <- site_metrics_all %>% 
+      add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
+                       q4e=qr.4.elev, q5e=qr.5.elev,
+                       q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
+                       q4p=qr.4.penet, q5p=qr.5.penet
+                       ) %>% 
+      add.fish.metric6() %>% 
+      add.fish.ibi() %>% 
+      cut.fish.ibi() %>% 
+      nps()
 
-      dt <- reactable(ibi_scores, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
-      
-      dt
-    })
-
-
-
-    ## * Scores plot
+    ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
     
-    output$scoresPlot <- renderPlot({
-      ibi_scores <- ibiData()
-      req(ibi_scores)
+    return(as.data.frame(ibi_scores))
+  })
 
-      ibi_scores$NPSscore[is.na(ibi_scores$NPSscore)] <- 'Unknown'
-      ibi_scores$NPSscore <- factor(as.character(ibi_scores$NPSscore),
-                                    levels = c('A', 'B', 'C', 'D', 'Unknown'))
+  
+  ## * Table of IBI scores
+  output$ibiTable <- renderReactable({
+    ibi_scores <- ibiData()
+    req(ibi_scores)
+    ibi_scores <- ibi_scores %>% select('SiteID', "Date", "IBIscore",
+                                        "IBIscoreCut", "NPSscore")
 
-      ibi_scores$IBIscoreCut <- as.character(ibi_scores$IBIscoreCut)
-      ibi_scores$IBIscoreCut[is.na(ibi_scores$IBIscoreCut)] <- 'Unknown'
-      ibi_scores$IBIscoreCut <- factor(ibi_scores$IBIscoreCut,
-                                       levels = c('Low quality', 'Medium quality', 'High quality', 'Unknown'))
+    dt <- reactable(ibi_scores, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
+    
+    dt
+  })
+
+
+
+  ## * Scores plot
+  
+  output$scoresPlot <- renderPlot({
+    ibi_scores <- ibiData()
+    req(ibi_scores)
+
+    ibi_scores$NPSscore[is.na(ibi_scores$NPSscore)] <- 'Unknown'
+    ibi_scores$NPSscore <- factor(as.character(ibi_scores$NPSscore),
+                                  levels = c('A', 'B', 'C', 'D', 'Unknown'))
+
+    ibi_scores$IBIscoreCut <- as.character(ibi_scores$IBIscoreCut)
+    ibi_scores$IBIscoreCut[is.na(ibi_scores$IBIscoreCut)] <- 'Unknown'
+    ibi_scores$IBIscoreCut <- factor(ibi_scores$IBIscoreCut,
+                                     levels = c('Low quality', 'Medium quality', 'High quality', 'Unknown'))
+    
+    if (input$sel_score == 'nps_score') {
+      group.colors <- c('A'       = "#00C7A8",
+                        'B'       = "#2C9986", 
+                        'C'       = "#004A6D", 
+                        'D'       = "#BF2F37",
+                        'Unknown' = '#d4dde1')
+      group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
+      g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
+        xlab("NPS-FM category")
+    } else if (input$sel_score == 'ibi_score') {
+      group.colors <- c('Low quality'    = "#BF2F37",
+                        'Medium quality' = "#004A6D", 
+                        'High quality'   = "#00C7A8",
+                        'Unknown'        = '#d4dde1')
+      group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
+      g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
+        xlab("IBI category")
+    }
+    g <- g + 
+      geom_histogram(stat = "count", alpha = 0.9) + 
+      ylab("Number of sites") + 
+      scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+      scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
+      theme_bw() +
+      theme(panel.grid.major.x = element_blank(),
+            panel.grid.minor.x = element_blank(),
+            panel.grid.major.y = element_line(size=.1, color="black"),
+            panel.grid.major   = element_blank(),
+            panel.grid.minor   = element_blank(),
+            panel.border       = element_blank(),
+            axis.line          = element_line(),
+            axis.line.y        = element_blank(),
+            axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
+            axis.ticks         = element_blank(),
+            legend.position    = 'none') +
+      theme(plot.margin = unit(c(2, 0.5, 0.5, 0.5),"cm"))+
+      theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
+      theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
+
+    rv$scoredistplot <- g
+    g
+  })
+
+  output$plotdl <- downloadHandler(
+    filename = function() fifelse(input$sel_score == 'nps_score',
+                                  'NPS_scores_distribution.png',
+                                  'IBI_scores_distribution.png'),
+    content = function(file) {
+      req(rv$scoredistplot)
+      ggsave(file, plot = rv$scoredistplot, device = "png", width = 7.5, height = 5)
+    }
+  )
+
+  
+  ## * MAP
+  
+  output$map <- renderLeaflet({
+
+    ibi_scores <- copy(ibiData())
+    ibi <- as.data.table(ibi_scores)
+    req(ibi)
+    dt <- as.data.table(rv$finalTable)
+
+    ## print(ibi[1])
+    ## print(dt[1])
+    if (all(c('Easting', 'Northing') %in% names(dt))) {
       
+      coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
+      ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
+      ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
+      ibi <- st_transform(ibi, crs = 4326)
+      ibi <- cbind(ibi, st_coordinates(ibi))
+      ibi <- as.data.table(ibi)
+      ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
+                     total_sp_richness, number_non_native, X, Y)]
+      
+      ibi[is.na(NPSscore), NPSscore := 'Unknown']
+      ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
+      ibi[, IBIscoreCut := as.character(IBIscoreCut)]
+      ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
+      ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
+                                                          'Medium quality',
+                                                          'High quality',
+                                                          'Unknown'))]
       if (input$sel_score == 'nps_score') {
-        group.colors <- c('A'       = "#00C7A8",
-                          'B'       = "#2C9986", 
-                          'C'       = "#004A6D", 
-                          'D'       = "#BF2F37",
-                          'Unknown' = '#d4dde1')
-        group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPSscore]
-        g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
-          xlab("NPS-FM category")
-      } else if (input$sel_score == 'ibi_score') {
-        group.colors <- c('Low quality'    = "#BF2F37",
-                          'Medium quality' = "#004A6D", 
-                          'High quality'   = "#00C7A8",
-                          'Unknown'        = '#d4dde1')
-        group.colors <- group.colors[names(group.colors) %in% ibi_scores$IBIscoreCut]
-        g <- ggplot(ibi_scores, aes(x = IBIscoreCut, fill = IBIscoreCut)) + 
-          xlab("IBI category")
+        factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+        ibi[, Colour := factcols(NPSscore)]
+      } else {
+        factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+        ibi[, Colour := factcols(IBIscoreCut)]
       }
-      g <- g + 
-        geom_histogram(stat = "count", alpha = 0.9) + 
-        ylab("Number of sites") + 
-        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-        scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
-        theme_bw() +
-        theme(panel.grid.major.x = element_blank(),
-              panel.grid.minor.x = element_blank(),
-              panel.grid.major.y = element_line(size=.1, color="black"),
-              panel.grid.major   = element_blank(),
-              panel.grid.minor   = element_blank(),
-              panel.border       = element_blank(),
-              axis.line          = element_line(),
-              axis.line.y        = element_blank(),
-              axis.text.x        = element_text(size = 12, face = 'bold', margin = margin(t = 15)),
-              axis.ticks         = element_blank(),
-              legend.position    = 'none') +
-        theme(plot.margin = unit(c(2, 0.5, 0.5, 0.5),"cm"))+
-        theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
-        theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
-
-      rv$scoredistplot <- g
-      g
-    })
-
-    output$plotdl <- downloadHandler(
-      filename = function() fifelse(input$sel_score == 'nps_score',
-                                    'NPS_scores_distribution.png',
-                                    'IBI_scores_distribution.png'),
-      content = function(file) {
-        req(rv$scoredistplot)
-        ggsave(file, plot = rv$scoredistplot, device = "png", width = 7.5, height = 5)
-      }
-    )
-
-    
-    ## * MAP
-    
-    output$map <- renderLeaflet({
-
-        ibi_scores <- copy(ibiData())
-        ibi <- as.data.table(ibi_scores)
-        req(ibi)
-        dt <- as.data.table(rv$finalTable)
-
-        ## print(ibi[1])
-        ## print(dt[1])
-        if (all(c('Easting', 'Northing') %in% names(dt))) {
-            
-            coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
-            ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
-            ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
-            ibi <- st_transform(ibi, crs = 4326)
-            ibi <- cbind(ibi, st_coordinates(ibi))
-            ibi <- as.data.table(ibi)
-            ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
-                           total_sp_richness, number_non_native, X, Y)]
-            
-            ibi[is.na(NPSscore), NPSscore := 'Unknown']
-            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
-            ibi[, IBIscoreCut := as.character(IBIscoreCut)]
-            ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
-            ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
-                                                                 'Medium quality',
-                                                                 'High quality',
-                                                                 'Unknown'))]
-            if (input$sel_score == 'nps_score') {
-              factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
-              ibi[, Colour := factcols(NPSscore)]
-            } else {
-              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
-              ibi[, Colour := factcols(IBIscoreCut)]
-            }
-            
-            ## Raw HTML for the map tooltip/label
-            ibi[, labels := paste0(
-              sprintf(
-                '<div class="maptip">
+      
+      ## Raw HTML for the map tooltip/label
+      ibi[, labels := paste0(
+        sprintf(
+          '<div class="maptip">
                   <div class="maptip--header">
                     <div>
                       Site ID:<br/>
@@ -811,165 +811,165 @@ shinyServer(function(input, output, session) {
                     </div>
                   </div>
                 </div>',
-                SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
-              )
-            )
-            , by = 1:nrow(ibi)]
-            
-            if (input$sel_score == 'nps_score') {
-                
-                factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
-                fc = ~factcols(NPSscore) 
-                c = ~factcols(NPSscore)
-
-                npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
-                                   color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
-                npss <- npss[as.character(label) %in% ibi$NPSscore]
-                
-                rv$map <- leaflet() %>%
-                    setView(173.6, -41, zoom = 5) %>%
-                    addProviderTiles(providers$CartoDB.Positron) %>%
-                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                     fillColor = fc, color = c,
-                                     popup = ~labels %>% lapply(htmltools::HTML),
-                                     popupOptions = labelOptions(
-                                         direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T, closeButton = F),
-                                     ## radius = ~radius,
-                                     fillOpacity = 0.7,
-                                     radius = 4,
-                                     opacity = 1,
-                                     weight = 1
-                                     ) %>%
-                    addLegend(data = ibi, "bottomright",
-                              colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
-                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
-                              title = 'NPS category', opacity = 1) %>%
-                    addFullscreenControl()
-                
-                rv$map
-                
-            } else if (input$sel_score == 'ibi_score') {
-
-                factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
-                fc <- ~factcols(IBIscoreCut) 
-                c <- ~factcols(IBIscoreCut)
-                ibis <- data.table(label = c(levels(ibi_scores$IBIscoreCut), 'Unknown'),
-                                   color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
-                ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
-                
-                rv$map <- leaflet() %>%
-                                        # addTiles() %>%
-                    setView(173.6, -41, zoom = 5) %>% 
-                    addProviderTiles(providers$CartoDB.Positron) %>%
-                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                                     fillColor = fc, color = c,
-                                     popup = ~labels %>% lapply(htmltools::HTML),
-                                     popupOptions = labelOptions(
-                                         direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T, closeButton = FALSE),
-                                     ## radius = ~radius,
-                                     fillOpacity = 1,
-                                     radius = 4,
-                                     opacity = 1,
-                                     weight = 1
-                                     ) %>%
-                    addLegend(data = ibi, "bottomright",
-                              colors = paste0(ibis$color,
-                                              "; width: 10px; height: 10px; border-radius: 50%"),
-                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
-                              title = 'IBI category', opacity = 1) %>%
-                    addFullscreenControl()
-                
-                rv$map
-            }
-   
-        }
+          SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
+        )
+      )
+    , by = 1:nrow(ibi)]
+      
+      if (input$sel_score == 'nps_score') {
         
-    })
+        factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+        fc = ~factcols(NPSscore) 
+        c = ~factcols(NPSscore)
 
-    mapdown <- reactive({
-      bounds <- input$map_bounds
-      latRng <- range(bounds$north, bounds$south)
-      lngRng <- range(bounds$east, bounds$west)
-      m <- rv$map %>%
-        setView(lng = (lngRng[1]+lngRng[2])/2, lat = (latRng[1]+latRng[2])/2, zoom = input$map_zoom)
-      m$x$options$fullscreenControl <- NULL # remove fullscreen control (others are removed automatically)
-      m
-    })
+        npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
+                           color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
+        npss <- npss[as.character(label) %in% ibi$NPSscore]
+        
+        rv$map <- leaflet() %>%
+          setView(173.6, -41, zoom = 5) %>%
+          addProviderTiles(providers$CartoDB.Positron) %>%
+          addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                           fillColor = fc, color = c,
+                           popup = ~labels %>% lapply(htmltools::HTML),
+                           popupOptions = labelOptions(
+                             direction = "auto", sticky = F,
+                             maxWidth = 700, closeOnClick = T, closeButton = F),
+                           ## radius = ~radius,
+                           fillOpacity = 0.7,
+                           radius = 4,
+                           opacity = 1,
+                           weight = 1
+                           ) %>%
+          addLegend(data = ibi, "bottomright",
+                    colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
+                    labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
+                    title = 'NPS category', opacity = 1) %>%
+          addFullscreenControl()
+        
+        rv$map
+        
+      } else if (input$sel_score == 'ibi_score') {
 
-    output$mapdl <- downloadHandler(
-      filename = function() fifelse(input$sel_score == 'nps_score',
-                                    'NPS_scores_map.png',
-                                    'IBI_scores_map.png'),
-      content = function(file) {
-        mapshot(mapdown(), file = file,
-                remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
-                                    "drawToolbar", "easyButton"))
-      }
-    )
-
-    
-    ## * Table of categories
-    
-    output$text <- renderUI({
-      if(input$sel_score == 'nps_score'){
-        splitLayout(cellWidths = rep("25%", 4),
-                    cellArgs = list(style='white-space: normal;'),
-                    column(width= 12, 
-                           h5(strong("A")),
-                           h5("≥ 34"),
-                           hr(),
-                           h6(includeMarkdown('text/nps-a.md'))),
-                    column(width= 12, 
-                           h5(strong("B")),
-                           h5("< 34 and ≥ 28"),
-                           hr(),
-                           h6(includeMarkdown('text/nps-b.md'))),
-                    column(width= 12, 
-                           h5(strong("C")),
-                           h5("< 28 and ≥ 18"),
-                           hr(),
-                           h6(includeMarkdown('text/nps-c.md'))),
-                    column(width= 12, 
-                           h5(strong("D")),
-                           h5("< 18"),
-                           hr(),
-                           h6(includeMarkdown('text/nps-d.md')))
-                    )
-      } else if(input$sel_score == 'ibi_score'){
-        splitLayout(cellWidths = rep("33%", 3),
-                    cellArgs = list(style='white-space: normal;'),
-                    column(width= 12, 
-                           h5(strong("High quality")),
-                           h5("> 67%"),
-                           hr(),
-                           # h6(includeMarkdown('text/nps-a.md'))
-                           ),
-                    column(width= 12, 
-                           h5(strong("Medium quality")),
-                           h5("≤ 67 and ≥ 33"),
-                           hr(),
-                           # h6(includeMarkdown('text/nps-b.md'))
-                           ),
-                    column(width= 12, 
-                           h5(strong("Low quality")),
-                           h5("< 33"),
-                           hr(),
-                           # h6(includeMarkdown('text/nps-c.md'))
-                           )
-                    )
+        factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+        fc <- ~factcols(IBIscoreCut) 
+        c <- ~factcols(IBIscoreCut)
+        ibis <- data.table(label = c(levels(ibi_scores$IBIscoreCut), 'Unknown'),
+                           color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
+        ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
+        
+        rv$map <- leaflet() %>%
+          # addTiles() %>%
+          setView(173.6, -41, zoom = 5) %>% 
+          addProviderTiles(providers$CartoDB.Positron) %>%
+          addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                           fillColor = fc, color = c,
+                           popup = ~labels %>% lapply(htmltools::HTML),
+                           popupOptions = labelOptions(
+                             direction = "auto", sticky = F,
+                             maxWidth = 700, closeOnClick = T, closeButton = FALSE),
+                           ## radius = ~radius,
+                           fillOpacity = 1,
+                           radius = 4,
+                           opacity = 1,
+                           weight = 1
+                           ) %>%
+          addLegend(data = ibi, "bottomright",
+                    colors = paste0(ibis$color,
+                                    "; width: 10px; height: 10px; border-radius: 50%"),
+                    labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
+                    title = 'IBI category', opacity = 1) %>%
+          addFullscreenControl()
+        
+        rv$map
       }
       
-    })
-
-    
-
-    output$download <- downloadHandler(
-      filename = "IBI_scores.csv",
-      content = function(fname) {
-        fwrite(ibiData(), fname)
-      })
+    }
     
   })
+
+  mapdown <- reactive({
+    bounds <- input$map_bounds
+    latRng <- range(bounds$north, bounds$south)
+    lngRng <- range(bounds$east, bounds$west)
+    m <- rv$map %>%
+      setView(lng = (lngRng[1]+lngRng[2])/2, lat = (latRng[1]+latRng[2])/2, zoom = input$map_zoom)
+    m$x$options$fullscreenControl <- NULL # remove fullscreen control (others are removed automatically)
+    m
+  })
+
+  output$mapdl <- downloadHandler(
+    filename = function() fifelse(input$sel_score == 'nps_score',
+                                  'NPS_scores_map.png',
+                                  'IBI_scores_map.png'),
+    content = function(file) {
+      mapshot(mapdown(), file = file,
+              remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+                                  "drawToolbar", "easyButton"))
+    }
+  )
+
+  
+  ## * Table of categories
+  
+  output$text <- renderUI({
+    if(input$sel_score == 'nps_score'){
+      splitLayout(cellWidths = rep("25%", 4),
+                  cellArgs = list(style='white-space: normal;'),
+                  column(width= 12, 
+                         h5(strong("A")),
+                         h5("≥ 34"),
+                         hr(),
+                         h6(includeMarkdown('text/nps-a.md'))),
+                  column(width= 12, 
+                         h5(strong("B")),
+                         h5("< 34 and ≥ 28"),
+                         hr(),
+                         h6(includeMarkdown('text/nps-b.md'))),
+                  column(width= 12, 
+                         h5(strong("C")),
+                         h5("< 28 and ≥ 18"),
+                         hr(),
+                         h6(includeMarkdown('text/nps-c.md'))),
+                  column(width= 12, 
+                         h5(strong("D")),
+                         h5("< 18"),
+                         hr(),
+                         h6(includeMarkdown('text/nps-d.md')))
+                  )
+    } else if(input$sel_score == 'ibi_score'){
+      splitLayout(cellWidths = rep("33%", 3),
+                  cellArgs = list(style='white-space: normal;'),
+                  column(width= 12, 
+                         h5(strong("High quality")),
+                         h5("> 67%"),
+                         hr(),
+                         # h6(includeMarkdown('text/nps-a.md'))
+                         ),
+                  column(width= 12, 
+                         h5(strong("Medium quality")),
+                         h5("≤ 67 and ≥ 33"),
+                         hr(),
+                         # h6(includeMarkdown('text/nps-b.md'))
+                         ),
+                  column(width= 12, 
+                         h5(strong("Low quality")),
+                         h5("< 33"),
+                         hr(),
+                         # h6(includeMarkdown('text/nps-c.md'))
+                         )
+                  )
+    }
+    
+  })
+
+  
+
+  output$download <- downloadHandler(
+    filename = "IBI_scores.csv",
+    content = function(fname) {
+      fwrite(ibiData(), fname)
+    })
+  
+})
 
