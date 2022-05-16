@@ -44,7 +44,7 @@ shinyUI(
             ),
                 column(4, class='header-col', id="title-container",
                     h1(
-                        id="main-title", 
+                        id="main-title",
                         "Fish IBI Calculator"
                     ),
                 ),
@@ -73,7 +73,7 @@ shinyUI(
                         tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
                     ),
                     fluidRow(
-                        br(),br(),
+                        br(), br(),
                         column(
                             6,
                             h2(includeMarkdown('text/page-1-title.md')),
@@ -94,7 +94,7 @@ shinyUI(
                                 column(6,
                                        actionButton('exbtn', 'Use demo table'))
                             ),
-                            br(), 
+                            br(),
                             h6(includeMarkdown('text/page-1-requirements.md'))
                         )
                     ),
@@ -103,7 +103,7 @@ shinyUI(
                     br(),
                     h3(includeMarkdown('text/page-1-about-title.md')),
                     div(class = 'twocols', h5(includeMarkdown('text/page-1-about.md'))),
-                    br(),br(),
+                    br(), br(),
                     div(id="outer-img-container",
                         div(id="inner-img-container",
                             tags$img(id="home-image",src="images/electric_fishing.png", width = '100%'),
@@ -182,10 +182,8 @@ shinyUI(
                                     6,
                                     id='rescol2', align = 'right',
                                     actionButton('remIssuesBtn', 'Exclude issues'),
-                                    br(),br(),
-                                    downloadButton('downloadissues', class = "shinyjs-disabled",
-                                           label=span(id="dl-button-label", "Download Issues",
-                                                     img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL)
+                                    br(), br(),
+                                    uiOutput('issue_type')
                                ),
                                # br(),br(),
                                column(
@@ -193,8 +191,11 @@ shinyUI(
                                    actionButton('to4btn', div(class="button-inner",
                                     span('Calculate IBI score'), 
                                     img(class='arrow-next', src='icons/buttonArrow.svg')
-                                   ))
-                               ## , actionButton('testbtn', 'Test')
+                                   )),
+                                    br(), br(),
+                                   downloadButton('downloadissues', class = "shinyjs-disabled",
+                                                  label=span(id="dl-button-label", "Download Issues",
+                                                             img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL)
                                )
                             )
                         )
@@ -213,7 +214,7 @@ shinyUI(
                     tags$head(
                         tags$link(rel="stylesheet", type="text/css", href="styles/tabPanel4.css")
                     ),
-                    br(),br(),
+                    br(), br(),
                     fluidRow(
                         column(
                             8,
@@ -289,11 +290,11 @@ shinyUI(
                     ),
                     
                     span(
-                        br(),br(), br(),
+                        br(), br(), br(),
                         tags$footer(id='footer',
                             fluidRow(align = "center", id = "footer-div",
                                 column(1, div()),
-                                column(2, align = "center", 
+                                column(2, align = "center",
                                 div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", target="_blank", img(class="footer-img", src="images/MFELogo.png")))
                                 ),
                                 column(2, offset = 6,
