@@ -336,7 +336,7 @@ shinyServer(function(input, output, session) {
                 d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
             }
             ## *** Check existence in species_ibi_metrics
-            c <- !(d$SpeciesCode %in% species_ibi_metrics$spcode)
+            c <- !(d$SpeciesCode %in% species_ibi_metrics$spcode | d$SpeciesCode == 'nospec')
             if (any(c)) {
                 d[c, 'SpeciesCode_warnings'] <- 1L
                 d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'

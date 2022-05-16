@@ -283,28 +283,25 @@ shinyUI(
                     br(),
                     hr(),
                     br(),
-                    fluidRow(h5(class="subheader", "Table of results")),
-                    br(),
+                    div(h2(class="subheader", "Table of results")),
                     fluidRow(withspinner(reactableOutput("ibiTable")))
-                    )
-                    ),
-                    
-                    span(
-                        br(),br(), br(),
-                        tags$footer(id='footer',
-                            fluidRow(align = "center", id = "footer-div",
-                                column(1, div()),
-                                column(2, align = "center", 
-                                div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", target="_blank", img(class="footer-img", src="images/MFELogo.png")))
-                                ),
-                                column(2, offset = 6,
-                                div(class="footer-img-container", img(class="footer-img", src="images/nzgovlogo.png"))
-                                ),
-                                column(1, div())
-                            )
+                  )
+                ),
+                span(
+                    br(),br(), br(),
+                    tags$footer(id='footer',
+                        fluidRow(align = "center", id = "footer-div",
+                            column(1, div()),
+                            column(2, align = "center", 
+                            div(class="footer-img-container", tags$a(href="https://environment.govt.nz/", target="_blank", img(class="footer-img", src="images/MFELogo.png")))
+                            ),
+                            column(2, offset = 6,
+                            div(class="footer-img-container", img(class="footer-img", src="images/nzgovlogo.png"))
+                            ),
+                            column(1, div())
                         )
                     )
                 )
-                
+              )
     )
 )
