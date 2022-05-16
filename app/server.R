@@ -691,7 +691,12 @@ shinyServer(function(input, output, session) {
                                                                  'Medium quality',
                                                                  'High quality',
                                                                  'Unknown'))]
-            ibi[, Colour := factor(NPSscore, levels= c('blue', 'green', 'red', 'orange', 'grey'))]
+            if (input$sel_score == 'nps_score') {
+              factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(NPSscore)]
+            } else {
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
+            }
             
             ## Raw HTML for the map tooltip/label
             ibi[, labels := paste0(
@@ -702,7 +707,7 @@ shinyServer(function(input, output, session) {
                       Site ID:<br/>
                       <span class="maptip--header__siteID">%s</span>
                     </div>
-                    <div class="maptip--header__swatch" style="background-color: %s; border: 2px solid blue"></div>
+                    <div class="maptip--header__swatch" style="background-color: %s;"></div>
                   </div>
                   <div class="maptip--main">
                     <div class="maptip--row">
@@ -724,7 +729,7 @@ shinyServer(function(input, output, session) {
                       <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
                     </div>
                   </div>
-                </div>', 
+                </div>',
                 SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
               )
             )
@@ -747,10 +752,8 @@ shinyServer(function(input, output, session) {
                                      fillColor = fc, color = c,
                                      popup = ~labels %>% lapply(htmltools::HTML),
                                      popupOptions = labelOptions(
-                                         style = list("font-weight" = "normal",
-                                                      padding = "3px 8px", "color" = 'grey80'),
                                          textsize = "17px", direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T),
+                                         maxWidth = 700, closeOnClick = T, closeButton = F),
                                      ## radius = ~radius,
                                      fillOpacity = 0.7,
                                      radius = 4,

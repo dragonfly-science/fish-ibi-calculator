@@ -36,7 +36,7 @@ div.item {
   font-size: 12px;
   min-width: 300px;
   &--header {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid #cccccc;
     display: flex;
     justify-content: space-between;
@@ -54,7 +54,7 @@ div.item {
     }
   }
   &--main {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
   }
   &--row {
     display: flex;
