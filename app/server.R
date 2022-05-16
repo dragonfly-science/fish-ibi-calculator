@@ -384,122 +384,6 @@ shinyServer(function(input, output, session) {
     
     d
     
-<<<<<<< HEAD
-    cleanTable <- reactive({
-        req(rv$intable)
-
-        fm <- rv$fieldsmatching
-        d <- rv$intable
-        cols <- fm$ori[fm$good == T]
-        goodcols <- intersect(c(cols_needed, cols_opt), fm$match[fm$good==T])
-        d <- rv$intable[, fm$ori[match(goodcols, fm$match)], drop=F]
-        names(d) <- goodcols
-        
-        ## ** Penetration
-        if ('Penetration' %in% names(d)) {
-            ## *** Check for missing values
-            c <- is.na(d$Penetration)
-            if (any(c)) {
-                d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration is missing'
-            }
-            ## *** Check for non-numeric values
-            suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration should be numeric'
-            }
-            ## *** Check for negative values
-            suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration should be positive'
-            }
-            ## *** Check for excessive values
-            suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Penetration_issues'] <- 1L
-                d[c, 'Penetration_txt']    <- 'Penetration too high'
-            }
-        }
-        ## ** Altitude
-        if ('Altitude' %in% names(d)) {
-            ## *** Check for missing values
-            c <- is.na(d$Altitude)
-            if (any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude is missing'
-            }
-            ## *** Check for non-numeric values
-            suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude should be numeric'
-            }
-            ## *** Check for negative values
-            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude should be positive'
-            }
-            ## *** Check for excessive values
-            suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
-            if (!all(is.na(c)) && any(c)) {
-                d[c, 'Altitude_issues'] <- 1L
-                d[c, 'Altitude_txt']    <- 'Altitude too high'
-            }
-        }
-        ## ** SpeciesCode
-        if ('SpeciesCode' %in% names(d)) {
-
-            d$SpeciesCode <- tolower(d$SpeciesCode)
-
-            ## *** Check for missing values
-            c <- is.na(d$SpeciesCode)
-            if (any(c)) {
-                d[c, 'SpeciesCode_issues'] <- 1L
-                d[c, 'SpeciesCode_txt']    <- 'Species is missing'
-            }
-            ## *** Check for existence
-            c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
-            if (any(c)) {
-                d[c, 'SpeciesCode_issues'] <- 1L
-                d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
-            }
-            ## *** Check existence in species_ibi_metrics
-            c <- !(d$SpeciesCode %in% species_ibi_metrics$spcode | d$SpeciesCode == 'nospec')
-            if (any(c)) {
-                d[c, 'SpeciesCode_warnings'] <- 1L
-                d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'
-            }
-        }        
-        ## ** SiteID
-        if ('SiteID' %in% names(d)) {
-            ## *** Check for missing values
-            c <- is.na(d$SiteID)
-            if (any(c)) {
-                d[c, 'SiteID_issues'] <- 1L
-                d[c, 'SiteID_txt']    <- 'Site ID is missing'
-            }
-        }
-        ## ** Date
-        if ('Date' %in% names(d)) {
-            ## *** Check for missing values
-            c <- is.na(d$Date)
-            if (any(c)) {
-                d[c, 'Date_issues'] <- 1L
-                d[c, 'Date_txt']    <- 'Date is missing'
-            }
-        }
-
-        d$OriginalRow <- seq_len(nrow(d))
-        setcolorder(d, 'OriginalRow')
-        
-        d
-        
-    })
-
-=======
   })
 
   observe({
@@ -541,7 +425,6 @@ shinyServer(function(input, output, session) {
                 choices  = labs)
   })
   
->>>>>>> dddd7e50aa40134f55e4d485acf8a9366d8ada2a
 
   dataissues <- reactive({ # boolean: is there any issue? yes:1 no:0
     ft <- rv$finalTable
