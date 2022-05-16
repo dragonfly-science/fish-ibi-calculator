@@ -691,15 +691,50 @@ shinyServer(function(input, output, session) {
                                                                  'Medium quality',
                                                                  'High quality',
                                                                  'Unknown'))]
+            if (input$sel_score == 'nps_score') {
+              factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(NPSscore)]
+            } else {
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(IBIscoreCut)]
+            }
+            
+            ## Raw HTML for the map tooltip/label
             ibi[, labels := paste0(
-              sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
-              kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
-                                                    `IBI category`      = IBIscoreCut,
-                                                    `NPS category`      = NPSscore,
-                                                    `Total sp richness` = total_sp_richness,
-                                                    `Non-native spp`   = number_non_native),
-                                         format='html', escape = F)))
-              , by = 1:nrow(ibi)]
+              sprintf(
+                '<div class="maptip">
+                  <div class="maptip--header">
+                    <div>
+                      Site ID:<br/>
+                      <span class="maptip--header__siteID">%s</span>
+                    </div>
+                    <div class="maptip--header__swatch" style="background-color: %s;"></div>
+                  </div>
+                  <div class="maptip--main">
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">NPS category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                  </div>
+                </div>',
+                SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
+              )
+            )
+            , by = 1:nrow(ibi)]
             
             if (input$sel_score == 'nps_score') {
                 
@@ -718,10 +753,8 @@ shinyServer(function(input, output, session) {
                                      fillColor = fc, color = c,
                                      popup = ~labels %>% lapply(htmltools::HTML),
                                      popupOptions = labelOptions(
-                                         style = list("font-weight" = "normal",
-                                                      padding = "3px 8px", "color" = 'grey80'),
-                                         textsize = "17px", direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T),
+                                         direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T, closeButton = F),
                                      ## radius = ~radius,
                                      fillOpacity = 0.7,
                                      radius = 4,
@@ -753,10 +786,8 @@ shinyServer(function(input, output, session) {
                                      fillColor = fc, color = c,
                                      popup = ~labels %>% lapply(htmltools::HTML),
                                      popupOptions = labelOptions(
-                                         style = list("font-weight" = "normal",
-                                                      padding = "3px 8px", "color" = 'grey80'),
-                                         textsize = "17px", direction = "auto", sticky = F,
-                                         maxWidth = 700, closeOnClick = T),
+                                         direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T, closeButton = FALSE),
                                      ## radius = ~radius,
                                      fillOpacity = 1,
                                      radius = 4,
