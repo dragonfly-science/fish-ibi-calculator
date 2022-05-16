@@ -7,6 +7,7 @@ library(shinycssloaders)
 library(data.table)
 library(leaflet)
 library(reactable)
+library(sass)
 
 fileInputOnlyButton <- function(..., label="") {
     temp <- fileInput(..., label=label)
@@ -27,16 +28,31 @@ mydownloadbutton <- function(outputId, label = "Download", class = NULL, ...,
 
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
+## Compile the scss into css
+css <- sass(
+  sass_file('styles/main.scss'),
+  cache = FALSE
+  # output = 'www/main.css',
+  # options = sass_options(
+  #   output_path = 'www/main.css',
+  #   output_style = "compressed",
+  #   source_map_embed = TRUE
+  # )
+)
+
 shinyUI(
     fluidPage(
-
         useShinydashboard(),
         title = 'IBI Calculator',
         titlePanel(
             windowTitle = 'IBI calculator',
             title = NULL
         ),
-        tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
+        tags$head(
+            tags$link(rel = "shortcut icon", href = "favicon.ico"), 
+            # tags$link(rel = "stylesheet", type = "text/css", href = "main.css"),
+            tags$style(css)
+        ),
         tags$header(id="header",
             fluidRow(id="header-div",
                 column(4, class='header-col header-img-container',
@@ -53,14 +69,9 @@ shinyUI(
             a(class='cr-text', href='https://www.rodmorris.co.nz/', p('© Rod Morris'))
         ),
         useShinyjs(),  # Set up shinyjs
-        
+       
         mainPanel(
             width = 12, id = 'mainpanel',
-            tags$head(
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/custom.css"),
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/buttons.css"),
-                     tags$link(rel = "stylesheet", type = "text/css", href = "styles/tables.css")
-                 ),
             tags$script(src = 'headers.js'),
             ## Input widgets
             tabsetPanel(
@@ -69,9 +80,6 @@ shinyUI(
                 ## * 1. Upload your file
                 tabPanel(
                     "1. Upload your file",
-                    tags$head(
-                        tags$link(rel = "stylesheet", type = "text/css", href="styles/tabPanel1.css"),
-                    ),
                     fluidRow(
                         br(), br(),
                         column(
@@ -139,10 +147,6 @@ shinyUI(
                                  tags$link(
                                          rel = "stylesheet",
                                         href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css"
-                                 ),
-                                 tags$link(
-                                          rel = "stylesheet",
-                                          href = "styles/contextMenu.css"
                                  ),
                                  tags$script(
                                           src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"

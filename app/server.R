@@ -745,112 +745,146 @@ shinyServer(function(input, output, session) {
     
     output$map <- renderLeaflet({
 
-      ibi_scores <- copy(ibiData())
-      ibi <- as.data.table(ibi_scores)
-      req(ibi)
-      dt <- as.data.table(rv$finalTable)
+        ibi_scores <- copy(ibiData())
+        ibi <- as.data.table(ibi_scores)
+        req(ibi)
+        dt <- as.data.table(rv$finalTable)
 
-      ## print(ibi[1])
-      ## print(dt[1])
-      if (all(c('Easting', 'Northing') %in% names(dt))) {
-        
-        coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
-        ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
-        ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
-        ibi <- st_transform(ibi, crs = 4326)
-        ibi <- cbind(ibi, st_coordinates(ibi))
-        ibi <- as.data.table(ibi)
-        ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
-                       total_sp_richness, number_non_native, X, Y)]
-        
-        ibi[is.na(NPSscore), NPSscore := 'Unknown']
-        ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
-        ibi[, IBIscoreCut := as.character(IBIscoreCut)]
-        ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
-        ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
-                                                            'Medium quality',
-                                                            'High quality',
-                                                            'Unknown'))]
-        ibi[, labels := paste0(
-          sprintf("<strong> Site ID: %s - Date: %s: </strong><br/> ", SiteID, Date),
-          kable_styling(knitr::kable(data.table(`IBI score`         = IBIscore,
-                                                `IBI category`      = IBIscoreCut,
-                                                `NPS category`      = NPSscore,
-                                                `Total sp richness` = total_sp_richness,
-                                                `Non-native spp`   = number_non_native),
-                                     format='html', escape = F)))
-        , by = 1:nrow(ibi)]
-        
-        if (input$sel_score == 'nps_score') {
-          
-          factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
-          fc = ~factcols(NPSscore) 
-          c = ~factcols(NPSscore)
+        ## print(ibi[1])
+        ## print(dt[1])
+        if (all(c('Easting', 'Northing') %in% names(dt))) {
+            
+            coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
+            ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
+            ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
+            ibi <- st_transform(ibi, crs = 4326)
+            ibi <- cbind(ibi, st_coordinates(ibi))
+            ibi <- as.data.table(ibi)
+            ibi <- ibi[, .(Date, SiteID, IBIscore, IBIscoreCut, NPSscore,
+                           total_sp_richness, number_non_native, X, Y)]
+            
+            ibi[is.na(NPSscore), NPSscore := 'Unknown']
+            ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
+            ibi[, IBIscoreCut := as.character(IBIscoreCut)]
+            ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
+            ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
+                                                                 'Medium quality',
+                                                                 'High quality',
+                                                                 'Unknown'))]
+            if (input$sel_score == 'nps_score') {
+              factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(NPSscore)]
+            } else {
+              factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+              ibi[, Colour := factcols(IBIscoreCut)]
+            }
+            
+            ## Raw HTML for the map tooltip/label
+            ibi[, labels := paste0(
+              sprintf(
+                '<div class="maptip">
+                  <div class="maptip--header">
+                    <div>
+                      Site ID:<br/>
+                      <span class="maptip--header__siteID">%s</span>
+                    </div>
+                    <div class="maptip--header__swatch" style="background-color: %s;"></div>
+                  </div>
+                  <div class="maptip--main">
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">IBI category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">NPS category:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                    <div class="maptip--row">
+                      <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
+                    </div>
+                  </div>
+                </div>',
+                SiteID, Colour, Date, IBIscore, IBIscoreCut, NPSscore, total_sp_richness, number_non_native
+              )
+            )
+            , by = 1:nrow(ibi)]
+            
+            if (input$sel_score == 'nps_score') {
+                
+                factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+                fc = ~factcols(NPSscore) 
+                c = ~factcols(NPSscore)
 
-          npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
-                             color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
-          npss <- npss[as.character(label) %in% ibi$NPSscore]
-          
-          rv$map <- leaflet() %>%
-            setView(173.6, -41, zoom = 5) %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                             fillColor = fc, color = c,
-                             popup = ~labels %>% lapply(htmltools::HTML),
-                             popupOptions = labelOptions(
-                               style = list("font-weight" = "normal",
-                                            padding = "3px 8px", "color" = 'grey80'),
-                               textsize = "17px", direction = "auto", sticky = F,
-                               maxWidth = 700, closeOnClick = T),
-                             ## radius = ~radius,
-                             fillOpacity = 0.7,
-                             radius = 4,
-                             opacity = 1,
-                             weight = 1
-                             ) %>%
-            addLegend(data = ibi, "bottomright",
-                      colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
-                      labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
-                      title = 'NPS category', opacity = 1) %>%
-            addFullscreenControl()
-          
-          rv$map
-          
-        } else if (input$sel_score == 'ibi_score') {
+                npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
+                                   color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
+                npss <- npss[as.character(label) %in% ibi$NPSscore]
+                
+                rv$map <- leaflet() %>%
+                    setView(173.6, -41, zoom = 5) %>%
+                    addProviderTiles(providers$CartoDB.Positron) %>%
+                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                     fillColor = fc, color = c,
+                                     popup = ~labels %>% lapply(htmltools::HTML),
+                                     popupOptions = labelOptions(
+                                         direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T, closeButton = F),
+                                     ## radius = ~radius,
+                                     fillOpacity = 0.7,
+                                     radius = 4,
+                                     opacity = 1,
+                                     weight = 1
+                                     ) %>%
+                    addLegend(data = ibi, "bottomright",
+                              colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
+                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
+                              title = 'NPS category', opacity = 1) %>%
+                    addFullscreenControl()
+                
+                rv$map
+                
+            } else if (input$sel_score == 'ibi_score') {
 
-          factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
-          fc <- ~factcols(IBIscoreCut) 
-          c <- ~factcols(IBIscoreCut)
-          ibis <- data.table(label = c(levels(ibi_scores$IBIscoreCut), 'Unknown'),
-                             color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
-          ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
-          
-          rv$map <- leaflet() %>%
-            # addTiles() %>%
-            setView(173.6, -41, zoom = 5) %>% 
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
-                             fillColor = fc, color = c,
-                             popup = ~labels %>% lapply(htmltools::HTML),
-                             popupOptions = labelOptions(
-                               style = list("font-weight" = "normal",
-                                            padding = "3px 8px", "color" = 'grey80'),
-                               textsize = "17px", direction = "auto", sticky = F,
-                               maxWidth = 700, closeOnClick = T),
-                             ## radius = ~radius,
-                             fillOpacity = 1,
-                             radius = 4,
-                             opacity = 1,
-                             weight = 1
-                             ) %>%
-            addLegend(data = ibi, "bottomright",
-                      colors = paste0(ibis$color,
-                                      "; width: 10px; height: 10px; border-radius: 50%"),
-                      labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
-                      title = 'IBI category', opacity = 1) %>%
-            addFullscreenControl()
-          
-          rv$map
+                factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+                fc <- ~factcols(IBIscoreCut) 
+                c <- ~factcols(IBIscoreCut)
+                ibis <- data.table(label = c(levels(ibi_scores$IBIscoreCut), 'Unknown'),
+                                   color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
+                ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
+                
+                rv$map <- leaflet() %>%
+                                        # addTiles() %>%
+                    setView(173.6, -41, zoom = 5) %>% 
+                    addProviderTiles(providers$CartoDB.Positron) %>%
+                    addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+                                     fillColor = fc, color = c,
+                                     popup = ~labels %>% lapply(htmltools::HTML),
+                                     popupOptions = labelOptions(
+                                         direction = "auto", sticky = F,
+                                         maxWidth = 700, closeOnClick = T, closeButton = FALSE),
+                                     ## radius = ~radius,
+                                     fillOpacity = 1,
+                                     radius = 4,
+                                     opacity = 1,
+                                     weight = 1
+                                     ) %>%
+                    addLegend(data = ibi, "bottomright",
+                              colors = paste0(ibis$color,
+                                              "; width: 10px; height: 10px; border-radius: 50%"),
+                              labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
+                              title = 'IBI category', opacity = 1) %>%
+                    addFullscreenControl()
+                
+                rv$map
+            }
+   
+>>>>>>> 37b44faeaa630e74c36efd8997f1a388df243267
         }
         
       }
