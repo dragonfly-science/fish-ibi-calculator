@@ -36,6 +36,25 @@ if (is.null(ph) || ph == '') {
   webshot::install_phantomjs()
 }
 
+upper1st <- function (x, prelower = T) {
+  if (is.factor(x)) {
+    x0 <- levels(x)
+  }
+  else x0 <- as.character(x)
+  if (prelower) 
+    x0 <- tolower(x0)
+  nc <- nchar(x0)
+  nc[is.na(nc)] <- 0
+  x0[nc > 1] <- sprintf("%s%s", toupper(substr(x0[nc > 1], 
+                                               1, 1)), substr(x0[nc > 1], 2, nchar(x0[nc > 1])))
+  x0[nc == 1] <- toupper(x0[nc == 1])
+  if (is.factor(x)) {
+    levels(x) <- x0
+  }
+  else x <- x0
+  return(x)
+}
+
 rv <- NULL
 ## reactlog::reactlog_enable()
 
