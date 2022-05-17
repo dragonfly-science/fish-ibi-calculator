@@ -1,18 +1,9 @@
 library(shiny)
 library(shinyjs)
 library(data.table)
-library(DT)
-library(tidyverse)
-library(quantreg)
-library(ggplot2)
-library(shinyWidgets)
 library(leaflet)
 library(sf)
-library(leaflet.extras)
-library(kableExtra)
-library(mapview)
 library(reactable)
-library(tippy)
 
 load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
@@ -382,7 +373,7 @@ shinyServer(function(input, output, session) {
     d$OriginalRow <- seq_len(nrow(d))
     setcolorder(d, 'OriginalRow')
     
-    d
+    as.data.frame(d)
     
   })
 
@@ -398,20 +389,31 @@ shinyServer(function(input, output, session) {
     d <- as.data.table(copy(d))
     ## ft <- as.data.table(copy(rv$finalTable))
     req(d)
-    e_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_txt$'), value.name = 'issue')[
-    , type := 'error']
-    w_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_wtxt$'), value.name = 'issue')[
-    , type := 'warning']
-    long0 <- rbind(e_long, w_long)
+    if (any(grepl('_txt$', names(d)))) {
+      e_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_txt$'), value.name = 'issue')[
+      , type := 'error']
+    } else e_long <- NULL
+    if (any(grepl('_wtxt$', names(d)))) {
+      w_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_wtxt$'), value.name = 'issue')[
+      , type := 'warning']
+    } else w_long <- NULL
+    if (!is.null(e_long) | !is.null(w_long)) {
+      long0 <- rbind(e_long, w_long)
+    } else long0 <- NULL
     long0
+
   })
   
   issues_summary <- reactive({ # one row per issue
     long0 <- issues_long()
     req(long0)
-    long <- long0[!is.na(issue)]
-    l <- long[, .N, .(type, issue)]
+
+    if (!is.null(long0)) {
+      long <- long0[!is.na(issue)]
+      l <- long[, .N, .(type, issue)]
+    } else l <- NULL
     l
+
   })
   
   output$issue_type <- renderUI({ # issue selector widget
@@ -464,15 +466,15 @@ shinyServer(function(input, output, session) {
   selectedissues <- reactive({
     ft <- copy(rv$finalTable)
     setDT(ft)
-    cat('\n=== ft:\n')
-    print(head(ft))
+    ## cat('\n=== ft:\n')
+    ## print(head(ft))
     req(ft)
     long <- copy(issues_long())
-    cat('\n=== long:\n')
-    print(long)
+    ## cat('\n=== long:\n')
+    ## print(long)
     req(long)
-    cat('\n=== selected issue_type:\n')
-    print(input$issue_type)
+    ## cat('\n=== selected issue_type:\n')
+    ## print(input$issue_type)
     req(input$issue_type)
     if (dataissues() %in% 1) {
       if (input$issue_type != 'All issues') {
@@ -484,8 +486,8 @@ shinyServer(function(input, output, session) {
     } else {
       dsel <- copy(rv$finalTable)
     }
-    print(head(dsel))
-    dsel
+    ## print(head(dsel))
+    as.data.frame(dsel)
   })
   
   ## ** Cleaned table on page 3
@@ -562,6 +564,7 @@ shinyServer(function(input, output, session) {
     d <- as.data.table(cleanTable())
     ## d <- as.data.table(d)
     req(d)
+
     if (any(grepl('_issues$', names(d)))) {
       d[, with_issue := rowSums(.SD, na.rm=T) > 0,
         .SDcols = patterns('_issues$')]
@@ -576,6 +579,7 @@ shinyServer(function(input, output, session) {
       d <- d[with_warnings == F, -c('with_warnings'), with=F]
     }
     rv$finalTable <- as.data.frame(d)
+
   }, label = 'Ignore visits with issues')
   
 
@@ -650,27 +654,28 @@ shinyServer(function(input, output, session) {
   
   ibiData <- reactive({
 
-    d <- rv$finalTable
-    req(d)
+    ft <- rv$finalTable
+    req(ft)
+    
+    ft$Altitude <- as.numeric(ft$Altitude)
+    ft$Penetration <- as.numeric(ft$Penetration)
 
-    d$Altitude <- as.numeric(d$Altitude)
-    d$Penetration <- as.numeric(d$Penetration)
-    
-    site_metrics_all <- d %>%
+    ft <- ft[order(ft$SiteID, ft$Date, ft$SpeciesCode),]
+
+    site_metrics_all <- ft |>
       prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
+    setorder(site_metrics_all, Stratum)
     
-    ibi_scores <- site_metrics_all %>% 
+    ibi_scores <- site_metrics_all |> 
       add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
                        q4e=qr.4.elev, q5e=qr.5.elev,
                        q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
                        q4p=qr.4.penet, q5p=qr.5.penet
-                       ) %>% 
-      add.fish.metric6() %>% 
-      add.fish.ibi() %>% 
-      cut.fish.ibi() %>% 
+                       ) |> 
+      add.fish.metric6() |> 
+      add.fish.ibi() |> 
+      cut.fish.ibi() |> 
       nps()
-
-    ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
     
     return(as.data.frame(ibi_scores))
   })
@@ -679,9 +684,8 @@ shinyServer(function(input, output, session) {
   ## * Table of IBI scores
   output$ibiTable <- renderReactable({
     ibi_scores <- ibiData()
-    req(ibi_scores)
-    ibi_scores <- ibi_scores %>% select('SiteID', "Date", "IBIscore",
-                                        "IBIscoreCut", "NPSscore")
+    req(setDT(ibi_scores))
+    ibi_scores <- ibi_scores[, .(SiteID, Date, IBIscore, IBIscoreCut, NPSscore)]
 
     dt <- reactable(ibi_scores, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
     
@@ -689,10 +693,11 @@ shinyServer(function(input, output, session) {
   })
 
 
-
   ## * Scores plot
   
   output$scoresPlot <- renderPlot({
+    library(ggplot2)
+
     ibi_scores <- ibiData()
     req(ibi_scores)
 
@@ -844,12 +849,12 @@ shinyServer(function(input, output, session) {
                            color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
         npss <- npss[as.character(label) %in% ibi$NPSscore]
         
-        rv$map <- leaflet() %>%
-          setView(173.6, -41, zoom = 5) %>%
-          addProviderTiles(providers$CartoDB.Positron) %>%
+        rv$map <- leaflet() |>
+          setView(173.6, -41, zoom = 5) |>
+          addProviderTiles(providers$CartoDB.Positron) |>
           addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
                            fillColor = fc, color = c,
-                           popup = ~labels %>% lapply(htmltools::HTML),
+                           popup = ~labels |> lapply(htmltools::HTML),
                            popupOptions = labelOptions(
                              direction = "auto", sticky = F,
                              maxWidth = 700, closeOnClick = T, closeButton = F),
@@ -858,12 +863,12 @@ shinyServer(function(input, output, session) {
                            radius = 4,
                            opacity = 1,
                            weight = 1
-                           ) %>%
+                           ) |>
           addLegend(data = ibi, "bottomright",
                     colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
                     labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
-                    title = 'NPS category', opacity = 1) %>%
-          addFullscreenControl()
+                    title = 'NPS category', opacity = 1) |>
+          leaflet.extras::addFullscreenControl()
         
         rv$map
         
@@ -876,13 +881,13 @@ shinyServer(function(input, output, session) {
                            color = c('#BF2F37', '#004A6D', '#2C9986', '#808080'))
         ibis <- ibis[as.character(label) %in% ibi$IBIscoreCut]
         
-        rv$map <- leaflet() %>%
-          # addTiles() %>%
-          setView(173.6, -41, zoom = 5) %>% 
-          addProviderTiles(providers$CartoDB.Positron) %>%
+        rv$map <- leaflet() |>
+          # addTiles() |>
+          setView(173.6, -41, zoom = 5) |> 
+          addProviderTiles(providers$CartoDB.Positron) |>
           addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
                            fillColor = fc, color = c,
-                           popup = ~labels %>% lapply(htmltools::HTML),
+                           popup = ~labels |> lapply(htmltools::HTML),
                            popupOptions = labelOptions(
                              direction = "auto", sticky = F,
                              maxWidth = 700, closeOnClick = T, closeButton = FALSE),
@@ -891,13 +896,13 @@ shinyServer(function(input, output, session) {
                            radius = 4,
                            opacity = 1,
                            weight = 1
-                           ) %>%
+                           ) |>
           addLegend(data = ibi, "bottomright",
                     colors = paste0(ibis$color,
                                     "; width: 10px; height: 10px; border-radius: 50%"),
                     labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", ibis$label, "</div>"),
-                    title = 'IBI category', opacity = 1) %>%
-          addFullscreenControl()
+                    title = 'IBI category', opacity = 1) |>
+          leaflet.extras::addFullscreenControl()
         
         rv$map
       }
@@ -910,7 +915,7 @@ shinyServer(function(input, output, session) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
-    m <- rv$map %>%
+    m <- rv$map |>
       setView(lng = (lngRng[1]+lngRng[2])/2, lat = (latRng[1]+latRng[2])/2, zoom = input$map_zoom)
     m$x$options$fullscreenControl <- NULL # remove fullscreen control (others are removed automatically)
     m
@@ -921,9 +926,9 @@ shinyServer(function(input, output, session) {
                                   'NPS_scores_map.png',
                                   'IBI_scores_map.png'),
     content = function(file) {
-      mapshot(mapdown(), file = file,
-              remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
-                                  "drawToolbar", "easyButton"))
+      mapview::mapshot(mapdown(), file = file,
+                       remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+                                           "drawToolbar", "easyButton"))
     }
   )
 
