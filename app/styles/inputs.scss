@@ -1,13 +1,14 @@
-.input-label {
-  color: $mfe-black;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
 .select-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+/* label for issues select */
+.input-label {
+  color: $mfe-black;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .select-label {
@@ -18,10 +19,31 @@
   margin-right: 30px;
 }
 
-div.items {
+.selectize-input.items {
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: left;
 }
 
+.option {
+  font-size: 14px;
+  &::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border: 1px solid #D4DDE1;
+    background-color: #ECEFF0;
+  }
+  &.selected {
+   &::before {
+     background-color: $mfe-green-bright;
+   }
+  }
+  
+}
+
+/* inner text elements */
 div.item {
-  font-size: 12pt;
+  font-size: 1rem;
+  font-weight: 700;
 }
