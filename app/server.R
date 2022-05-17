@@ -1,18 +1,9 @@
-print('shiny'); print(system.time(library(shiny)))
-print('shinyjs'); print(system.time(library(shinyjs)))
-print('data.table'); print(system.time(library(data.table)))
-## print('DT'); print(print(system.time(library(DT))))
-## print('tidyverse'); print(system.time(library(tidyverse)))
-## print('quantreg'); print(system.time(library(quantreg)))
-print('ggplot2'); print(system.time(library(ggplot2)))
-## print('shinyWidgets'); print(system.time(library(shinyWidgets)))
-print('leaflet'); print(system.time(library(leaflet)))
-print('sf'); print(system.time(library(sf)))
-## print('leaflet.extras'); print(system.time(library(leaflet.extras)))
-## print('kableExtra'); print(system.time(library(kableExtra)))
-## print('mapview'); print(system.time(library(mapview)))
-print('reactable'); print(system.time(library(reactable)))
-## print('tippy'); print(system.time(library(tippy)))
+library(shiny)
+library(shinyjs)
+library(data.table)
+library(leaflet)
+library(sf)
+library(reactable)
 
 load('data/species_ibi_metrics.rda', v=T)
 load('data/fish_names.rda', v=T)
@@ -706,6 +697,8 @@ shinyServer(function(input, output, session) {
   ## * Scores plot
   
   output$scoresPlot <- renderPlot({
+    library(ggplot2)
+
     ibi_scores <- ibiData()
     req(ibi_scores)
 
@@ -935,8 +928,8 @@ shinyServer(function(input, output, session) {
                                   'IBI_scores_map.png'),
     content = function(file) {
       mapview::mapshot(mapdown(), file = file,
-              remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
-                                  "drawToolbar", "easyButton"))
+                       remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+                                           "drawToolbar", "easyButton"))
     }
   )
 
