@@ -421,7 +421,7 @@ shinyServer(function(input, output, session) {
                          c('All issues', sprintf('%s: %s (%s)', upper1st(type), issue, N)))]
     selectInput(inputId  = "issue_type",
                 multiple = F,
-                label    = h4("Show issues:"),
+                label    = "Show issues:",
                 choices  = labs)
   })
   

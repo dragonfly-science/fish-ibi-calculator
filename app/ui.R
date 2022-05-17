@@ -29,15 +29,15 @@ mydownloadbutton <- function(outputId, label = "Download", class = NULL, ...,
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
 
 ## Compile the scss into css
-css <- sass(
+sass(
   sass_file('styles/main.scss'),
-  cache = FALSE
-  # output = 'www/main.css',
-  # options = sass_options(
-  #   output_path = 'www/main.css',
-  #   output_style = "compressed",
-  #   source_map_embed = TRUE
-  # )
+  cache = FALSE,
+  output = 'www/main.css',
+  options = sass_options(
+    output_path = 'www/main.css',
+    output_style = "compressed",
+    source_map_embed = TRUE
+  )
 )
 
 shinyUI(
@@ -50,12 +50,12 @@ shinyUI(
     ),
     tags$head(
       tags$link(rel = "shortcut icon", href = "favicon.ico"), 
-      # tags$link(rel = "stylesheet", type = "text/css", href = "main.css"),
-      tags$style(css)
+      tags$link(rel = "stylesheet", type = "text/css", href = "main.css"),
+      # tags$style(css)
     ),
     tags$header(id="header",
                 fluidRow(id="header-div",
-                         column(4, class='header-col header-img-container',
+                         column(4, class = 'header-col header-img-container',
                          (tags$a(href="https://environment.govt.nz/", target="_blank" , img(class='header-img', src="images/MFELogo.png")))
                          ),
                          column(4, class='header-col', id="title-container",
@@ -175,8 +175,7 @@ shinyUI(
                        ## imageOutput('issueImg', height='100px', width='100px')),
                        column(9, h2(htmlOutput('issuesTxt')))
                      ),
-                     br(),
-                     h5(htmlOutput('issuesSubTxt'))
+                    #  br(),
                    ),
                    ),
             column(
@@ -186,21 +185,30 @@ shinyUI(
                   6,
                   id='rescol2', align = 'right',
                   actionButton('remIssuesBtn', 'Exclude issues'),
-                  br(), br(),
-                  uiOutput('issue_type')
                 ),
                 # br(),br(),
                 column(
                   6,
                   actionButton('to4btn', div(class="button-inner",
-                                             span('Calculate IBI score'), 
-                                             img(class='arrow-next', src='icons/buttonArrow.svg')
-                                             )),
-                  br(), br(),
-                  downloadButton('downloadissues', class = "shinyjs-disabled",
-                                 label=span(id="dl-button-label", "Download Issues",
-                                            img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL)
+                    span('Calculate IBI score'), 
+                    img(class='arrow-next', src='icons/buttonArrow.svg')
+                    )),
                 )
+              )
+            )
+          ),
+          fluidRow(
+            column(7, 
+              h5(htmlOutput('issuesSubTxt'))
+            ),
+            column(3,
+              uiOutput('issue_type')
+            ),
+            column(2,
+              downloadButton(
+                'downloadissues', class = "shinyjs-disabled dl-issues-btn",
+                label=span(class="dl-issues-btn--label", "Download Issues",
+                img(class='dl-issues-btn--label__arrow', src='icons/smButtonArrow.svg')), icon=NULL
               )
             )
           ),
@@ -215,9 +223,6 @@ shinyUI(
         ## * 4. Calculate IBI score
         tabPanel(
           "4. Calculate IBI score",
-          tags$head(
-            tags$link(rel="stylesheet", type="text/css", href="styles/tabPanel4.css")
-          ),
           br(), br(),
           fluidRow(
             column(
@@ -237,8 +242,8 @@ shinyUI(
             column(
               4, align='right',
               downloadButton('download', 
-                             label=span(id="dl-button-label", "Download Results",
-                                        img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL),
+                  label=span(class="dl-button-label", "Download Results",
+                  img(class='arrow-download', src='icons/buttonArrow.svg')), icon=NULL),
               )
           ),
           br(),
