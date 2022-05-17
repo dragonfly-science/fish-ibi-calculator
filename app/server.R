@@ -421,10 +421,9 @@ shinyServer(function(input, output, session) {
                          c('All issues', sprintf('%s: %s (%s)', upper1st(type), issue, N)))]
     selectInput(inputId  = "issue_type",
                 multiple = F,
-                label    = "Show issues:",
+                label    = div(class = 'input-label', "Show issues:"),
                 choices  = labs)
   })
-  
 
   dataissues <- reactive({ # boolean: is there any issue? yes:1 no:0
     ft <- rv$finalTable

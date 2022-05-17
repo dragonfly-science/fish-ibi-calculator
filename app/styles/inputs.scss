@@ -1,0 +1,27 @@
+.input-label {
+  color: $mfe-black;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.select-label {
+  margin-right: 40px;
+}
+
+.select-menu {
+  margin-right: 30px;
+}
+
+div.items {
+  text-align: left;
+}
+
+div.item {
+  font-size: 12pt;
+}

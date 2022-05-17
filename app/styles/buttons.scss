@@ -80,14 +80,18 @@ img.arrow-download {
 
 .dl-issues-btn {
   height: 45px;
+  margin-top: 20px;
   border: 2px solid $btn-primary;
   background-color: transparent;
   padding: 7px 0px;
+  color: $btn-primary;
+  &:hover {
+    border-color: $mfe-blue;
+  }
   &--label {
     line-height: 1rem;
     font-size: 1rem;
     width: 100%;
-    color: $btn-primary;
     margin: auto;
     &__arrow {
       height: 20px;
