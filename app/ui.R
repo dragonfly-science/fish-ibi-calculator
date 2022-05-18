@@ -166,18 +166,18 @@ shinyUI(
           br(), br(),
           fluidRow(
             column(6, id='rescol1',
-                   wellPanel(
-                     id = 'issues-panel',
-                     fluidRow(
+                  wellPanel(
+                    id = 'issues-panel',
+                    fluidRow(
                        column(3, class='smallcol', align='center',
                               uiOutput('issuesIcon')
                               ),
                        ## imageOutput('issueImg', height='100px', width='100px')),
                        column(9, h2(htmlOutput('issuesTxt')))
-                     ),
+                    ),
                     #  br(),
-                   ),
-                   ),
+                  ),
+            ),
             column(
               6,
               fluidRow(
@@ -312,8 +312,6 @@ shinyUI(
                              )
                     )
       ),
-      tags$script(src = "js/selectize.js")
-    )
-    
+    )   
   )
 )
