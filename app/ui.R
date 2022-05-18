@@ -72,7 +72,7 @@ shinyUI(
     
     mainPanel(
       width = 12, id = 'mainpanel',
-      tags$script(src = 'headers.js'),
+      tags$script(src = 'js/headers.js'),
       ## Input widgets
       tabsetPanel(
         type = 'tabs', id = 'myFirst',
@@ -202,7 +202,7 @@ shinyUI(
               h5(htmlOutput('issuesSubTxt'))
             ),
             column(3,
-              uiOutput('issue_type')
+              div(id="issue_type_container", uiOutput('issue_type'))
             ),
             column(2,
               downloadButton(
@@ -247,7 +247,7 @@ shinyUI(
               )
           ),
           br(),
-          hr(), 
+          hr(),
           ##br(),
           fluidRow(column(6
                         , fluidRow(column(8, div(class='subheader', "Scores across number of sites")),
@@ -311,7 +311,8 @@ shinyUI(
                              column(1, div())
                              )
                     )
-      )
+      ),
+      tags$script(src = "js/selectize.js")
     )
     
   )
