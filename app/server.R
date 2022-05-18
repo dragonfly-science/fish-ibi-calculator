@@ -12,6 +12,7 @@ load('data/nz-fitted-quantiles.rdata', v=T)
 
 source('fishr-functions.R')
 
+
 cols_needed <- c('SiteID', 'Date', 'Penetration', 
                  'Altitude', 'SpeciesCode')
 
@@ -120,7 +121,9 @@ shinyServer(function(input, output, session) {
                       selected = "2. Match headers")
   }, label='File upload')
   
+
   observeEvent(input$exbtn, {
+
     df <- NULL
     rv[['intable']] <- NULL
     rv[['ignoredrows']] <- 0L
@@ -142,6 +145,7 @@ shinyServer(function(input, output, session) {
     rv[['intable']] <- df
     rv[['tablefields']] <- names(df)
     rv[['tablefields_ori']] <- names(df)
+
     disable('downloadissues')
     shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
     shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
@@ -268,37 +272,39 @@ shinyServer(function(input, output, session) {
     req(rv$intable)
 
     fm <- rv$fieldsmatching
-    d <- rv$intable
+    d <- copy(rv$intable)
     cols <- fm$ori[fm$good == T]
     goodcols <- intersect(c(cols_needed, cols_opt), fm$match[fm$good==T])
     d <- rv$intable[, fm$ori[match(goodcols, fm$match)], drop=F]
     names(d) <- goodcols
-    
+    setDT(d)
+    d[, Stratum := paste0(Date, '_', SiteID)]
+  
     ## *** Penetration
     if ('Penetration' %in% names(d)) {
       ## **** Check for missing values
       c <- is.na(d$Penetration)
       if (any(c)) {
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Penetration is missing'
+        d[c, `:=`(Penetration_issues = 1L,
+                  Penetration_txt    = 'Penetration is missing')]
       }
       ## **** Check for non-numeric values
       suppressWarnings({c <- !is.na(d$Penetration) & is.na(as.numeric(d$Penetration))})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Penetration should be numeric'
+        d[c, `:=`(Penetration_issues = 1L,
+                  Penetration_txt    = 'Penetration should be numeric')]
       }
       ## **** Check for negative values
       suppressWarnings({c <- !is.na(d$Penetration) & as.numeric(d$Penetration) < 0})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Penetration should be positive'
+        d[c, `:=`(Penetration_issues = 1L,
+                  Penetration_txt    = 'Penetration should be positive')]
       }
       ## **** Check for excessive values
       suppressWarnings({c <- grepl('^[0-9.]+$', d$Penetration) & as.numeric(d$Penetration) > 2000})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Penetration_issues'] <- 1L
-        d[c, 'Penetration_txt']    <- 'Penetration too high'
+        d[c, `:=`(Penetration_issues = 1L,
+                  Penetration_txt    = 'Penetration too high')]
       }
     }
     ## *** Altitude
@@ -306,52 +312,60 @@ shinyServer(function(input, output, session) {
       ## **** Check for missing values
       c <- is.na(d$Altitude)
       if (any(c)) {
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Altitude is missing'
+        d[c, `:=`(Altitude_issues = 1L,
+                  Altitude_txt    = 'Altitude is missing')]
       }
       ## **** Check for non-numeric values
       suppressWarnings({c <- !is.na(d$Altitude) & is.na(as.numeric(d$Altitude))})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Altitude should be numeric'
+        d[c, `:=`(Altitude_issues = 1L,
+                  Altitude_txt    = 'Altitude should be numeric')]
       }
       ## **** Check for negative values
       suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) < 0})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Altitude should be positive'
+        d[c, `:=`(Altitude_issues = 1L,
+                  Altitude_txt    = 'Altitude should be positive')]
       }
       ## **** Check for excessive values
       suppressWarnings({c <- !is.na(d$Altitude) & as.numeric(d$Altitude) > 3600})
       if (!all(is.na(c)) && any(c)) {
-        d[c, 'Altitude_issues'] <- 1L
-        d[c, 'Altitude_txt']    <- 'Altitude too high'
+        d[c, `:=`(Altitude_issues = 1L,
+                  Altitude_txt    = 'Altitude too high')]
       }
     }
     ## *** SpeciesCode
     if ('SpeciesCode' %in% names(d)) {
-
       d$SpeciesCode <- tolower(d$SpeciesCode)
-
       ## **** Check for missing values
       c <- is.na(d$SpeciesCode)
       if (any(c)) {
-        d[c, 'SpeciesCode_issues'] <- 1L
-        d[c, 'SpeciesCode_txt']    <- 'Species is missing'
+        d[c, `:=`(SpeciesCode_issues = 1L,
+                  SpeciesCode_txt    = 'Species is missing')]
       }
       ## **** Check for existence
       c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
       if (any(c)) {
-        d[c, 'SpeciesCode_issues'] <- 1L
-        d[c, 'SpeciesCode_txt']    <- 'Species code not recognised'
+        d[c, `:=`(SpeciesCode_issues = 1L,
+                  SpeciesCode_txt    = 'Species code not recognised')]
       }
       ## **** Check existence in species_ibi_metrics
-      c <- !(d$SpeciesCode %in% species_ibi_metrics$spcode)
+      c <- !(d$SpeciesCode %in% c(species_ibi_metrics$spcode, 'nospec'))
       if (any(c)) {
-        d[c, 'SpeciesCode_warnings'] <- 1L
-        d[c, 'SpeciesCode_wtxt']    <- 'Non-fish code or species without IBI metrics'
+        d[c, `:=`(SpeciesCode_warnings = 1L,
+                  SpeciesCode_wtxt     = 'Non-fish code or species without IBI metrics')]
       }
-    }        
+      ## **** Check for nospec alongside other species
+      d[, `:=`(n_spp = uniqueN(setdiff(SpeciesCode, 'nospec')),
+               n_nosp = sum(SpeciesCode == 'nospec'))
+      , Stratum]
+      c <- d[, SpeciesCode == 'nospec' & n_spp > 0]
+      if (any(c)) {
+        d[c, `:=`(SpeciesCode_warnings = 1L,
+                  SpeciesCode_wtxt     = '"nospec" alongside some records of species')]
+      }
+      ## d[, c('n_spp', 'n_nosp') := NULL]
+    }
     ## *** SiteID
     if ('SiteID' %in% names(d)) {
       ## **** Check for missing values
@@ -387,6 +401,7 @@ shinyServer(function(input, output, session) {
   
   issues_long <- reactive({ # one row per issue and record
     d <- cleanTable()
+
     d <- as.data.table(copy(d))
     ## ft <- as.data.table(copy(rv$finalTable))
     req(d)
@@ -502,9 +517,8 @@ shinyServer(function(input, output, session) {
     }
     print(dsel[1,])
 
-    cols2hide <- sapply(grep('_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T), function(x) {
-      colDef(show = FALSE)
-    }, simplify = F)
+    cols2hide <- sapply(grep('n_spp$|n_nosp$|_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T),
+                        function(x) colDef(show = FALSE), simplify = F)
     
     dt <- reactable(
       dsel, highlight=T, compact=T, wrap=F,
@@ -562,17 +576,27 @@ shinyServer(function(input, output, session) {
   ## ** Exclude issues
   
   observeEvent(input$remIssuesBtn, {
-    d <- as.data.table(cleanTable())
-    ## d <- as.data.table(d)
+    d <- cleanTable()
+    d <- as.data.table(d)
     req(d)
 
+    ## *** Collapse rows to "nospec" if no IBI species were present within the stratum
+    d[, nospec := all(!(SpeciesCode %in% species_ibi_metrics$spcode | SpeciesCode %in% 'nospec'))
+    , Stratum]
+    nospec1 <- d[nospec == T, .SD[1], Stratum][, SpeciesCode := 'nospec']
+    d1 <- rbind(d[nospec == F], nospec1)
+    rv$ignoredrows <- nrow(d) - nrow(d1)
+    d <- d1
+    d[, nospec := NULL]
+    ## *** Remove complete strata with some issues
     if (any(grepl('_issues$', names(d)))) {
       d[, with_issue := rowSums(.SD, na.rm=T) > 0,
         .SDcols = patterns('_issues$')]
       d[, site_issue := any(with_issue %in% T), .(SiteID, Date)]
-      rv$ignoredrows <- sum(d$site_issue == T)
+      rv$ignoredrows <- rv$ignoredrows + sum(d$site_issue == T)
       d <- d[site_issue == F, -c('with_issue', 'site_issue'), with = F]
     }
+    ## *** Remove individual records with some warnings
     if (any(grepl('_warnings$', names(d)))) {
       d[, with_warnings := rowSums(.SD, na.rm=T) > 0,
         .SDcols = patterns('_warnings$')]
@@ -685,6 +709,7 @@ shinyServer(function(input, output, session) {
   ## * Table of IBI scores
   output$ibiTable <- renderReactable({
     ibi_scores <- ibiData()
+
     req(setDT(ibi_scores))
     ibi_scores <- ibi_scores[, .(SiteID, Date, IBIscore, IBIscoreCut, NPSscore)]
 
@@ -704,15 +729,17 @@ shinyServer(function(input, output, session) {
 
     ibi_scores$NPSscore[is.na(ibi_scores$NPSscore)] <- 'Unknown'
     ibi_scores$NPSscore <- factor(as.character(ibi_scores$NPSscore),
-                                  levels = c('A', 'B', 'C', 'D', 'Unknown'))
-
+                                  levels = c('No species', 'A', 'B', 'C', 'D', 'Unknown'))
     ibi_scores$IBIscoreCut <- as.character(ibi_scores$IBIscoreCut)
     ibi_scores$IBIscoreCut[is.na(ibi_scores$IBIscoreCut)] <- 'Unknown'
     ibi_scores$IBIscoreCut <- factor(ibi_scores$IBIscoreCut,
-                                     levels = c('Low quality', 'Medium quality', 'High quality', 'Unknown'))
+                                     levels = c('No IBI species', 'Low quality',
+                                                'Medium quality', 'High quality',
+                                                'Unknown'))
     
     if (input$sel_score == 'nps_score') {
-      group.colors <- c('A'       = "#00C7A8",
+      group.colors <- c('No species'       = "#565659",
+                        'A'       = "#00C7A8",
                         'B'       = "#2C9986", 
                         'C'       = "#004A6D", 
                         'D'       = "#BF2F37",
@@ -721,7 +748,8 @@ shinyServer(function(input, output, session) {
       g <- ggplot(ibi_scores, aes(x = NPSscore, fill = NPSscore)) +
         xlab("NPS-FM category")
     } else if (input$sel_score == 'ibi_score') {
-      group.colors <- c('Low quality'    = "#BF2F37",
+      group.colors <- c('No IBI species' = "#565659",
+                        'Low quality'    = "#BF2F37",
                         'Medium quality' = "#004A6D", 
                         'High quality'   = "#00C7A8",
                         'Unknown'        = '#d4dde1')
@@ -788,18 +816,18 @@ shinyServer(function(input, output, session) {
                      total_sp_richness, number_non_native, X, Y)]
       
       ibi[is.na(NPSscore), NPSscore := 'Unknown']
-      ibi[, NPSscore := factor(as.character(NPSscore), levels = c('A', 'B', 'C', 'D', 'Unknown'))]
+      ibi[, NPSscore := factor(as.character(NPSscore), levels = c('No species', 'A', 'B', 'C', 'D', 'Unknown'))]
       ibi[, IBIscoreCut := as.character(IBIscoreCut)]
       ibi[is.na(IBIscoreCut), IBIscoreCut := 'Unknown']
-      ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('Low quality',
+      ibi[, IBIscoreCut := factor(IBIscoreCut, levels = c('No IBI species', 'Low quality',
                                                           'Medium quality',
                                                           'High quality',
                                                           'Unknown'))]
       if (input$sel_score == 'nps_score') {
-        factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+        factcols <- colorFactor(c("#565659", '#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
         ibi[, Colour := factcols(NPSscore)]
       } else {
-        factcols <- colorFactor(c('#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
+        factcols <- colorFactor(c("#565659", '#BF2F37', '#004A6D', '#2C9986', '#808080'), domain = NULL)
         ibi[, Colour := factcols(IBIscoreCut)]
       }
       
@@ -842,12 +870,12 @@ shinyServer(function(input, output, session) {
       
       if (input$sel_score == 'nps_score') {
         
-        factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
+        factcols <- colorFactor(c("#565659", '#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'), domain = NULL)
         fc = ~factcols(NPSscore) 
         c = ~factcols(NPSscore)
 
-        npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown'),
-                           color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
+        npss <- data.table(label = c('No species', 'A', 'B', 'C', 'D', 'Unknown'),
+                           color = c("#565659", '#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080'))
         npss <- npss[as.character(label) %in% ibi$NPSscore]
         
         rv$map <- leaflet() |>
@@ -966,21 +994,15 @@ shinyServer(function(input, output, session) {
                   cellArgs = list(style='white-space: normal;'),
                   column(width= 12, 
                          h5(strong("High quality")),
-                         h5("> 67%"),
-                         hr(),
-                         # h6(includeMarkdown('text/nps-a.md'))
+                         h5("> 67%")
                          ),
                   column(width= 12, 
                          h5(strong("Medium quality")),
-                         h5("≤ 67 and ≥ 33"),
-                         hr(),
-                         # h6(includeMarkdown('text/nps-b.md'))
+                         h5("≤ 67 and ≥ 33")
                          ),
                   column(width= 12, 
                          h5(strong("Low quality")),
-                         h5("< 33"),
-                         hr(),
-                         # h6(includeMarkdown('text/nps-c.md'))
+                         h5("< 33")
                          )
                   )
     }
