@@ -1,0 +1,75 @@
+.select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/*
+  label for issues select
+*/
+.input-label {
+  color: $mfe-black;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.select-label {
+  margin-right: 40px;
+}
+
+.select-menu {
+  margin-right: 30px;
+}
+
+.selectize-input.items {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/*
+  text inside the input control
+*/
+.selectize-input .item {
+  width: 80%;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selectize-dropdown-content {
+  padding: 15px;
+}
+
+/*
+  options for select input 
+*/
+.option {
+  font-size: 14px;
+  position: relative;
+  padding-left: 2rem !important;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    border: 1px solid #d4dde1;
+    border-radius: 2000px;
+    background-color: #eceff0;
+  }
+  &.active {
+    background-color: #ffffff;
+    &::before {
+      background-color: $mfe-green-bright;
+    }
+  }
+  &.selected {
+    background-color: #ffffff;
+  }
+}

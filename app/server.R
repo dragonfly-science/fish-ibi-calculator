@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyjs)
+library(shinyWidgets)
 library(data.table)
 library(leaflet)
 library(sf)
@@ -437,11 +438,10 @@ shinyServer(function(input, output, session) {
     labs <- l[, setNames(c('All issues', issue),
                          c('All issues', sprintf('%s: %s (%s)', upper1st(type), issue, N)))]
     selectInput(inputId  = "issue_type",
-                multiple = F,
-                label    = h4("Show issues:"),
+                multiple = FALSE,
+                label    = div(class = 'input-label', "Show issues:"),
                 choices  = labs)
   })
-  
 
   dataissues <- reactive({ # boolean: is there any issue? yes:1 no:0
     ft <- rv$finalTable
