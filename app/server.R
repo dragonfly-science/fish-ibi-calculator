@@ -371,8 +371,8 @@ shinyServer(function(input, output, session) {
       ## **** Check for missing values
       c <- is.na(d$SiteID)
       if (any(c)) {
-        d[c, 'SiteID_issues'] <- 1L
-        d[c, 'SiteID_txt']    <- 'Site ID is missing'
+        d[c, `:=`(SiteID_issues = 1L,
+                  SiteID_txt    = 'Site ID is missing')]
       }
     }
     ## *** Date
@@ -380,8 +380,8 @@ shinyServer(function(input, output, session) {
       ## **** Check for missing values
       c <- is.na(d$Date)
       if (any(c)) {
-        d[c, 'Date_issues'] <- 1L
-        d[c, 'Date_txt']    <- 'Date is missing'
+        d[c, `:=`(Date_issues = 1L,
+                  Date_txt    = 'Date is missing')]
       }
     }
 
@@ -396,6 +396,7 @@ shinyServer(function(input, output, session) {
     d <- cleanTable()
     req(d)
     ft <- copy(d)
+    cat('\n* cleanTable -> finalTable\n')
     rv$finalTable <- ft
   })
   
@@ -482,17 +483,17 @@ shinyServer(function(input, output, session) {
   selectedissues <- reactive({
     ft <- copy(rv$finalTable)
     setDT(ft)
-    ## cat('\n=== ft:\n')
-    ## print(head(ft))
+    cat('\n=== ft:\n')
+    print(head(ft))
     req(ft)
     long <- copy(issues_long())
     ## cat('\n=== long:\n')
     ## print(long)
-    req(long)
+    ## req(long)
     ## cat('\n=== selected issue_type:\n')
     ## print(input$issue_type)
-    req(input$issue_type)
-    if (dataissues() %in% 1) {
+    ## req(input$issue_type)
+    if (dataissues() & !is.null(input$issue_type)) {
       if (input$issue_type != 'All issues') {
         iids <- ft[long[issue %in% input$issue_type], on = 'OriginalRow'][, sort(unique(OriginalRow))]
       } else {
@@ -502,8 +503,10 @@ shinyServer(function(input, output, session) {
     } else {
       dsel <- copy(rv$finalTable)
     }
+    cat('\n=== dsel:\n')
+    print(dsel)
     ## print(head(dsel))
-    as.data.frame(dsel)
+    as.data.frame(copy(dsel))
   })
   
   ## ** Cleaned table on page 3
@@ -511,11 +514,15 @@ shinyServer(function(input, output, session) {
   output$newTable <- renderReactable({
     dsel <- selectedissues() #rv$finalTable
     req(dsel)
-    if (any(grepl('_issues$', names(dsel))) &&
-          sum(sapply(dsel[, grep('_issues$|_warnings$', names(dsel), val=T)], function(x) any(x %in% 1))) > 0) {
-      dsel <- dsel[rowSums(dsel[, grep('_issues$|_warnings$', names(dsel), val=T), drop=F], na.rm=T) > 0,]
-    }
-    print(dsel[1,])
+
+    cat('\n* dsel:\n')
+    print(as.data.table(dsel))
+
+    ## if (any(grepl('_issues$', names(dsel))) &&
+    ##       sum(sapply(dsel[, grep('_issues$|_warnings$', names(dsel), val=T)], function(x) any(x %in% 1))) > 0) {
+    ##   dsel <- dsel[rowSums(dsel[, grep('_issues$|_warnings$', names(dsel), val=T), drop=F], na.rm=T) > 0,]
+    ## }
+    ## print(dsel[1,])
 
     cols2hide <- sapply(grep('n_spp$|n_nosp$|_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T),
                         function(x) colDef(show = FALSE), simplify = F)
