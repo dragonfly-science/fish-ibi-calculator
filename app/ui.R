@@ -186,7 +186,6 @@ shinyUI(
                   id='rescol2', align = 'right',
                   actionButton('remIssuesBtn', 'Exclude issues'),
                 ),
-                # br(),br(),
                 column(
                   6,
                   actionButton('to4btn', div(class="button-inner",

@@ -73,3 +73,8 @@
     background-color: #ffffff;
   }
 }
+
+/* hide the caret in select input */
+#issue_type-selectized {
+  caret-color: transparent;
+}
