@@ -65,6 +65,7 @@
   }
   &.active {
     background-color: #ffffff;
+    font-weight: 700;
     &::before {
       background-color: $mfe-green-bright;
     }
@@ -74,7 +75,7 @@
   }
 }
 
-/* hide the caret in select input */
+/* hide the caret in selectInput() element */
 #issue_type-selectized {
   caret-color: transparent;
 }

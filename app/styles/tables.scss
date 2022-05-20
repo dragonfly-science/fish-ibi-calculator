@@ -66,6 +66,11 @@ td[title="Value should be numeric"] {
   background-color: #eceff0;
 }
 
+#newTable .ReactTable {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
 .ReactTable .rt-table_info,
 .ReactTable .rt-table_paginate {
   font-family: Lato;
@@ -159,18 +164,17 @@ CellWithComment {
   /* opacity: 1; */
 }
 
-
 .CellWithComment:hover span.CellCommentWarn {
-    display: block;
-    /* opacity: 1; */
+  display: block;
+  /* opacity: 1; */
 }
 
 .CellWithComment:hover span.CellComment {
-    display: block;
-    /* opacity: 1; */
+  display: block;
+  /* opacity: 1; */
 }
 
 .CellWithComment:hover span.CellCommentError {
-    display: block;
-    /* opacity: 1; */
+  display: block;
+  /* opacity: 1; */
 }

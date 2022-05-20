@@ -49,7 +49,7 @@ shinyUI(
       title = NULL
     ),
     tags$head(
-      tags$link(rel = "shortcut icon", href = "favicon.ico"), 
+      tags$link(rel = "shortcut icon", href = "favicon.ico"),
       tags$link(rel = "stylesheet", type = "text/css", href = "main.css"),
       # tags$style(css)
     ),
