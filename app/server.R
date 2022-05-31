@@ -562,14 +562,14 @@ shinyServer(function(input, output, session) {
                 paste0(name,'_wtxt') %in% names(dsel) &&
                 !is.na(dsel[index, paste0(name,'_warnings')]) &&
                 dsel[index, paste0(name,'_warnings')] > 0) {
-            v <- sprintf('%s <span class="CellCommentWarn">Warning: %s</span>',
+            v <- sprintf('%s <span class="cellcomment cellcomment--warn"><b>Warning:</b> %s</span>',
                          value, dsel[index, paste0(name,'_wtxt')])
           }
           if (paste0(name,'_issues') %in% names(dsel) &&
                 paste0(name,'_txt') %in% names(dsel) &&
                 !is.na(dsel[index, paste0(name,'_issues')]) &&
                 dsel[index, paste0(name,'_issues')] > 0) {
-            v <- sprintf('%s <span class="CellCommentError">Error: %s</span>',
+            v <- sprintf('%s <span class="cellcomment cellcomment--error"><b>Error:</b> %s</span>',
                          value, dsel[index, paste0(name,'_txt')])
           }
           v
