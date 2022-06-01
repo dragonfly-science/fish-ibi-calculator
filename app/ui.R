@@ -110,7 +110,7 @@ shinyUI(
           hr(),
           br(),
           h3(includeMarkdown('text/page-1-about-title.md')),
-          div(class = 'twocols', h5(includeMarkdown('text/page-1-about.md'))),
+          div(class = 'twocols', includeMarkdown('text/page-1-about.md')),
           br(), br(),
           div(id="outer-img-container",
               div(id="inner-img-container",
@@ -197,21 +197,21 @@ shinyUI(
             )
           ),
           fluidRow(
-            column(7, 
+            column(6, 
               h5(htmlOutput('issuesSubTxt'))
             ),
             column(3,
               div(id="issue_type_container", uiOutput('issue_type'))
             ),
-            column(2,
+            column(3,
               downloadButton(
                 'downloadissues', class = "shinyjs-disabled dl-issues-btn",
-                label=span(class="dl-issues-btn--label", "Download Issues",
+                label=span(class="dl-issues-btn--label", "Download All Issues",
                 img(class='dl-issues-btn--label__arrow', src='icons/smButtonArrow.svg')), icon=NULL
               )
             )
           ),
-          br(), br()
+          br()
           ## , fluidRow(verbatimTextOutput('logtxt')) # Comment-out this line if not testing
         , withspinner(reactableOutput("newTable"))
           ## , withspinner(DTOutput("newTable"))

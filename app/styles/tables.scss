@@ -133,48 +133,33 @@ CellWithComment {
   position: relative;
 }
 
-.CellCommentWarn {
+.cellcomment {
   display: none;
   position: absolute;
   z-index: 100;
   border: 1px;
-  background-color: #084553;
   border-style: solid;
   border-width: 1px;
-  border-color: #084553;
-  padding: 3px;
   color: white;
-  top: 20px;
-  left: 20px;
-  /* opacity: 1; */
-}
-.CellCommentError {
-  display: none;
-  position: absolute;
-  z-index: 100;
-  border: 1px;
-  background-color: #bf2f37;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #bf2f37;
-  padding: 3px;
-  color: white;
-  top: 20px;
-  left: 20px;
-  /* opacity: 1; */
+  top: -50px;
+  left: 0px;
+  padding: 3px 1rem;
+  &--warn {
+    background-color: #084553;
+    border-color: #084553;
+  }
+  &--error {
+    border-color: #bf2f37;
+    background-color: #bf2f37;
+  }
 }
 
-.CellWithComment:hover span.CellCommentWarn {
+.CellWithComment:hover span.cellcomment {
   display: block;
   /* opacity: 1; */
 }
 
 .CellWithComment:hover span.CellComment {
-  display: block;
-  /* opacity: 1; */
-}
-
-.CellWithComment:hover span.CellCommentError {
   display: block;
   /* opacity: 1; */
 }
