@@ -228,14 +228,6 @@ shinyUI(
               8,
               div(style="margin-bottom: 40px;",
                   h2(includeMarkdown('text/page-4-title.md'))
-                  ),
-              div(id="select-container",
-                  span(class="select-label", HTML("View by: "), style="height: 100%; margin-top: auto; margin-bottom: auto;"),
-                  span(class="select-menu",
-                       selectInput("sel_score", "",
-                                   choices = c("NPS-FM category" = 'nps_score',
-                                               "IBI score" = 'ibi_score')))## ,
-                  ## span(id="select-2", selectInput("download2", "", choices = c("NPS-FM category")))
                   )
             ),
             column(

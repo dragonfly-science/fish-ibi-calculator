@@ -39,7 +39,7 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics) 
 
   .data <- copy(.data)
   setDT(.data)
-  .data[, Stratum := paste0(Date, '_', SiteID)]
+  .data[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
   .data <- .data[rowid(Stratum, SpeciesCode) == 1]
   
   sim <- as.data.table(species.ibi.metrics)
@@ -54,7 +54,7 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics) 
   , .(Date              = first(Date),
       SiteID            = first(SiteID),
       Altitude          = first(Altitude),
-      Penet             = first(Penetration),
+      Penetration       = first(Penetration),
       total_sp_richness = .SD[SpeciesCode != 'nospec', .N],
       metric1           = sum(native, na.rm = T),
       metric2           = sum(benthic_riffle, na.rm = T),
@@ -65,9 +65,9 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics) 
   , Stratum][
    , metric6 := fifelse(total_sp_richness > 0, metric1 / (number_non_native + metric1), 0)
   ]
-  
+
   ms
- 
+
 }
 
 #' Fit quantile regression
@@ -122,11 +122,11 @@ add.fish.metrics <- function(.data, q1e = qr.1.elev, q2e = qr.2.elev, q3e = qr.3
     metric3_rating_elev = qr.score(x = Altitude, y = metric3, qr = q3e),
     metric4_rating_elev = qr.score(x = Altitude, y = metric4, qr = q4e),
     metric5_rating_elev = qr.score(x = Altitude, y = metric5, qr = q5e),
-    metric1_rating_pene = qr.score(x = Penet, y = metric1, qr = q1p),
-    metric2_rating_pene = qr.score(x = Penet, y = metric2, qr = q2p),
-    metric3_rating_pene = qr.score(x = Penet, y = metric3, qr = q3p),
-    metric4_rating_pene = qr.score(x = Penet, y = metric4, qr = q4p),
-    metric5_rating_pene = qr.score(x = Penet, y = metric5, qr = q5p))
+    metric1_rating_pene = qr.score(x = Penetration, y = metric1, qr = q1p),
+    metric2_rating_pene = qr.score(x = Penetration, y = metric2, qr = q2p),
+    metric3_rating_pene = qr.score(x = Penetration, y = metric3, qr = q3p),
+    metric4_rating_pene = qr.score(x = Penetration, y = metric4, qr = q4p),
+    metric5_rating_pene = qr.score(x = Penetration, y = metric5, qr = q5p))
   , by = 1:nrow(.data)]
   for (v in grep('_rating_', names(d1), val = T, fixed = T))
     d1[total_sp_richness == 0, eval(v) := NA_real_]
