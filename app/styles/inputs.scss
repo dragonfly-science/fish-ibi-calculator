@@ -64,14 +64,14 @@
     background-color: #eceff0;
   }
   &.active {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     font-weight: 700;
     &::before {
       background-color: $mfe-green-bright;
     }
   }
   &.selected {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
   }
 }
 

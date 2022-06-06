@@ -105,7 +105,6 @@ shinyUI(
               h6(includeMarkdown('text/page-1-requirements.md'))
             )
           ),
-          br(),
           hr(),
           br(),
           h3(includeMarkdown('text/page-1-about-title.md')),
