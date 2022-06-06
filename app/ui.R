@@ -86,7 +86,7 @@ shinyUI(
               6,
               h2(includeMarkdown('text/page-1-title.md')),
               br(),
-              h5(includeMarkdown('text/page-1-description.md'))
+              p(includeMarkdown('text/page-1-description.md'))
             ),
             column(
               6,
@@ -102,7 +102,6 @@ shinyUI(
                 column(6,
                        actionButton('exbtn', 'Use demo table'))
               ),
-              br(),
               h6(includeMarkdown('text/page-1-requirements.md'))
             )
           ),
@@ -130,7 +129,7 @@ shinyUI(
             column(6,
                    h2(includeMarkdown('text/page-2-title.md')),
                    br(),
-                   h5(includeMarkdown('text/page-2-description.md'))
+                   p(includeMarkdown('text/page-2-description.md'))
                    ),
             column(3, offset = 3 #, align = 'right'
                  , disabled(
@@ -175,7 +174,6 @@ shinyUI(
                        ## imageOutput('issueImg', height='100px', width='100px')),
                        column(9, h2(htmlOutput('issuesTxt')))
                     ),
-                    #  br(),
                   ),
             ),
             column(
@@ -198,7 +196,7 @@ shinyUI(
           ),
           fluidRow(
             column(6, 
-              h5(htmlOutput('issuesSubTxt'))
+              htmlOutput('issuesSubTxt')
             ),
             column(3,
               div(id="issue_type_container", uiOutput('issue_type'))
@@ -211,9 +209,9 @@ shinyUI(
               )
             )
           ),
-          br()
+          br(),
           ## , fluidRow(verbatimTextOutput('logtxt')) # Comment-out this line if not testing
-        , withspinner(reactableOutput("newTable"))
+          div(style="margin-top: 2rem;", withspinner(reactableOutput("newTable")))
           ## , withspinner(DTOutput("newTable"))
         ),
         ## tabPanel('>'),
