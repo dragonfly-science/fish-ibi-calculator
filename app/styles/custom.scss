@@ -1,12 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@900&display=swap");
+html {
+  font-size: 16px;
+}
 
 body {
   color: #003147;
   font-family: Lato;
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 22px;
 }
 
 .container-fluid {
@@ -300,10 +302,9 @@ h6 > li {
 
 #rescol1,
 #rescol2 {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
-
 
 .legend i {
   vertical-align: unset;

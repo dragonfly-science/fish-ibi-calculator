@@ -49,6 +49,7 @@ td[title="Value should be numeric"] {
   line-height: 30px;
   color: #003147;
   padding-left: 15px !important;
+  padding-right: 15px !important;
   border-right: 1px solid rgba(96, 119, 129, 0.6);
   border-collapse: collapse;
 }
@@ -61,7 +62,13 @@ td[title="Value should be numeric"] {
   line-height: 30px;
   color: #003147;
   padding-left: 15px !important;
+  padding-right: 15px !important;
   background-color: #eceff0;
+}
+
+#newTable .ReactTable {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .ReactTable .rt-table_info,
@@ -126,22 +133,33 @@ CellWithComment {
   position: relative;
 }
 
-.CellComment {
+.cellcomment {
   display: none;
   position: absolute;
   z-index: 100;
   border: 1px;
-  background-color: #bf2f37;
   border-style: solid;
   border-width: 1px;
-  border-color: #bf2f37;
-  padding: 3px;
   color: white;
-  top: 20px;
-  left: 20px;
+  top: -50px;
+  left: 0px;
+  padding: 3px 1rem;
+  &--warn {
+    background-color: #084553;
+    border-color: #084553;
+  }
+  &--error {
+    border-color: #bf2f37;
+    background-color: #bf2f37;
+  }
+}
+
+.CellWithComment:hover span.cellcomment {
+  display: block;
   /* opacity: 1; */
 }
+
 .CellWithComment:hover span.CellComment {
-    display: block;
-    /* opacity: 1; */
+  display: block;
+  /* opacity: 1; */
 }

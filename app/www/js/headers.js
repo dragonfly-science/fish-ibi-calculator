@@ -55,18 +55,6 @@ $(document).contextMenu({
             radio: 'radio', 
             value: 'Northing'
         },
-        Location: {
-            name: "Location (opt)",
-            type: 'radio',
-            radio: 'radio',
-            value: 'Location'
-        },
-        NZreach: {
-            name: "NZreach (opt)",
-            type: 'radio',
-            radio: 'radio',
-            value: 'NZreach'
-        },
 	sep2: "---------",
 	None: {
 	    name: "[Remove]",
