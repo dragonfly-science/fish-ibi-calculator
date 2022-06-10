@@ -9,3 +9,5 @@ RUN Rscript -e "install.packages('sass', repos = 'https://cloud.r-project.org')"
 
 RUN Rscript -e "webshot::install_phantomjs()"
 RUN mv /root/bin/phantomjs /usr/local/bin/phantomjs
+
+RUN Rscript -e "install.packages('leaflet.extras', repos = 'https://cloud.r-project.org')"

@@ -1,5 +1,5 @@
 baseimage := dragonflyscience/fish-ibi-shiny-20.04
-image := $(baseimage):2022-06-07
+image := $(baseimage):2022-06-10
 
 PORT ?= 3090
 
