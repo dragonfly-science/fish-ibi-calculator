@@ -356,12 +356,6 @@ shinyServer(function(input, output, session) {
         d[c, `:=`(SpeciesCode_warnings = 1L,
                   SpeciesCode_wtxt     = 'Non-fish code or species without IBI metrics')]
       }
-      ## **** Flag duplicated records of same species within stratum
-      c <- rowid(d$SpeciesCode, d$Stratum) > 1
-      if (any(c)) {
-        d[c, `:=`(SpeciesCode_warnings = 1L,
-                  SpeciesCode_wtxt     = 'Duplicated record of the species')]
-      }
       ## **** Check for nospec alongside other species
       d[, `:=`(n_spp = uniqueN(setdiff(SpeciesCode, 'nospec')),
                n_nosp = sum(SpeciesCode == 'nospec'))
