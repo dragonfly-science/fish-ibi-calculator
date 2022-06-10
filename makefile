@@ -21,8 +21,8 @@ deploytest:
 docker: Dockerfile
 	docker build --tag $(baseimage) . && \
 	docker tag $(baseimage) $(image) #&& \
-#	docker push $(image) && \
-#	touch .push
+	docker push $(image) && \
+	touch .push
 
 local:
 	docker run -it --rm -w /work -v $$(pwd):/work \

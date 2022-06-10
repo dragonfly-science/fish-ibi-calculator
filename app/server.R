@@ -673,7 +673,9 @@ shinyServer(function(input, output, session) {
     req(d)
     n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
     if (n.issues > 0) {
-      return('Please correct the following issues and re-upload the file, or exclude the issues, which would remove the individual records for issues of non-fish codes, or whole visits for other issues.\n\nCells are coloured red if they have errors, or blue/grey if they have warnings. Hover your mouse over cells to find more information about the issues, or filter the table using the button to the right.\nYou can download a comma-separated table of issues using the button on the far right.')
+      return('<p>Please correct the following issues and re-upload the file, or exclude the issues. Excluding issues removes the individual records for non-fish code issues. For all other issues, all records associated with the particular site visit are excluded from the analysis.</p>
+             <p>In the table below, cells are coloured red if they have errors, or blue/grey if they have warnings. Hover your mouse over cells to find more information about the issues, or filter the table using the button to the right.</p>
+             <p>You can download a comma-separated table of issues using the button on the far right.</p>')
     } else {
       return('The table below will be used as it is to calculate the IBI scores')
     }
