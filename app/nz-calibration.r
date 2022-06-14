@@ -181,11 +181,11 @@ qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
 qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)
 qr.5.elev <- qr.construct("metric5", "Altitude", data = site_metrics_all)
 
-qr.1.penet <- qr.construct("metric1", "Penet", data = site_metrics_all)
-qr.2.penet <- qr.construct("metric2", "Penet", data = site_metrics_all)
-qr.3.penet <- qr.construct("metric3", "Penet", data = site_metrics_all)
-qr.4.penet <- qr.construct("metric4", "Penet", data = site_metrics_all)
-qr.5.penet <- qr.construct("metric5", "Penet", data = site_metrics_all)
+qr.1.penet <- qr.construct("metric1", "Penetration", data = site_metrics_all)
+qr.2.penet <- qr.construct("metric2", "Penetration", data = site_metrics_all)
+qr.3.penet <- qr.construct("metric3", "Penetration", data = site_metrics_all)
+qr.4.penet <- qr.construct("metric4", "Penetration", data = site_metrics_all)
+qr.5.penet <- qr.construct("metric5", "Penetration", data = site_metrics_all)
 
 ibi_scores <- site_metrics_all %>% 
     add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
@@ -198,7 +198,7 @@ ibi_scores <- site_metrics_all %>%
     cut.fish.ibi() %>% 
     nps()
 
-ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
+ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date, Altitude, Penetration)]), on = c('Date', 'SiteID', 'Altitude','Penetration')]
 
 
 save(qr.1.elev, qr.2.elev, qr.3.elev, qr.4.elev, qr.5.elev,
