@@ -35,11 +35,16 @@ add.fish.dates <- function(.data){
 #' This function prepares site-level summaries for later metric calculations
 #'
 #' @export
-prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics) {
+prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics, stratum.incl.alt.penet = T) {
 
   .data <- copy(.data)
   setDT(.data)
-  .data[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
+  if (stratum.incl.alt.penet == T) {
+    .data[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
+  } else {
+    .data[, Stratum := paste0(Date, '_', SiteID)]
+  }
+    
   .data <- .data[rowid(Stratum, SpeciesCode) == 1]
   
   sim <- as.data.table(species.ibi.metrics)
