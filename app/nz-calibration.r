@@ -1,5 +1,4 @@
 library(data.table)
-library(tidyverse)
 library(quantreg)
 
 source('fishr-functions.R')
@@ -7,6 +6,7 @@ source('fishr-functions.R')
 load('data/species_ibi_metrics.rda', v=T)
 
 load('data/fish_names.rda', v=T)
+
 setDT(fish_names)
 ## load('../fishr/data/fish_names.rda', v=T)
 load('../fishr/data/fish_methods.rda', v=T)
@@ -172,8 +172,8 @@ d
 d$Altitude <- as.numeric(d$Altitude)
 d$Penetration <- as.numeric(d$Penetration)
 
-site_metrics_all <- d %>%
-    prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
+site_metrics_all <- d |>
+    prep.site.metrics(species.ibi.metrics = species_ibi_metrics, stratum.incl.alt.penet = T)
 
 qr.1.elev <- qr.construct(y="metric1", x="Altitude", data = site_metrics_all)
 qr.2.elev <- qr.construct("metric2", "Altitude", data = site_metrics_all)
@@ -181,24 +181,24 @@ qr.3.elev <- qr.construct("metric3", "Altitude", data = site_metrics_all)
 qr.4.elev <- qr.construct("metric4", "Altitude", data = site_metrics_all)
 qr.5.elev <- qr.construct("metric5", "Altitude", data = site_metrics_all)
 
-qr.1.penet <- qr.construct("metric1", "Penet", data = site_metrics_all)
-qr.2.penet <- qr.construct("metric2", "Penet", data = site_metrics_all)
-qr.3.penet <- qr.construct("metric3", "Penet", data = site_metrics_all)
-qr.4.penet <- qr.construct("metric4", "Penet", data = site_metrics_all)
-qr.5.penet <- qr.construct("metric5", "Penet", data = site_metrics_all)
+qr.1.penet <- qr.construct("metric1", "Penetration", data = site_metrics_all)
+qr.2.penet <- qr.construct("metric2", "Penetration", data = site_metrics_all)
+qr.3.penet <- qr.construct("metric3", "Penetration", data = site_metrics_all)
+qr.4.penet <- qr.construct("metric4", "Penetration", data = site_metrics_all)
+qr.5.penet <- qr.construct("metric5", "Penetration", data = site_metrics_all)
 
-ibi_scores <- site_metrics_all %>% 
+ibi_scores <- site_metrics_all |> 
     add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev,
                      q4e=qr.4.elev, q5e=qr.5.elev,
                      q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet,
                      q4p=qr.4.penet, q5p=qr.5.penet
-                     ) %>% 
-    add.fish.metric6() %>% 
-    add.fish.ibi() %>% 
-    cut.fish.ibi() %>% 
+                     ) |> 
+    add.fish.metric6() |> 
+    add.fish.ibi() |> 
+    cut.fish.ibi() |> 
     nps()
 
-ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date)]), on = c('Date', 'SiteID')]
+ibi_scores <- as.data.table(ibi_scores)[unique(as.data.table(d)[, .(SiteID, Date, Altitude, Penetration)]), on = c('Date', 'SiteID', 'Altitude','Penetration')]
 
 
 save(qr.1.elev, qr.2.elev, qr.3.elev, qr.4.elev, qr.5.elev,

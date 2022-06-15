@@ -103,7 +103,6 @@ shinyServer(function(input, output, session) {
     rv[['ignoredrows']] <- 0L
     rv[['finalTable']] <- NULL
     df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
-    ## df <- read.csv('~/Downloads/transaction-report.csv', header = TRUE, stringsAsFactors = F)
 
     fields <- isolate(rv[['selfields']])
     fields$good <- ifelse(fields$req %in% names(df), 1, 0)
@@ -130,13 +129,6 @@ shinyServer(function(input, output, session) {
     rv[['ignoredrows']] <- 0L
     rv[['finalTable']] <- NULL
     df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
-    ## setDT(df)
-    ## df <- df[!is.na(Penetration)]
-    ## fwrite(df, 'test-data-no-errors.csv')
-    ## df <- df[!(SpeciesCode %in% c("parcur","galaxi","galdep","galgra","gobiom","galcob","salmo","galgol","galspd","galpul","galmar","galeld","galsps","galano","angrei","parane","hyrmen","nospec","anguil","cypcar"))]
-    ## fwrite(df, 'test-data-no-warnings.csv')
-    ## df <- read.csv('test-data-no-warnings.csv', header = TRUE, stringsAsFactors = F)
-    ## df <- read.csv('data/example-data-1.csv', header = TRUE, stringsAsFactors = F)
     fields <- isolate(rv[['selfields']])
     fields$good <- ifelse(fields$req %in% names(df), 1, 0)
     rv[['selfields']] <- fields
@@ -179,9 +171,6 @@ shinyServer(function(input, output, session) {
       if (pair[1] == 'None') {
         pair[1] <- ''
       }
-      ## pair <- c('SiteID', 'card')
-      ## pair <- c('Northing', 'Easting')
-      ## pair <- c('SiteID', 'Instrument.code')
       sf <- isolate(rv[['selfields']])
       fm <- as.data.table(isolate(rv[['fieldsmatching']]))
       if (pair[1] %in% fm$match) {
@@ -193,17 +182,6 @@ shinyServer(function(input, output, session) {
 
       sf[sf$req == pair[1], 'good'] <- 1L
       rv[['selfields']] <- sf
-      ## d <- isolate(rv[['intable']])
-      ## if (pair[1] != pair[2] & pair[1] %in% names(d)) {
-      ##     names(d)[names(d) %in% pair[1]] <- paste0(names(d)[names(d) %in% pair[1]], '_0')
-      ## }
-      ## if (pair[1] != pair[2] & pair[2] %in% names(d)) {
-      ##     names(d)[names(d) == pair[2]] <- pair[1]
-      ##     rv[['tablefields']] <- names(d)
-      ## }
-      ## sf$good <- ifelse(sf$req %in% names(d), 1, 0)
-      ## rv[['selfields']] <- sf
-      ## rv[['intable']] <- d
     }
   }, label = 'Fields renaming')
 
@@ -365,7 +343,6 @@ shinyServer(function(input, output, session) {
         d[c, `:=`(SpeciesCode_warnings = 1L,
                   SpeciesCode_wtxt     = '"nospec" alongside some records of species')]
       }
-      ## d[, c('n_spp', 'n_nosp') := NULL]
     }
     ## *** SiteID
     if ('SiteID' %in% names(d)) {
@@ -405,7 +382,6 @@ shinyServer(function(input, output, session) {
     d <- cleanTable()
 
     d <- as.data.table(copy(d))
-    ## ft <- as.data.table(copy(rv$finalTable))
     req(d)
     if (any(grepl('_txt$', names(d)))) {
       e_long <- melt(d, id.var = 'OriginalRow', measure.vars = patterns('_txt$'), value.name = 'issue')[
@@ -488,12 +464,6 @@ shinyServer(function(input, output, session) {
     print(head(ft))
     req(ft)
     long <- copy(issues_long())
-    ## cat('\n=== long:\n')
-    ## print(long)
-    ## req(long)
-    ## cat('\n=== selected issue_type:\n')
-    ## print(input$issue_type)
-    ## req(input$issue_type)
     if (dataissues() & !is.null(input$issue_type)) {
       if (input$issue_type != 'All issues') {
         iids <- ft[long[issue %in% input$issue_type], on = 'OriginalRow'][, sort(unique(OriginalRow))]
@@ -506,7 +476,6 @@ shinyServer(function(input, output, session) {
     }
     cat('\n=== dsel:\n')
     print(dsel)
-    ## print(head(dsel))
     as.data.frame(copy(dsel))
   })
 
@@ -518,12 +487,6 @@ shinyServer(function(input, output, session) {
 
     cat('\n* dsel:\n')
     print(as.data.table(dsel))
-
-    ## if (any(grepl('_issues$', names(dsel))) &&
-    ##       sum(sapply(dsel[, grep('_issues$|_warnings$', names(dsel), val=T)], function(x) any(x %in% 1))) > 0) {
-    ##   dsel <- dsel[rowSums(dsel[, grep('_issues$|_warnings$', names(dsel), val=T), drop=F], na.rm=T) > 0,]
-    ## }
-    ## print(dsel[1,])
 
     cols2hide <- sapply(grep('n_spp$|n_nosp$|_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T),
                         function(x) colDef(show = FALSE), simplify = F)
@@ -556,8 +519,6 @@ shinyServer(function(input, output, session) {
         cell = function(value, index, name) {
           if (is.na(value))
             value <- ''
-          ##     v <- '<tr><td>&nbsp;</td></tr>'
-          ## } else v <- value
           v <- value
           if (paste0(name,'_warnings') %in% names(dsel) &&
                 paste0(name,'_wtxt') %in% names(dsel) &&
@@ -700,13 +661,12 @@ shinyServer(function(input, output, session) {
     ft <- ft[order(ft$SiteID, ft$Date, ft$SpeciesCode),]
 
     site_metrics_all <- ft |>
-      prep.site.metrics(species.ibi.metrics = species_ibi_metrics)
+      prep.site.metrics(species.ibi.metrics = species_ibi_metrics, stratum.incl.alt.penet = T)
     setorder(site_metrics_all, Stratum)
 
     ibi_scores <- site_metrics_all |>
       add.fish.metrics(q1e=qr.1.elev, q2e=qr.2.elev, q3e=qr.3.elev, q4e=qr.4.elev, q5e=qr.5.elev,
-                       q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet, q4p=qr.4.penet, q5p=qr.5.penet
-                       ) |>
+                       q1p=qr.1.penet, q2p=qr.2.penet, q3p=qr.3.penet, q4p=qr.4.penet, q5p=qr.5.penet) |>
       add.fish.metric6() |>
       add.fish.ibi() |>
       nps()
@@ -793,17 +753,15 @@ shinyServer(function(input, output, session) {
     req(ibi)
     dt <- as.data.table(rv$finalTable)
 
-    ## print(ibi[1])
-    ## print(dt[1])
     if (all(c('Easting', 'Northing') %in% names(dt))) {
 
-      coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Date, SiteID)]
-      ibi <- merge(ibi, coords, by.x = c('Date', 'SiteID'), by.y = c('Date', 'SiteID'), all = T)
+      coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Stratum)]
+      ibi <- merge(ibi, coords, by = 'Stratum', all = T)
       ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
       ibi <- st_transform(ibi, crs = 4326)
       ibi <- cbind(ibi, st_coordinates(ibi))
       ibi <- as.data.table(ibi)
-      ibi <- ibi[, .(Date, SiteID, IBIscore, NPSscore,
+      ibi <- ibi[, .(Date, SiteID, Penetration, Altitude, IBIscore, NPSscore,
                      total_sp_richness, number_non_native, X, Y)]
 
       ibi[is.na(NPSscore), NPSscore := 'Unknown']

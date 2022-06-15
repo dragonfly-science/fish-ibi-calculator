@@ -1,6 +1,6 @@
 baseimage := dragonflyscience/fish-ibi-shiny-20.04
-image := $(baseimage):2022-06-10
-
+image := $(baseimage):2022-06-15	
+HOST := `hostname -I | awk '{print $$1}'`
 PORT ?= 3090
 
 RUN ?= docker run -it --rm --net=host --user=$$(id -u):$$(id -g) -v$$(pwd)/:/work -v /tmp/.x11-unix/x0:/tmp/.x11-unix/x0 -w /work $(image)
@@ -10,6 +10,8 @@ RUN ?= docker run -it --rm --net=host --user=$$(id -u):$$(id -g) -v$$(pwd)/:/wor
 all: app
 
 app:
+	 $(RUN) bash -c "cd app && Rscript -e \"shiny::runApp('.', port=$(PORT), host = '$(HOST)')\""
+applocal:
 	 $(RUN) bash -c "cd app && Rscript -e \"shiny::runApp('.', port=$(PORT), host = '127.0.0.1')\""
 
 deploylive:
@@ -30,3 +32,6 @@ local:
 		-e display=$display \
 		-v /tmp/.x11-unix/x0:/tmp/.x11-unix/x0 \
 		-u $$(id -u):$$(id -g) $(image) bash
+
+test:
+	echo $(HOST)
