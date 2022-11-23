@@ -86,7 +86,9 @@ shinyUI(
               6,
               h2(includeMarkdown('text/page-1-title.md')),
               br(),
-              p(includeMarkdown('text/page-1-description.md'))
+              p(includeMarkdown('text/page-1-description.md')),
+              br(),
+              uiOutput('region')
             ),
             column(
               6,
@@ -224,7 +226,8 @@ shinyUI(
             column(
               8,
               div(style="margin-bottom: 40px;",
-                  h2(includeMarkdown('text/page-4-title.md'))
+                  h2(includeMarkdown('text/page-4-title.md')),
+                  uiOutput('nz_region')
                   )
             ),
             column(

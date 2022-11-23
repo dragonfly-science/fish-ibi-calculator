@@ -1,0 +1,11 @@
+Fish type,scale,x intercept,y intercept
+Native,E,1600,5.334
+Native,D,500,6
+Benthicriffle,E,1600,3.555
+Benthicriffle,D,500,3.333
+Benthicpool,E,1600,3.333
+Benthicpool,D,500,4
+Pelagicpool,E,1600,2
+Pelagicpool,D,500,2.667
+Intolerant,E,1600,2.667
+Intolerant,D,500,2.667

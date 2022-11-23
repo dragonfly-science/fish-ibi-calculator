@@ -1,0 +1,76 @@
+NZFFD code,Scientific name,Common name,Native?,Migratory?,Behaviour
+aldfor,Aldrichetta forsteri,Yelloweye mullet,,,Marine
+ameneb,Ameiurus nebulosus,Catfish,N,,Non-migratory
+angaus,Anguilla australis,Shortfin eel,,,Catadromous
+angdie,Anguilla dieffenbachii,Longfin eel,,,Catadromous
+angrei,Anguilla reinhardtii,Australian longfin eel,,,Catadromous
+anguil,Anguilla spp.,Unidentified eel,,,Catadromous
+caraur,Carassius auratus,Goldfish,N,,Non-migratory
+chefos,Cheimarrichthys fosteri,Torrentfish,,,Amphidromous
+cteide,Ctenopharyngodon idella,Grass carp,N,,Non-migratory
+cypcar,Cyprinus carpio,Koi carp,N,,Non-migratory
+galano,Galaxias anomalus,Roundhead galaxias,,N,Non-migratory
+galarg,Galaxias argenteus,Giant kokopu,,,Amphidromous
+galaxi,Galaxias spp.,Unidentified galaxiid,,,
+galbre,Galaxias brevipinnis,Koaro,,,Amphidromous
+galcob,Galaxias cobitinis,Lowland longjaw galaxias,,N,Non-migratory
+galdep,Galaxias depressiceps,Flathead galaxias,,N,Non-migratory
+galdiv,Galaxias divergens,Dwarf galaxias,,N,Non-migratory
+galeld,Galaxias eldoni,Eldons galaxias,,N,Non-migratory
+galfas,Galaxias fasciatus,Banded kokopu,,,Amphidromous
+galgol,Galaxias gollumoides,Gollum galaxias,,N,Non-migratory
+galgra,Galaxias gracilis,Dwarf inanga,,N,Non-migratory
+galmac,Galaxias maculatus,Inanga,,,Catadromous
+galmar,Galaxias macronasus,Bignose galaxias,,N,Non-migratory
+galpau,Galaxias paucispondylus,Alpine galaxias,,N,Non-migratory
+galpos,Galaxias postvectis,Shortjaw kokopu,,,Amphidromous
+galpro,Galaxias prognathus,Upland longjaw galaxias,,N,Non-migratory
+galpul,Galaxias pullus,Dusky galaxias,,N,Non-migratory
+galspd,"Galaxias ""species D""","Galaxias ""species D""",,,
+galspn,"Galaxias ""northern""","Galaxias ""northern""",,,
+galsps,"Galaxias ""southern""","Galaxias ""southern""",,,
+galspt,"Galaxias ""teviot""","Galaxias ""teviot""",,,
+galvul,Galaxias vulgaris,Canterbury galaxias,,N,Non-migratory
+gamaff,Gambusia affinis,Gambusia,N,,Non-migratory
+geoaus,Geotria australis,Lamprey,,,Anadromous
+gobalp,Gobiomorphus alpinus,Tarndale bully,,N,Non-migratory
+gobbas,Gobiomorphus basalis,Crans bully,,,Non-migratory
+gobbre,Gobiomorphus breviceps,Upland bully,,N,Non-migratory
+gobcot,Gobiomorphus cotidianus,Common bully,,,Amphidromous
+gobgob,Gobiomorphus gobioides,Giant bully,,,Amphidromous
+gobhub,Gobiomorphus hubbsi,Bluegill bully,,,Amphidromous
+gobhut,Gobiomorphus huttoni,Redfin bully,,,Amphidromous
+gobiom,Gobiomorphus spp.,Unidentified bully,,,
+graham,Grahamina sp.,Estuarine triplefin,,,
+hypmol,Hypophthalmichthys molitrix,Silver carp,N,,
+hyrmen,Hyridella menziesi,Freshwater mussel,,,
+leuidu,Leuciscus idus,Golden orfe,N,,
+marine,Marine,Marine species,,,
+mugcep,Mugil cephalus,Grey mullet,,,Marine
+mugil,Mugil,Unidentified mullet,,,
+neoapo,Neochanna apoda,Brown mudfish,,N,Non-migratory
+neobur,Neochanna burrowsius,Canterbury mudfish,,N,Non-migratory
+neodiv,Neochanna diversus,Black mudfish,,N,Non-migratory
+neohel,Neochanna heleios,Burgundy mudfish,,,
+neorek,Neochanna rekohua,Chatham mudfish,,,
+nospec,Nil,No species recorded,,,
+oncmyk,Oncorhynchus mykiss,Rainbow trout,N,,Anadromous
+oncner,Oncorhynchus nerka,Sockeye salmon,N,,
+onctsh,Oncorhynchus tshawytscha,Chinook salmon,N,,
+parane,Paranephrops spp.,Koura,,,
+parcur,Paratya curvirostris,Freshwater shrimp,,,
+parmar,Parioglossus marginalis,Dart goby,N,,
+perflu,Perca fluviatilis,Perch,N,,Non-migratory
+poelat,Poecilia latipinna,Sailfin molly,N,,Non-migratory
+poeret,Poecilia reticulata,Guppy,N,,Non-migratory
+prooxy,Prototroctes oxyrhynchus,Grayling,,,
+retret,Retropinna retropinna,Common smelt,,,Anadromous
+rhombo,Rhombosolea spp.,Unidentified flounder,,,
+rhoret,Rhombosolea retiaria,Black flounder,,,Amphidromous
+salfon,Salvelinus fontinalis,Brook char,N,,
+salmo,Salmo,Unidentified salmonid,,,
+salsal,Salmo salar,Atlantic salmon,N,,
+saltru,Salmo trutta,Brown trout,N,,Anadromous
+scaery,Scardinius erythrophthalmus,Rudd,N,,Non-migratory
+stoani,Stokellia anisodon,Stokells smelt,,,
+tintin,Tinca tinca,Tench,N,,Non-migratory

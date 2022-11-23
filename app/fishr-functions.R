@@ -100,38 +100,82 @@ qr.construct <- function(y, x, data = site_metrics_all){
 #' Once you've fit a quantile regression, you then need to score it
 #'
 #' @export
-qr.score <- function(x, y, qr){
+## qr.score <- function(x, y, qr){
 
-  line_66 <- y > coef(qr)[4] * x + coef(qr)[3]
-  line_33 <- y > coef(qr)[2] * x + coef(qr)[1]
+##   line_66 <- y > coef(qr)[4] * x + coef(qr)[3]
+##   line_33 <- y > coef(qr)[2] * x + coef(qr)[1]
 
-  fcase(
-    line_66 == TRUE, 5,
-    line_33 == TRUE, 3,
-    line_66 == FALSE & line_33 == FALSE, 1
-  )
+##   fcase(
+##     line_66 == TRUE, 5,
+##     line_33 == TRUE, 3,
+##     line_66 == FALSE & line_33 == FALSE, 1
+##   )
+## }
+
+qr.score <- function(x, nsp, cal) {
+  xint <- cal[, xint]
+  yint <- cal[, yint]
+  if (x < xint) {
+    z <- nsp / (xint - x) * (xint / yint)
+    score <- fcase(z > 1  , 5,
+                   z > 0.5, 3,
+                   default = 1)
+  } else {
+    score <- fifelse(nsp = 0, 0, 5)
+  }
+  score
 }
-
+  
 #' Add metric scores
 #'
 #' Add each metrics scores onto df
 #'
 #' @export
-add.fish.metrics <- function(.data, q1e = qr.1.elev, q2e = qr.2.elev, q3e = qr.3.elev,
-                             q4e = qr.4.elev, q5e = qr.5.elev, q1p = qr.1.penet,
-                             q2p = qr.2.penet, q3p = qr.3.penet, q4p = qr.4.penet,
-                             q5p = qr.5.penet) {
+## add.fish.metrics <- function(.data, q1e = qr.1.elev, q2e = qr.2.elev, q3e = qr.3.elev,
+##                              q4e = qr.4.elev, q5e = qr.5.elev, q1p = qr.1.penet,
+##                              q2p = qr.2.penet, q3p = qr.3.penet, q4p = qr.4.penet,
+##                              q5p = qr.5.penet) {
+##   d1 <- copy(.data)[, `:=`(
+##     metric1_rating_elev = qr.score(x = Altitude, y = metric1, qr = q1e),
+##     metric2_rating_elev = qr.score(x = Altitude, y = metric2, qr = q2e),
+##     metric3_rating_elev = qr.score(x = Altitude, y = metric3, qr = q3e),
+##     metric4_rating_elev = qr.score(x = Altitude, y = metric4, qr = q4e),
+##     metric5_rating_elev = qr.score(x = Altitude, y = metric5, qr = q5e),
+##     metric1_rating_pene = qr.score(x = Penetration, y = metric1, qr = q1p),
+##     metric2_rating_pene = qr.score(x = Penetration, y = metric2, qr = q2p),
+##     metric3_rating_pene = qr.score(x = Penetration, y = metric3, qr = q3p),
+##     metric4_rating_pene = qr.score(x = Penetration, y = metric4, qr = q4p),
+##     metric5_rating_pene = qr.score(x = Penetration, y = metric5, qr = q5p))
+##   , by = 1:nrow(.data)]
+##   for (v in grep('_rating_', names(d1), val = T, fixed = T))
+##     d1[total_sp_richness == 0, eval(v) := NA_real_]
+##   d1
+## }
+
+add.fish.metrics <- function(.data, cal) {
+  setkey(cal, metric, type)
+  q1e <- cal[.('metric1', 'altitude')]
+  q2e <- cal[.('metric2', 'altitude')]
+  q3e <- cal[.('metric3', 'altitude')]
+  q4e <- cal[.('metric4', 'altitude')]
+  q5e <- cal[.('metric5', 'altitude')]
+  q1p <- cal[.('metric1', 'penetration')]
+  q2p <- cal[.('metric2', 'penetration')]
+  q3p <- cal[.('metric3', 'penetration')]
+  q4p <- cal[.('metric4', 'penetration')]
+  q5p <- cal[.('metric5', 'penetration')]
+
   d1 <- copy(.data)[, `:=`(
-    metric1_rating_elev = qr.score(x = Altitude, y = metric1, qr = q1e),
-    metric2_rating_elev = qr.score(x = Altitude, y = metric2, qr = q2e),
-    metric3_rating_elev = qr.score(x = Altitude, y = metric3, qr = q3e),
-    metric4_rating_elev = qr.score(x = Altitude, y = metric4, qr = q4e),
-    metric5_rating_elev = qr.score(x = Altitude, y = metric5, qr = q5e),
-    metric1_rating_pene = qr.score(x = Penetration, y = metric1, qr = q1p),
-    metric2_rating_pene = qr.score(x = Penetration, y = metric2, qr = q2p),
-    metric3_rating_pene = qr.score(x = Penetration, y = metric3, qr = q3p),
-    metric4_rating_pene = qr.score(x = Penetration, y = metric4, qr = q4p),
-    metric5_rating_pene = qr.score(x = Penetration, y = metric5, qr = q5p))
+    metric1_rating_elev = qr.score(x = Altitude, nsp = metric1, cal = q1e),
+    metric2_rating_elev = qr.score(x = Altitude, nsp = metric2, cal = q2e),
+    metric3_rating_elev = qr.score(x = Altitude, nsp = metric3, cal = q3e),
+    metric4_rating_elev = qr.score(x = Altitude, nsp = metric4, cal = q4e),
+    metric5_rating_elev = qr.score(x = Altitude, nsp = metric5, cal = q5e),
+    metric1_rating_pene = qr.score(x = Penetration, nsp = metric1, cal = q1p),
+    metric2_rating_pene = qr.score(x = Penetration, nsp = metric2, cal = q2p),
+    metric3_rating_pene = qr.score(x = Penetration, nsp = metric3, cal = q3p),
+    metric4_rating_pene = qr.score(x = Penetration, nsp = metric4, cal = q4p),
+    metric5_rating_pene = qr.score(x = Penetration, nsp = metric5, cal = q5p))
   , by = 1:nrow(.data)]
   for (v in grep('_rating_', names(d1), val = T, fixed = T))
     d1[total_sp_richness == 0, eval(v) := NA_real_]
@@ -162,7 +206,7 @@ add.fish.metric6 <- function(.data) {
 #' @export
 add.fish.ibi <- function(.data){
   .data[
-      , IBIscore :=
+      , IBI_score :=
           metric1_rating_elev +
           metric2_rating_elev +
           metric3_rating_elev +
@@ -185,19 +229,19 @@ add.fish.ibi <- function(.data){
 cut.fish.ibi <- function(.data) {
   labs <- c("Low quality", "Medium quality", "High quality")
   .data[total_sp_richness > 0
-      , IBIscoreCut := cut(IBIscore, breaks = c(0, 20, 40, 60), labels = labs)]
+      , IBIscoreCut := cut(IBI_score, breaks = c(0, 20, 40, 60), labels = labs)]
   .data[, IBIscoreCut := factor(as.character(IBIscoreCut), levels = c('No IBI species', labs))]
   .data[total_sp_richness == 0, IBIscoreCut := 'No IBI species']
   .data
 }
 
-nps <- function(.data) {
+nps <- function(.data, lq=18, med=28, uq=34, colname = 'NPS_category') {
   .data[
-  , NPSscore := fcase(
+  , eval(colname) := fcase(
     total_sp_richness == 0, "No species",
-    IBIscore >= 34, "A",
-    IBIscore >= 28, "B",
-    IBIscore >= 18, "C",
-    IBIscore <  18, "D"
+    IBI_score >= uq , "A",
+    IBI_score >= med, "B",
+    IBI_score >= lq , "C",
+    IBI_score <  lq , "D"
   )]
 }
