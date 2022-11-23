@@ -13,8 +13,12 @@ library(ggplot2)
 ## regions <- readRDS('data/regions.rds')
 
 source('fishr-functions.R')
+source('app-functions.r')
+
 load('data/app-data.rdata', v = T)
 ## calibrations <- readRDS('data/IBI-calibration-values.rds')
+
+options(debug = T)
 
 cols_needed <- c('SiteID', 'Date', 'Penetration',
                  'Altitude', 'SpeciesCode')
@@ -30,26 +34,6 @@ cols <- c('red', 'green')
 ph <- webshot:::find_phantom()
 if (is.null(ph) || ph == '') {
   webshot::install_phantomjs()
-}
-
-upper1st <- function(x, prelower = T) {
-  if (is.factor(x)) {
-    x0 <- levels(x)
-  } else {
-    x0 <- as.character(x)
-  }
-  if (prelower)
-    x0 <- tolower(x0)
-  nc <- nchar(x0)
-  nc[is.na(nc)] <- 0
-  x0[nc > 1] <- sprintf("%s%s", toupper(substr(x0[nc > 1], 1, 1)), substr(x0[nc > 1], 2, nchar(x0[nc > 1])))
-  x0[nc == 1] <- toupper(x0[nc == 1])
-  if (is.factor(x)) {
-    levels(x) <- x0
-  } else {
-    x <- x0
-  }
-  return(x)
 }
 
 
@@ -79,6 +63,7 @@ shinyServer(function(input, output, session) {
 
 
   observe({
+    debuginfo('In observe shinyjs switches')
     if (is.null(rv$intable)) {
       shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
       shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
@@ -102,6 +87,7 @@ shinyServer(function(input, output, session) {
   ## * Data loading
 
   output$region <- renderUI({ # Region selector widget
+    debuginfo('Rendering UI region')
     labs <- c('No Region', regions$region)
     selectInput(inputId  = "region",
                 multiple = FALSE,
@@ -110,6 +96,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$nz_region <- renderUI({
+    debuginfo('Rendering UI nz_region')
     if (input$region != 'No Region') {
       radioGroupButtons(
         inputId = "nz_region",
@@ -125,6 +112,7 @@ shinyServer(function(input, output, session) {
   })
   
   observe({
+    debuginfo('In observe file upload')
     inFile <- input$target_upload
     if (is.null(inFile))
       return(NULL)
@@ -153,6 +141,7 @@ shinyServer(function(input, output, session) {
 
   observeEvent(input$exbtn, {
 
+    debuginfo('In observeEvent example load')
     df <- NULL
     rv[['intable']] <- NULL
     rv[['ignoredrows']] <- 0L
@@ -178,12 +167,15 @@ shinyServer(function(input, output, session) {
 
   ## * List of required fields
   output$mandfields <- renderUI({
+    debuginfo('Rendering UI mandfields')
+
     fm <- rv$fieldsmatching
     prettyCheckboxGroup(inputId='mandfields',  label = 'Mandatory fields:', choices = cols_needed,
                         shape = 'round', icon = icon('check'), animation = 'pulse',
                         selected = intersect(cols_needed, fm$match[fm$good==T]))
   })
   observe({
+    debuginfo('Updating UI mandfields')
     fm <- rv$fieldsmatching
     updatePrettyCheckboxGroup(session, inputId='mandfields', label = 'Mandatory fields:',
                               choices = cols_needed,
@@ -195,6 +187,7 @@ shinyServer(function(input, output, session) {
   ## * Assigment of field roles from context menu
 
   observeEvent(input$selfield, {
+    debuginfo('In observedEvent Fields renaming')
     if (!is.null(input$selfield)) {
       pair <- strsplit(input$selfield, '=')[[1]]
       if (pair[1] == 'None') {
@@ -218,6 +211,7 @@ shinyServer(function(input, output, session) {
   ## * Raw input table
 
   output$dtable <- renderReactable({
+    debuginfo('Rendering raw input table')
     d <- rv[['intable']]
     fm <- rv[['fieldsmatching']]
     cols <- sapply(fm$ori, function(m) {
@@ -244,6 +238,7 @@ shinyServer(function(input, output, session) {
 
   # button to go from tab 2 to 3
   observe({
+    debuginfo('In Enable/disable button to next on page 2')
     if(all(rv$selfields$good == 1)) {
       enable('checkData')
     } else{
@@ -253,12 +248,14 @@ shinyServer(function(input, output, session) {
 
   # check data button
   observeEvent(input$checkData, {
+    debuginfo('In Go to page 3')
     updateTabsetPanel(session, "myFirst",
                       selected = "3. Check input data")
   }, label = 'Go to page 3')
 
   # button to go from tab 2 to 3
   observe({
+    debuginfo('In Enable/disable button to next on page 3')
     if(dataissues()) {
       disable('to4btn')
       enable('remIssuesBtn')
@@ -279,6 +276,7 @@ shinyServer(function(input, output, session) {
   cleanTable <- reactive({
     req(rv$intable)
 
+    debuginfo('In cleanTable()')
     fm <- rv$fieldsmatching
     d <- copy(rv$intable)
     cols <- fm$ori[fm$good == T]
@@ -420,6 +418,8 @@ shinyServer(function(input, output, session) {
   })
 
   observe({
+    debuginfo('In observe rv$finalTable <- ft')
+
     d <- cleanTable()
     req(d)
 
@@ -430,6 +430,7 @@ shinyServer(function(input, output, session) {
   })
 
   issues_long <- reactive({ # one row per issue and record
+    debuginfo('In issues_long()')
     d <- cleanTable()
 
     d <- as.data.table(copy(d))
@@ -450,6 +451,7 @@ shinyServer(function(input, output, session) {
   })
 
   issues_summary <- reactive({ # one row per issue
+    debuginfo('In issues_summary()')
     long0 <- issues_long()
     req(long0)
 
@@ -462,6 +464,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$issue_type <- renderUI({ # issue selector widget
+    debuginfo('Rendering UI issue_type')
     l <- issues_summary()
     req(l)
     labs <- l[, setNames(c('All issues', issue),
@@ -473,6 +476,7 @@ shinyServer(function(input, output, session) {
   })
 
   dataissues <- reactive({ # boolean: is there any issue? yes:1 no:0
+    debuginfo('In dataissues()')
     ft <- rv$finalTable
     req(ft)
     withissue   <- apply(ft[, grep('_issues$',   names(ft), val=T), drop=F], 1, function(x) any(x %in% 1))
@@ -509,6 +513,7 @@ shinyServer(function(input, output, session) {
   ## ** Filtered issues
 
   selectedissues <- reactive({
+    debuginfo('In selectedissues()')
 
     ft <- copy(rv$finalTable)
     setDT(ft)
@@ -535,6 +540,8 @@ shinyServer(function(input, output, session) {
   ## ** Cleaned table on page 3
 
   output$newTable <- renderReactable({
+    debuginfo('Rendering UI newTable')
+
     dsel <- selectedissues() #rv$finalTable
     req(dsel)
 
@@ -598,6 +605,8 @@ shinyServer(function(input, output, session) {
   ## ** Exclude issues
 
   observeEvent(input$remIssuesBtn, {
+    debuginfo('In observeEvent "Ignore visits with issues"')
+
     d <- cleanTable()
     d <- as.data.table(d)
     req(d)
@@ -635,6 +644,8 @@ shinyServer(function(input, output, session) {
   ## ** Feedback on issues
 
   output$issuesTxt <- renderText({
+    debuginfo('Rendering text issuesTxt')
+
     d <- rv$finalTable
     req(d)
     setDF(d)
@@ -652,6 +663,7 @@ shinyServer(function(input, output, session) {
 
 
   output$issuesIcon <- renderText({
+    debuginfo('Rendering text issuesIcon')
     if (dataissues()) {
       as.character(icon('exclamation-triangle', class='dangerico'))
     } else {
@@ -661,6 +673,7 @@ shinyServer(function(input, output, session) {
 
 
   output$issueImg <- renderImage({
+    debuginfo('Rendering image issueImg')
     d <- rv$finalTable
     req(d)
     n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
@@ -677,6 +690,8 @@ shinyServer(function(input, output, session) {
 
 
   output$issuesSubTxt <- renderText({
+    debuginfo('Rendering text issuesSubTxt')
+
     d <- rv$finalTable
     req(d)
     n.issues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
@@ -696,6 +711,7 @@ shinyServer(function(input, output, session) {
   })
 
   observeEvent(input$to4btn, {
+    debuginfo('In observeEvent "Go to page 4"')
     updateTabsetPanel(session, "myFirst",
                       selected = "4. Calculate IBI score")
   }, label = 'Go to page 4')
@@ -704,6 +720,7 @@ shinyServer(function(input, output, session) {
   ## * IBI scores =========================================================================
 
   ibiData <- reactive({
+    debuginfo('Rendering text issuesSubTxt')
 
     ft <- rv$finalTable
     req(ft)
@@ -748,6 +765,7 @@ shinyServer(function(input, output, session) {
   
   ## * Table of IBI scores
   output$ibiTable <- renderReactable({
+    debuginfo('Rendering ibiTable')
     ibi_scores <- ibiData()
     
     req(setDT(ibi_scores))
@@ -768,6 +786,7 @@ shinyServer(function(input, output, session) {
   ## * Scores plot
 
   output$scoresPlot <- renderPlot({
+    debuginfo('Rendering scoresPlot')
 
     ibi_scores <- ibiData()
 
@@ -840,6 +859,7 @@ shinyServer(function(input, output, session) {
   ## * MAP
 
   output$map <- renderLeaflet({
+    debuginfo('Rendering map')
 
     ibi_scores <- copy(ibiData())
 
@@ -949,6 +969,7 @@ shinyServer(function(input, output, session) {
   })
 
   mapdown <- reactive({
+    debuginfo('in mapdown()')
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
@@ -978,6 +999,7 @@ shinyServer(function(input, output, session) {
   ## * Table of categories
 
   output$text <- renderUI({
+    debuginfo('Rendering categories')
     
     if (!is.null(input$nz_region) && input$nz_region != 'National') {
       thresh <- ibi_thresh[input$region]
