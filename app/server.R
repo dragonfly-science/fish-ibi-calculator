@@ -287,7 +287,15 @@ shinyServer(function(input, output, session) {
     names(d) <- goodcols
     setDT(d)
     d[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
-    if (input$region != 'No Region')  d[, ReportingRegion := input$region]
+
+    ## *** Standardise species codes
+    setnames(d, 'SpeciesCode', 'SpeciesCode.ori')
+    d[species_codes, SpeciesCode := i.spp_code_2004, on = c('SpeciesCode.ori' = 'nzffd_spp_code')]
+    d[is.na(SpeciesCode) & SpeciesCode.ori == 'nospec', SpeciesCode := 'nospec']
+
+    if (input$region != 'No Region')
+      d[, ReportingRegion := input$region]
+    
     ## *** Penetration
     if ('Penetration' %in% names(d)) {
       ## **** Check for missing values
@@ -352,7 +360,7 @@ shinyServer(function(input, output, session) {
                   SpeciesCode_txt    = 'Species is missing')]
       }
       ## **** Check for existence
-      c <- !(d$SpeciesCode %in% fish_names[['NZFFD code']])
+      c <- !(d$SpeciesCode %in% c(species_codes$spp_code_2004, 'nospec'))
       if (any(c)) {
         d[c, `:=`(SpeciesCode_issues = 1L,
                   SpeciesCode_txt    = 'Species code not recognised')]
