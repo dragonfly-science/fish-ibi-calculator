@@ -93,36 +93,35 @@ shinyServer(function(input, output, session) {
                 choices  = labs)
   })
 
-  # output$nz_region <- renderUI({
-  #   debuginfo('Rendering UI nz_region')
-  #   if (input$region != 'No Region') {
-  #     radioGroupButtons(
-  #       inputId = "nz_region",
-  #       label = NULL,
-  #       choices = c('National', input$region),
-  #       checkIcon = list(
-  #         yes = tags$i(class = "fa fa-check-square", 
-  #                      style = "color: steelblue"),
-  #         no = tags$i(class = "fa fa-square-o", 
-  #                     style = "color: steelblue"))
-  #     )
-  #   }
-  # })
-
   output$view_region_only <- renderUI({
     debuginfo("Rendering UI region_only")
     if (input$region != "No Region") {
-      div(class = "toggle-switch-container",
-          tags$label('for' = "view_region_only", 'National'),
+      span(id = "toggle-switch-container",
+          tags$label('for' = "view_region_only", class = 'toggle-label-l','National', style = "font-weight: 400"),
           prettySwitch(
             inputId = "view_region_only",
             label = NULL,
             value = TRUE,
-            width = "40px",
             inline = TRUE,
+            fill = TRUE
+            # status = 'primary'
           ),
-          tags$label('for' = "view_region_only", input$region)
+          tags$label('for' = "view_region_only", class = 'toggle-label-r', input$region)
       )
+    }
+  })
+
+  observeEvent(input$view_region_only, {
+    if(input$view_region_only == FALSE) {
+      runjs("
+        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '600'
+        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '400'
+      ") 
+    } else {
+      runjs("
+        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '400'
+        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '600'
+      ") 
     }
   })
   

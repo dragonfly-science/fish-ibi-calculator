@@ -132,3 +132,37 @@ img.arrow-download {
   color: $mfe-blue !important;
   text-decoration: underline;
 }
+
+/* Toggle switch */
+
+#toggle-switch-container {
+  label {
+    display: inline-block;
+    font-size: 14px;
+    &.toggle-label-l {
+      min-width: 55px;
+    }
+  }
+  .form-group {
+    margin: 0;
+    margin-right: 10px;
+    margin-left: 10px;
+    .pretty {
+      margin: 0;
+      .state {
+        &::before {
+          border-color: #D4DDE1 !important;
+          background-color: #FFFFFF !important;
+        }
+        label {
+          font-size: 16px;
+          &::after {
+            background-color: $mfe-green-bright !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+
