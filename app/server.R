@@ -93,29 +93,21 @@ shinyServer(function(input, output, session) {
                 choices  = labs)
   })
 
-  output$nz_region <- renderUI({
-    debuginfo('Rendering UI nz_region')
-    if (input$region != 'No Region') {
-      radioGroupButtons(
-        inputId = "nz_region",
-        label = NULL,
-        choices = c('National', input$region),
-        checkIcon = list(
-          yes = tags$i(class = "fa fa-check-square", 
-                       style = "color: steelblue"),
-          no = tags$i(class = "fa fa-square-o", 
-                      style = "color: steelblue"))
-      )
-    }
-  })
-
-  get_label_style <- function(val) {
-    if (val == FALSE) {
-      return ("font-weight: 400;")
-    } else {
-      return ("font-weight: 600;")
-    }
-  }
+  # output$nz_region <- renderUI({
+  #   debuginfo('Rendering UI nz_region')
+  #   if (input$region != 'No Region') {
+  #     radioGroupButtons(
+  #       inputId = "nz_region",
+  #       label = NULL,
+  #       choices = c('National', input$region),
+  #       checkIcon = list(
+  #         yes = tags$i(class = "fa fa-check-square", 
+  #                      style = "color: steelblue"),
+  #         no = tags$i(class = "fa fa-square-o", 
+  #                     style = "color: steelblue"))
+  #     )
+  #   }
+  # })
 
   output$view_region_only <- renderUI({
     debuginfo("Rendering UI region_only")

@@ -227,7 +227,7 @@ shinyUI(
               8,
               div(style="margin-bottom: 40px;",
                   h2(includeMarkdown('text/page-4-title.md')),
-                  uiOutput('nz_region'),
+                  # uiOutput('nz_region'),
                   uiOutput('view_region_only')
                   )
             ),
