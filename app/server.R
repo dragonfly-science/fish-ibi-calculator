@@ -16,9 +16,8 @@ source('fishr-functions.R')
 source('app-functions.r')
 
 load('data/app-data.rdata', v = T)
-## calibrations <- readRDS('data/IBI-calibration-values.rds')
 
-options(debug = T)
+options(debug = F)
 
 cols_needed <- c('SiteID', 'Date', 'Penetration',
                  'Altitude', 'SpeciesCode')
@@ -37,17 +36,16 @@ if (is.null(ph) || ph == '') {
 }
 
 
-rv <- NULL
-## reactlog::reactlog_enable()
+## rv <- NULL
+## ## reactlog::reactlog_enable()
 
-input <- list(region = 'Wellington', nz_region = 'Wellington')
-rv <- list(
-    reqfields = req_fields,
-    selfields = data.frame(req = names(req_fields), good = 0L),
-    intable = NULL, tablefields = NULL, tablefields_ori = NULL,
-    finalTable = NULL, region = 'Wellington'
-)
-
+## input <- list(region = 'Wellington', nz_region = 'Wellington', target_upload = list(datapath='~/Downloads/test-data (copy).csv'))
+## rv <- list(
+##     reqfields = req_fields,
+##     selfields = data.frame(req = names(req_fields), good = 0L),
+##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
+##     finalTable = NULL, region = 'Wellington'
+## )
 
 
 shinyServer(function(input, output, session) {
@@ -113,6 +111,7 @@ shinyServer(function(input, output, session) {
   
   observe({
     debuginfo('In observe file upload')
+
     inFile <- input$target_upload
     if (is.null(inFile))
       return(NULL)
@@ -130,6 +129,7 @@ shinyServer(function(input, output, session) {
     rv[['intable']] <- df
     rv[['tablefields']] <- names(df)
     rv[['tablefields_ori']] <- names(df)
+
     disable('downloadissues')
     shinyjs::disable(selector = '#myFirst li a[data-value="2. Match headers"]')
     shinyjs::disable(selector = '#myFirst li a[data-value="3. Check input data"]')
@@ -275,8 +275,10 @@ shinyServer(function(input, output, session) {
 
   cleanTable <- reactive({
     req(rv$intable)
-
+    req(all(c('SpeciesCode', 'Date', 'SiteID', 'Penetration', 'Altitude') %in% names(rv$intable)))
     debuginfo('In cleanTable()')
+    debuginfo(head(rv$intable))
+
     fm <- rv$fieldsmatching
     d <- copy(rv$intable)
     cols <- fm$ori[fm$good == T]
@@ -285,7 +287,8 @@ shinyServer(function(input, output, session) {
     names(d) <- goodcols
     setDT(d)
     d[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
-
+    d[, SpeciesCode := tolower(SpeciesCode)]
+    
     ## *** Standardise species codes
     setnames(d, 'SpeciesCode', 'SpeciesCode.ori')
     d[species_codes, SpeciesCode := i.spp_code_2004, on = c('SpeciesCode.ori' = 'nzffd_spp_code')]
@@ -371,9 +374,9 @@ shinyServer(function(input, output, session) {
       }
       ## **** Check for nospec alongside other species
       d[, `:=`(n_spp = uniqueN(setdiff(SpeciesCode, 'nospec')),
-               n_nosp = sum(SpeciesCode == 'nospec'))
+               n_nosp = sum(SpeciesCode %in% 'nospec'))
       , Stratum]
-      c <- d[, SpeciesCode == 'nospec' & n_spp > 0]
+      c <- d[, SpeciesCode %in% 'nospec' & n_spp > 0]
       if (any(c)) {
         d[c, `:=`(SpeciesCode_warnings = 1L,
                   SpeciesCode_wtxt     = '"nospec" alongside some records of species')]
@@ -412,6 +415,7 @@ shinyServer(function(input, output, session) {
     }
     d$OriginalRow <- seq_len(nrow(d))
     setcolorder(d, 'OriginalRow')
+    debuginfo(head(d))
 
     as.data.frame(d)
 
@@ -649,13 +653,17 @@ shinyServer(function(input, output, session) {
     d <- rv$finalTable
     req(d)
     setDF(d)
-    n.rows.noissues <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T) == 0)
-    n.issues        <- sum(rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm=T))
+    withissues <- rowSums(d[, grep('_issues$|_warnings$', names(d), val=T), drop=F], na.rm = T)
+    n.issues        <- sum(withissues)
     n.ignoredrows   <- ifelse(is.null(rv$ignoredrows), 0, rv$ignoredrows)
-
+    strata.with.issues <- unique(d[withissues > 0, 'Stratum'])
+    strata.without.issues <- setdiff(unique(d$Stratum), strata.with.issues)
+    n.rows.noissues <- nrow(d[d$Stratum %in% strata.without.issues & withissues == 0,])
     sprintf('%s<br>%i valid rows%s',
-            ifelse(n.issues == 0, 'No issues found',
-                   sprintf('%i data issues were found', n.issues)),
+            ifelse(n.issues == 0,
+                   sprintf('No issues found in %i strata', length(strata.without.issues)),
+                   sprintf('%i data issues were found in %i (out of %i) strata', n.issues, length(strata.with.issues),
+                           uniqueN(d$Stratum))),
             n.rows.noissues,
             ifelse(n.ignoredrows == 0, '',
                    sprintf('<br>(%s rows were excluded)', n.ignoredrows)))

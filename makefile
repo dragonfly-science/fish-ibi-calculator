@@ -9,15 +9,15 @@ RUN ?= docker run -it --rm --net=host --user=$$(id -u):$$(id -g) -v$$(pwd)/:/wor
 
 all: app
 
-app: data/app-data.rdata
+app: app/data/app-data.rdata
 	 $(RUN) bash -c "cd app && Rscript -e \"shiny::runApp('.', port=$(PORT), host = '$(HOST)')\""
-applocal: data/app-data.rdata
+applocal: app/data/app-data.rdata
 	 $(RUN) bash -c "cd app && Rscript -e \"shiny::runApp('.', port=$(PORT), host = '127.0.0.1')\""
 
-deploylive: data/app-data.rdata
+deploylive: app/data/app-data.rdata
 	$(RUN) bash -c "cd app && Rscript -e \"rsconnect::deployApp('.', appName='Fish-IBI-Calculator')\""
 
-deploytest: data/app-data.rdata
+deploytest: app/data/app-data.rdata
 	$(RUN) bash -c "cd app && Rscript -e \"rsconnect::deployApp('.', appName='Fish-IBI-Calculator-TESTING')\""
 
 docker: Dockerfile
@@ -26,7 +26,7 @@ docker: Dockerfile
 	docker push $(image) && \
 	touch .push
 
-data/app-data.rdata: app/prepare-data.r \
+app/data/app-data.rdata: app/prepare-data.r \
 		app/data/regional-council-2022-generalised.gpkg \
 		app/data/joy-calibration.csv \
 		app/data/regional_ibi_thresholds.csv \
