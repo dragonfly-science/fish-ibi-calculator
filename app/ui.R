@@ -225,9 +225,10 @@ shinyUI(
           fluidRow(
             column(
               8,
-              div(style="margin-bottom: 40px;",
+              div(style="margin-bottom: 20px;",
                   h2(includeMarkdown('text/page-4-title.md')),
-                  uiOutput('nz_region')
+                  div(style="margin-top: 2.5rem;",
+                      uiOutput('view_region_only'))
                   )
             ),
             column(

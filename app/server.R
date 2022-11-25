@@ -93,19 +93,35 @@ shinyServer(function(input, output, session) {
                 choices  = labs)
   })
 
-  output$nz_region <- renderUI({
-    debuginfo('Rendering UI nz_region')
-    if (input$region != 'No Region') {
-      radioGroupButtons(
-        inputId = "nz_region",
-        label = NULL,
-        choices = c('National', input$region),
-        checkIcon = list(
-          yes = tags$i(class = "fa fa-check-square", 
-                       style = "color: steelblue"),
-          no = tags$i(class = "fa fa-square-o", 
-                      style = "color: steelblue"))
+  output$view_region_only <- renderUI({
+    debuginfo("Rendering UI region_only")
+    if (input$region != "No Region") {
+      span(id = "toggle-switch-container",
+          tags$label('for' = "view_region_only", class = 'toggle-label-l','National', style = "font-weight: 400"),
+          prettySwitch(
+            inputId = "view_region_only",
+            label = NULL,
+            value = TRUE,
+            inline = TRUE,
+            fill = TRUE
+            # status = 'primary'
+          ),
+          tags$label('for' = "view_region_only", class = 'toggle-label-r', input$region)
       )
+    }
+  })
+
+  observeEvent(input$view_region_only, {
+    if(input$view_region_only == FALSE) {
+      runjs("
+        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '600'
+        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '400'
+      ") 
+    } else {
+      runjs("
+        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '400'
+        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '600'
+      ") 
     }
   })
   
@@ -800,9 +816,9 @@ shinyServer(function(input, output, session) {
 
     req(ibi_scores)
     req(input$region)
-    if (!is.null(input$nz_region) && input$nz_region != 'National') {
+    if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
       ibi_scores$NPScategory <- ibi_scores[, get(grep('NPS_category_', names(ibi_scores), val = T))]
-      xlab <- sprintf('%s region IBI category', input$nz_region)
+      xlab <- sprintf('%s region IBI category', input$region)
     } else {
       ibi_scores$NPScategory <- ibi_scores$NPS_category
       xlab <- "NPS-FM category"
@@ -850,7 +866,7 @@ shinyServer(function(input, output, session) {
   output$plotdl <- downloadHandler(
     ## filename = rv$plot_filename,
     filename = function() {
-      if (!is.null(input$nz_region) && input$nz_region != 'National') {
+      if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
         fn <- sprintf('IBI-category-distribution_%s-region.png', gsub('\'', '', gsub(' ', '-', input$region)))
       } else {
         fn <- 'IBI-category-distribution_national.png'
@@ -871,9 +887,9 @@ shinyServer(function(input, output, session) {
 
     ibi_scores <- copy(ibiData())
 
-    if (!is.null(input$nz_region) && input$nz_region != 'National') {
+    if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
       ibi_scores$NPScategory <- ibi_scores[, get(grep('NPS_category_', names(ibi_scores), val = T))]
-      leg.title <- sprintf('%s region<br>IBI category', input$nz_region)
+      leg.title <- sprintf('%s region<br>IBI category', input$region)
     } else {
       ibi_scores$NPScategory <- ibi_scores$NPS_category
       leg.title <- "NPS-FM category"
@@ -944,8 +960,8 @@ shinyServer(function(input, output, session) {
                          color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"))
       npss <- npss[as.character(label) %in% ibi$NPScategory]
       
-      if (input$region != 'No Region' && input$nz_region != 'National') {
-        leg.title <- sprintf('%s region<br>IBI category', input$nz_region)
+      if (input$region != 'No Region' && input$view_region_only != FALSE) {
+        leg.title <- sprintf('%s region<br>IBI category', input$region)
       } else leg.title <- "NPS-FM category"
 
       rv$map <- leaflet() |>
@@ -989,7 +1005,7 @@ shinyServer(function(input, output, session) {
 
   output$mapdl <- downloadHandler(
     filename = function() {
-      if (!is.null(input$nz_region) && input$nz_region != 'National') {
+      if (!is.null(input$nview_region_only) && input$view_region_only != FALSE) {
         fn <- sprintf('IBI-category-map_%s-region.png', gsub('\'', '', gsub(' ', '-', input$region)))
       } else {
         fn <- 'IBI-category-map_national.png'
@@ -1009,7 +1025,7 @@ shinyServer(function(input, output, session) {
   output$text <- renderUI({
     debuginfo('Rendering categories')
     
-    if (!is.null(input$nz_region) && input$nz_region != 'National') {
+    if (!is.null(input$nview_region_only) && input$view_region_only != FALSE) {
       thresh <- ibi_thresh[input$region]
     } else thresh <- ibi_thresh['No Region']
 
