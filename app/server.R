@@ -97,7 +97,7 @@ shinyServer(function(input, output, session) {
     debuginfo("Rendering UI region_only")
     if (input$region != "No Region") {
       span(id = "toggle-switch-container",
-          tags$label('for' = "view_region_only", class = 'toggle-label-l','National', style = "font-weight: 400"),
+          tags$label('for' = "view_region_only", class = 'toggle-label-l','National'),
           prettySwitch(
             inputId = "view_region_only",
             label = NULL,
@@ -112,16 +112,12 @@ shinyServer(function(input, output, session) {
   })
 
   observeEvent(input$view_region_only, {
-    if(input$view_region_only == FALSE) {
-      runjs("
-        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '600'
-        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '400'
-      ") 
+    if(input$view_region_only) {
+      addClass(selector = "#toggle-switch-container label.toggle-label-r", class = "bold")
+      removeClass(selector = "#toggle-switch-container label.toggle-label-l", class = "bold")
     } else {
-      runjs("
-        document.querySelector('#toggle-switch-container label.toggle-label-l').style.fontWeight = '400'
-        document.querySelector('#toggle-switch-container label.toggle-label-r').style.fontWeight = '600'
-      ") 
+      addClass(selector = "#toggle-switch-container label.toggle-label-l", class = "bold")
+      removeClass(selector = "#toggle-switch-container label.toggle-label-r", class = "bold")
     }
   })
   

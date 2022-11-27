@@ -139,8 +139,12 @@ img.arrow-download {
   label {
     display: inline-block;
     font-size: 14px;
+    font-weight: 400;
     &.toggle-label-l {
       min-width: 55px;
+    }
+    &.bold {
+      font-weight: 600;
     }
   }
   .form-group {
