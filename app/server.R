@@ -36,16 +36,17 @@ if (is.null(ph) || ph == '') {
 }
 
 
-## rv <- NULL
-## ## reactlog::reactlog_enable()
+rv <- NULL
+## reactlog::reactlog_enable()
 
-## input <- list(region = 'Wellington', nz_region = 'Wellington', target_upload = list(datapath='~/Downloads/test-data (copy).csv'))
-## rv <- list(
-##     reqfields = req_fields,
-##     selfields = data.frame(req = names(req_fields), good = 0L),
-##     intable = NULL, tablefields = NULL, tablefields_ori = NULL,
-##     finalTable = NULL, region = 'Wellington'
-## )
+input <- list(region = 'Wellington', nz_region = 'Wellington', target_upload = list(datapath='~/Downloads/test-data (copy).csv'))
+input <- list(region = 'Wellington', nz_region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'))
+rv <- list(
+    reqfields = req_fields,
+    selfields = data.frame(req = names(req_fields), good = 0L),
+    intable = NULL, tablefields = NULL, tablefields_ori = NULL,
+    finalTable = NULL, region = 'Wellington'
+)
 
 
 shinyServer(function(input, output, session) {
@@ -132,6 +133,8 @@ shinyServer(function(input, output, session) {
     rv[['finalTable']] <- NULL
     df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
 
+    debuginfo(head(df))
+    
     fields <- isolate(rv[['selfields']])
     fields$good <- ifelse(fields$req %in% names(df), 1, 0)
     rv[['selfields']] <- fields
@@ -216,6 +219,8 @@ shinyServer(function(input, output, session) {
 
       sf[sf$req == pair[1], 'good'] <- 1L
       rv[['selfields']] <- sf
+      debuginfo(rv[['fieldsmatching']])
+      debuginfo(rv[['selfields']])
     }
   }, label = 'Fields renaming')
 
@@ -253,6 +258,7 @@ shinyServer(function(input, output, session) {
     debuginfo('In Enable/disable button to next on page 2')
     if(all(rv$selfields$good == 1)) {
       enable('checkData')
+      rv$intable <- copy(rv$intable)
     } else{
       disable('checkData')
     }
@@ -280,18 +286,31 @@ shinyServer(function(input, output, session) {
     }
   }, label = 'Enable/disable button to next on page 3')
 
+  renamedTable <- reactive({
+    req(rv$intable)
+    tab <- copy(rv$intable)
+    setDT(tab)
+    req(all(rv$selfields$good == 1))
+    debuginfo(sum(rv$selfields$good))
+    setnames(tab, rv$fieldsmatching$ori, rv$fieldsmatching$match)
+    debuginfo(tab)
+    return(copy(tab))
+  })
 
+  
   ## * Processed table and issues =============================================================
 
   ## ** Table cleaned and with identified issues
 
   cleanTable <- reactive({
-    req(rv$intable)
-    req(all(c('SpeciesCode', 'Date', 'SiteID', 'Penetration', 'Altitude') %in% names(rv$intable)))
     debuginfo('In cleanTable()')
-    debuginfo(head(rv$intable))
-
+    tab <- renamedTable()
+    req(tab)
+    ## req(all(c('SpeciesCode', 'Date', 'SiteID', 'Penetration', 'Altitude') %in% names(rv$intable)))
+    ## debuginfo(head(rv$intable))
+    debuginfo(tab)
     fm <- rv$fieldsmatching
+    debuginfo(rv$fieldsmatching)
     d <- copy(rv$intable)
     cols <- fm$ori[fm$good == T]
     goodcols <- intersect(c(cols_needed, cols_opt), fm$match[fm$good==T])
@@ -308,6 +327,8 @@ shinyServer(function(input, output, session) {
 
     if (input$region != 'No Region')
       d[, ReportingRegion := input$region]
+
+    debuginfo(d)
     
     ## *** Penetration
     if ('Penetration' %in% names(d)) {
@@ -469,12 +490,14 @@ shinyServer(function(input, output, session) {
   issues_summary <- reactive({ # one row per issue
     debuginfo('In issues_summary()')
     long0 <- issues_long()
+    debuginfo(long0)
     req(long0)
 
     if (!is.null(long0)) {
       long <- long0[!is.na(issue)]
       l <- long[, .N, .(type, issue)]
     } else l <- NULL
+    debuginfo(l)
     l
 
   })
@@ -483,8 +506,10 @@ shinyServer(function(input, output, session) {
     debuginfo('Rendering UI issue_type')
     l <- issues_summary()
     req(l)
+    
     labs <- l[, setNames(c('All issues', issue),
                          c('All issues', sprintf('%s: %s (%s)', upper1st(type), issue, N)))]
+    debuginfo(labs)
     selectInput(inputId  = "issue_type",
                 multiple = FALSE,
                 label    = div(class = 'input-label', "Show issues:"),
@@ -494,9 +519,12 @@ shinyServer(function(input, output, session) {
   dataissues <- reactive({ # boolean: is there any issue? yes:1 no:0
     debuginfo('In dataissues()')
     ft <- rv$finalTable
+    debuginfo(rv$finalTable)
     req(ft)
     withissue   <- apply(ft[, grep('_issues$',   names(ft), val=T), drop=F], 1, function(x) any(x %in% 1))
     withwarning <- apply(ft[, grep('_warnings$', names(ft), val=T), drop=F], 1, function(x) any(x %in% 1))
+    debuginfo(sum(withissue))
+    debuginfo(sum(withwarning))
     if (any(withissue | withwarning)) {
       return(1)
     } else {
