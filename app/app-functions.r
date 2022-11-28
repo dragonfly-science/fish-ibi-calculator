@@ -3,6 +3,7 @@ debuginfo <- function(what=NULL, debug = getOption('debug', F), fun.path = getOp
   ## * Print debug info if enabled with options(debug=T)
   objname <- paste(deparse(substitute(what)), collapse='\n')
   whatischar <- grepl('^"', objname)
+  datetime <- format(Sys.time(), '%Y-%m-%d %H:%M:%S')
   ## print(sys.status())
   ## print(sys.nframe())
   ## print(str(sys.frames()))
@@ -23,12 +24,12 @@ debuginfo <- function(what=NULL, debug = getOption('debug', F), fun.path = getOp
       ## print(glue::glue('\n{paste(rep("\t", sys.nframe()), collapse="")}>> In {calling.funs} : `{objname}` = "{what}".\n'))
       nf <- sys.nframe()
       if (!whatischar) {
-        print(glue::glue('\n{nf}>> {calling.funs}`{objname}` = "{what}".\n'))
-      } else print(glue::glue('\n{nf}>> {calling.funs}{what}.\n'))
+        print(glue::glue('\n{nf} {datetime} >> {calling.funs}`{objname}` = "{what}".\n'))
+      } else print(glue::glue('\n{nf} {datetime} >> {calling.funs}{what}.\n'))
     } else {
       
       ## print(glue::glue('\n{paste(rep("\t", sys.nframe()), collapse="")}>> In {calling.funs} : `{objname}` = \n'))
-      print(glue::glue('\n{sys.nframe()}>> {calling.funs}`{objname}` = \n'))
+      print(glue::glue('\n{sys.nframe()} {datetime} >> {calling.funs}`{objname}` = \n'))
       if (last(capture.output(print(what))) == 'NULL') {
         cat(out[-length(out)], sep='\n')
       } else {

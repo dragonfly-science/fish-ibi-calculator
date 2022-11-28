@@ -1,5 +1,6 @@
 library(data.table)
 library(sf)
+library(qs)
 
 
 ## * REGIONS - Data from https://datafinder.stats.govt.nz/layer/106666-regional-council-2022-generalised/
@@ -60,7 +61,7 @@ if (nrow(not.in.lookup)) {
   print(not.in.lookup)
 }
 
-save(regions, calibrations, ibi_thresh, species_codes, species_ibi_metrics, fish_names,
-     file = 'data/app-data.rdata')
+qsavem(regions, calibrations, ibi_thresh, species_codes, species_ibi_metrics, fish_names,
+       file = 'data/app-data.qs')
 
 

@@ -6,6 +6,7 @@ library(leaflet)
 library(sf)
 library(reactable)
 library(ggplot2)
+library(qs)
 
 ## load('data/species_ibi_metrics.rda', v=T)
 ## load('data/fish_names.rda', v=T)
@@ -15,9 +16,9 @@ library(ggplot2)
 source('fishr-functions.R')
 source('app-functions.r')
 
-load('data/app-data.rdata', v = T)
+qload('data/app-data.qs')
 
-options(debug = F)
+options(debug = T)
 
 cols_needed <- c('SiteID', 'Date', 'Penetration',
                  'Altitude', 'SpeciesCode')
@@ -561,8 +562,6 @@ shinyServer(function(input, output, session) {
 
     ft <- copy(rv$finalTable)
     setDT(ft)
-    cat('\n=== ft:\n')
-    print(head(ft,1))
     req(ft)
     long <- copy(issues_long())
     if (dataissues() & !is.null(input$issue_type)) {
@@ -575,8 +574,7 @@ shinyServer(function(input, output, session) {
     } else {
       dsel <- copy(rv$finalTable)
     }
-    cat('\n=== dsel:\n')
-    print(dsel[1])
+    debuginfo('Done with selectedissues()')
 
     as.data.frame(copy(dsel))
   })
@@ -589,59 +587,62 @@ shinyServer(function(input, output, session) {
     dsel <- selectedissues() #rv$finalTable
     req(dsel)
 
-    cat('\n* dsel:\n')
-    print(as.data.table(dsel)[1])
-
     cols2hide <- sapply(grep('n_spp$|n_nosp$|_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T),
                         function(x) colDef(show = FALSE), simplify = F)
+    debuginfo('Rendering UI newTable - done step 1')
 
     dt <- reactable(
       dsel, highlight=T, compact=T, wrap=F,
       defaultColDef = colDef(
         align = 'left', html = T,
         class = function(value, index, name) {
-          if ((paste0(name,'_warnings') %in% names(dsel) &&
-                 !is.na(dsel[index, paste0(name,'_warnings')]) &&
-                 dsel[index, paste0(name,'_warnings')] > 0) |
-                (paste0(name,'_issues') %in% names(dsel) &&
-                   !is.na(dsel[index, paste0(name,'_issues')]) &&
-                   dsel[index, paste0(name,'_issues')] > 0))
+          d <- dsel[index,]
+          if ((paste0(name,'_warnings') %in% names(d) &&
+                 !is.na(d[[paste0(name,'_warnings')]]) &&
+                 d[[paste0(name,'_warnings')]] > 0) |
+                (paste0(name,'_issues') %in% names(d) &&
+                   !is.na(d[[paste0(name,'_issues')]]) &&
+                   d[[paste0(name,'_issues')]] > 0))
             return('CellWithComment')
         },
         style = function(value, index, name) {
-          if (paste0(name,'_warnings') %in% names(dsel) &&
-                !is.na(dsel[index, paste0(name,'_warnings')]) &&
-                dsel[index, paste0(name,'_warnings')] > 0) {
+          d <- dsel[index,]
+          if (paste0(name,'_warnings') %in% names(d) &&
+                !is.na(d[[paste0(name,'_warnings')]]) &&
+                d[[paste0(name,'_warnings')]] > 0) {
             return(list(background='#1F3B7133', color='#003547', fontWeight='normal'))
           }
-          if (paste0(name,'_issues') %in% names(dsel) &&
-                !is.na(dsel[index, paste0(name,'_issues')]) &&
-                dsel[index, paste0(name,'_issues')] > 0) {
+          if (paste0(name,'_issues') %in% names(d) &&
+                !is.na(d[[paste0(name,'_issues')]]) &&
+                d[[paste0(name,'_issues')]] > 0) {
             return(list(background='#BF2F3733', color='#003547', fontWeight='normal'))
           }
         },
         cell = function(value, index, name) {
+          d <- dsel[index,]
           if (is.na(value))
             value <- ''
           v <- value
-          if (paste0(name,'_warnings') %in% names(dsel) &&
-                paste0(name,'_wtxt') %in% names(dsel) &&
-                !is.na(dsel[index, paste0(name,'_warnings')]) &&
-                dsel[index, paste0(name,'_warnings')] > 0) {
+          if (paste0(name,'_warnings') %in% names(d) &&
+                paste0(name,'_wtxt') %in% names(d) &&
+                !is.na(d[[paste0(name,'_warnings')]]) &&
+                d[[paste0(name,'_warnings')]] > 0) {
             v <- sprintf('%s <span class="cellcomment cellcomment--warn"><b>Warning:</b> %s</span>',
-                         value, dsel[index, paste0(name,'_wtxt')])
+                         value, d[[paste0(name,'_wtxt')]])
           }
-          if (paste0(name,'_issues') %in% names(dsel) &&
-                paste0(name,'_txt') %in% names(dsel) &&
-                !is.na(dsel[index, paste0(name,'_issues')]) &&
-                dsel[index, paste0(name,'_issues')] > 0) {
+          if (paste0(name,'_issues') %in% names(d) &&
+                paste0(name,'_txt') %in% names(d) &&
+                !is.na(d[[paste0(name,'_issues')]]) &&
+                d[[paste0(name,'_issues')]] > 0) {
             v <- sprintf('%s <span class="cellcomment cellcomment--error"><b>Error:</b> %s</span>',
-                         value, dsel[index, paste0(name,'_txt')])
+                         value, d[[paste0(name,'_txt')]])
           }
           v
         }),
       columns = cols2hide
     )
+    debuginfo('Done rendering UI newTable')
+    
     dt
   })
 
@@ -801,12 +802,15 @@ shinyServer(function(input, output, session) {
     reg_thresh <- ibi_thresh[input$region] 
     if (input$region != 'No Region') {
       ibi_scores <- nps(ibi_scores, lq = reg_thresh$q1, med = reg_thresh$median, uq = reg_thresh$q3,
-                        colname = paste0('NPS_category_', gsub('\'', '', gsub(' ', '_', input$region))))
+                        colname = paste0('Regional_IBI_category_', gsub('\'', '', gsub(' ', '_', input$region))))
     }
 
     cols2rem <- c(grep('metric', names(ibi_scores), val = T))
     ibi_scores[, (cols2rem) := NULL]
 
+    setnames(ibi_scores, c('total_sp_richness', 'number_non_native'),
+             c('Species_richness', 'Species_non_native'))
+    
     ibi_scores
   })
 
@@ -819,11 +823,11 @@ shinyServer(function(input, output, session) {
     req(setDT(ibi_scores))
     ibi_scores_table <- copy(ibi_scores)
 
-    if (any(grepl('NPS_category_', names(ibi_scores_table)))) {
-      setnames(ibi_scores_table, grep('NPS_category_', names(ibi_scores_table), val = T),
-               paste0('NPS_category ', input$region))
-      setnames(ibi_scores_table, gsub('_', ' ', names(ibi_scores_table)))
+    if (any(grepl('Regional_IBI_category_', names(ibi_scores_table)))) {
+      setnames(ibi_scores_table, grep('Regional_IBI_category_', names(ibi_scores_table), val = T),
+               paste0('Regional IBI category ', input$region))
     }
+    setnames(ibi_scores_table, gsub('_', ' ', names(ibi_scores_table)))
 
     dt <- reactable(ibi_scores_table, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
 
@@ -841,7 +845,7 @@ shinyServer(function(input, output, session) {
     req(ibi_scores)
     req(input$region)
     if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
-      ibi_scores$NPScategory <- ibi_scores[, get(grep('NPS_category_', names(ibi_scores), val = T))]
+      ibi_scores$NPScategory <- ibi_scores[, get(grep('Regional_IBI_category_', names(ibi_scores), val = T))]
       xlab <- sprintf('%s region IBI category', input$region)
     } else {
       ibi_scores$NPScategory <- ibi_scores$NPS_category
@@ -912,10 +916,10 @@ shinyServer(function(input, output, session) {
     ibi_scores <- copy(ibiData())
 
     if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
-      ibi_scores$NPScategory <- ibi_scores[, get(grep('NPS_category_', names(ibi_scores), val = T))]
+      ibi_scores$IBIcategory <- ibi_scores[, get(grep('Regional_IBI_category_', names(ibi_scores), val = T))]
       leg.title <- sprintf('%s region<br>IBI category', input$region)
     } else {
-      ibi_scores$NPScategory <- ibi_scores$NPS_category
+      ibi_scores$IBIcategory <- ibi_scores$NPS_category
       leg.title <- "NPS-FM category"
     }
 
@@ -923,6 +927,10 @@ shinyServer(function(input, output, session) {
     req(ibi)
     dt <- as.data.table(rv$finalTable)
 
+    req(input$region)
+    if (!(input$region %in% 'No Region'))
+      req(!is.null(input$view_region_only))
+    
     if (all(c('Easting', 'Northing') %in% names(dt))) {
 
       coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Stratum)]
@@ -931,14 +939,14 @@ shinyServer(function(input, output, session) {
       ibi <- st_transform(ibi, crs = 4326)
       ibi <- cbind(ibi, st_coordinates(ibi))
       ibi <- as.data.table(ibi)
-      ibi <- ibi[, .(Date, SiteID, Penetration, Altitude, IBI_score, NPScategory,
-                     total_sp_richness, number_non_native, X, Y)]
+      ibi <- ibi[, .(Date, SiteID, Penetration, Altitude, IBI_score, IBIcategory,
+                     Species_richness, Species_non_native, X, Y)]
 
-      ibi[is.na(NPScategory), NPScategory := 'Unknown']
-      ibi[, NPScategory := factor(as.character(NPScategory), levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))]
+      ibi[is.na(IBIcategory), IBIcategory := 'Unknown']
+      ibi[, IBIcategory := factor(as.character(IBIcategory), levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))]
       factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"),
                               domain = NULL)
-      ibi[, Colour := factcols(NPScategory)]
+      ibi[, Colour := factcols(IBIcategory)]
 
       ## Raw HTML for the map tooltip/label
       ibi[, labels := paste0(
@@ -969,7 +977,7 @@ shinyServer(function(input, output, session) {
                     </div>
                   </div>
                 </div>',
-          SiteID, Colour, Date, IBI_score, NPScategory, total_sp_richness, number_non_native
+          SiteID, Colour, Date, IBI_score, IBIcategory, Species_richness, Species_non_native
         )
       )
     , by = 1L:nrow(ibi)]
@@ -977,14 +985,14 @@ shinyServer(function(input, output, session) {
 
       factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"),
                               domain = NULL)
-      fc = ~factcols(NPScategory)
-      c = ~factcols(NPScategory)
+      fc = ~factcols(IBIcategory)
+      c = ~factcols(IBIcategory)
 
       npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown', 'No species'),
                          color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"))
-      npss <- npss[as.character(label) %in% ibi$NPScategory]
+      npss <- npss[as.character(label) %in% ibi$IBIcategory]
       
-      if (input$region != 'No Region' && input$view_region_only != FALSE) {
+      if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
         leg.title <- sprintf('%s region<br>IBI category', input$region)
       } else leg.title <- "NPS-FM category"
 

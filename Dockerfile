@@ -12,3 +12,4 @@ RUN mv /root/bin/phantomjs /usr/local/bin/phantomjs
 
 RUN Rscript -e "install.packages('leaflet.extras', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "install.packages('quantreg', repos = 'https://cloud.r-project.org')"
+RUN Rscript -e "install.packages('qs', repos = 'https://cloud.r-project.org')"
