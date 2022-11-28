@@ -102,7 +102,7 @@ shinyServer(function(input, output, session) {
           prettySwitch(
             inputId = "view_region_only",
             label = NULL,
-            value = TRUE,
+            value = FALSE,
             inline = TRUE,
             fill = TRUE
             # status = 'primary'
