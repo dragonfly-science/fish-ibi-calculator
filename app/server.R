@@ -592,7 +592,7 @@ shinyServer(function(input, output, session) {
     debuginfo('Rendering UI newTable - done step 1')
 
     dt <- reactable(
-      dsel, highlight=T, compact=T, wrap=F,
+      dsel, highlight=T, compact=T, wrap=F, resizable = T,
       defaultColDef = colDef(
         align = 'left', html = T,
         class = function(value, index, name) {
@@ -829,7 +829,8 @@ shinyServer(function(input, output, session) {
     }
     setnames(ibi_scores_table, gsub('_', ' ', names(ibi_scores_table)))
 
-    dt <- reactable(ibi_scores_table, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'))
+    dt <- reactable(ibi_scores_table, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'),
+                    resizable = T)
 
     dt
   })
