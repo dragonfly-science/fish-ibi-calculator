@@ -111,28 +111,6 @@ img.arrow-download {
   vertical-align: middle;
 }
 
-#plotdl,
-#mapdl {
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 20px;
-  border-radius: 3px;
-  border-color: #eceff0 !important;
-  color: #607781;
-  font-weight: normal;
-  background-color: unset;
-  padding: 2px;
-  width: 150px;
-}
-
-#plotdl:hover,
-#mapdl:hover {
-  color: $mfe-blue !important;
-  text-decoration: underline;
-}
-
 /* Toggle switch */
 
 #toggle-switch-container {
@@ -169,4 +147,28 @@ img.arrow-download {
   }
 }
 
+/* plot & map download links */
+.my-dl-btn {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 3px;
+  border-color: #eceff0 !important;
+  color: #607781;
+  font-weight: normal;
+  background-color: unset;
+  padding: 2px;
+  width: 150px;
+  span {
+    margin-right: 0.5rem;
+  }
+  &:hover {
+    color: $mfe-blue !important;
+    span {
+      text-decoration: underline;
+    }
+  }
+}
 
