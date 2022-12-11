@@ -1058,7 +1058,7 @@ shinyServer(function(input, output, session) {
   output$text <- renderUI({
     debuginfo('Rendering categories')
     
-    if (!is.null(input$nview_region_only) && input$view_region_only != FALSE) {
+    if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
       thresh <- ibi_thresh[input$region]
     } else thresh <- ibi_thresh['No Region']
 
