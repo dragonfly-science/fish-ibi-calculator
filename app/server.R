@@ -953,32 +953,32 @@ shinyServer(function(input, output, session) {
       ibi[, labels := paste0(
         sprintf(
           '<div class="maptip">
-                  <div class="maptip--header">
-                    <div>
-                      Site ID:<br/>
-                      <span class="maptip--header__siteID">%s</span>
-                    </div>
-                    <div class="maptip--header__swatch" style="background-color: %s;"></div>
-                  </div>
-                  <div class="maptip--main">
-                    <div class="maptip--row">
-                      <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
-                    </div>
-                    <div class="maptip--row">
-                      <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
-                    </div>
-                    <div class="maptip--row">
-                      <span class="maptip--row__left">NPS category:</span><span class="maptip--row__right">%s</span>
-                    </div>
-                    <div class="maptip--row">
-                      <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
-                    </div>
-                    <div class="maptip--row">
-                      <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
-                    </div>
-                  </div>
-                </div>',
-          SiteID, Colour, Date, IBI_score, IBIcategory, Species_richness, Species_non_native
+            <div class="maptip--header">
+              <div>
+                Site ID:<br/>
+                <span class="maptip--header__siteID">%s</span>
+              </div>
+              <div class="maptip--header__swatch" style="background-color: %s;"></div>
+            </div>
+            <div class="maptip--main">
+              <div class="maptip--row">
+                <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
+              </div>
+              <div class="maptip--row">
+                <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
+              </div>
+              <div class="maptip--row">
+                <span class="maptip--row__left">%s:</span><span class="maptip--row__right">%s</span>
+              </div>
+              <div class="maptip--row">
+                <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
+              </div>
+              <div class="maptip--row">
+                <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
+              </div>
+            </div>
+          </div>',
+          SiteID, Colour, Date, IBI_score, leg.title, IBIcategory, Species_richness, Species_non_native
         )
       )
     , by = 1L:nrow(ibi)]
