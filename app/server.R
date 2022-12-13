@@ -99,7 +99,8 @@ shinyServer(function(input, output, session) {
     debuginfo("Rendering UI region_only")
     if (input$region != "No Region") {
       span(id = "toggle-switch-container",
-          tags$label('for' = "view_region_only", class = 'toggle-label-l','National'),
+          tags$label('for' = "view_region_only", class = 'toggle-label-l',
+                    'National'),
           prettySwitch(
             inputId = "view_region_only",
             label = NULL,
@@ -108,7 +109,8 @@ shinyServer(function(input, output, session) {
             fill = TRUE
             # status = 'primary'
           ),
-          tags$label('for' = "view_region_only", class = 'toggle-label-r', input$region)
+          tags$label('for' = "view_region_only", class = 'toggle-label-r',
+                    input$region)
       )
     }
   })
@@ -593,6 +595,9 @@ shinyServer(function(input, output, session) {
 
     cols <- colDef(
         align = 'left', html = T,
+        header = function(value, index, name) {
+          sprintf('<span title="%1$s">%1$s</span>', value)
+        },
         class = function(value, index, name) {
           d <- dsel[index,]
           if ((paste0(name,'_warnings') %in% names(d) &&
@@ -829,8 +834,19 @@ shinyServer(function(input, output, session) {
     }
     setnames(ibi_scores_table, gsub('_', ' ', names(ibi_scores_table)))
 
-    dt <- reactable(ibi_scores_table, highlight=T, compact=T, wrap=F, defaultColDef = colDef(align = 'left'),
-                    resizable = T)
+    dt <- reactable(
+      ibi_scores_table, 
+      highlight=T, 
+      compact=T, wrap=F, 
+      defaultColDef = colDef(
+        html=TRUE,
+        align = 'left', 
+        header = function(value, index ,name) {
+          sprintf('<span title="%1$s">%1$s</span>', value)
+        }
+      ),
+      resizable = T
+    )
 
     dt
   })
