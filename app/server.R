@@ -591,9 +591,7 @@ shinyServer(function(input, output, session) {
                         function(x) colDef(show = FALSE), simplify = F)
     debuginfo('Rendering UI newTable - done step 1')
 
-    dt <- reactable(
-      dsel, highlight=T, compact=T, wrap=F, resizable = T,
-      defaultColDef = colDef(
+    cols <- colDef(
         align = 'left', html = T,
         class = function(value, index, name) {
           d <- dsel[index,]
@@ -638,9 +636,11 @@ shinyServer(function(input, output, session) {
                          value, d[[paste0(name,'_txt')]])
           }
           v
-        }),
-      columns = cols2hide
-    )
+        })
+
+    dt <- reactable(dsel, highlight=T, compact=T, wrap=F, resizable = T,
+                    defaultColDef = cols, columns = cols2hide)
+
     debuginfo('Done rendering UI newTable')
     
     dt
@@ -1058,7 +1058,7 @@ shinyServer(function(input, output, session) {
   output$text <- renderUI({
     debuginfo('Rendering categories')
     
-    if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
+    if (!is.null(input$nview_region_only) && input$view_region_only != FALSE) {
       thresh <- ibi_thresh[input$region]
     } else thresh <- ibi_thresh['No Region']
 
