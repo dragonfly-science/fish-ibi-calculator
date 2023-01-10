@@ -86,15 +86,6 @@ shinyServer(function(input, output, session) {
 
   ## * Data loading
 
-  output$region <- renderUI({ # Region selector widget
-    debuginfo('Rendering UI region')
-    labs <- c('No Region', regions$region)
-    selectInput(inputId  = "region",
-                multiple = FALSE,
-                label    = div(class = 'input-label', "Select your region (optional):"),
-                choices  = labs)
-  })
-
   output$view_region_only <- renderUI({
     debuginfo("Rendering UI region_only")
     if (input$region != "No Region") {

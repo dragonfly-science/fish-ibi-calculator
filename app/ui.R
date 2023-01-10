@@ -88,7 +88,10 @@ shinyUI(
               br(),
               p(includeMarkdown('text/page-1-description.md')),
               br(),
-              uiOutput('region')
+              selectInput(inputId  = "region",
+                multiple = FALSE,
+                label    = div(class = 'input-label', "Select your region (optional):"),
+                choices  = c("No Region","Northland","Auckland","Waikato","Bay of Plenty","Gisborne","Hawke's Bay","Taranaki","Manawatū-Whanganui","Wellington","West Coast","Canterbury","Otago","Southland","Tasman","Nelson","Marlborough"))
             ),
             column(
               6,
