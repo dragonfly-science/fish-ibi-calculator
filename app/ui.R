@@ -245,7 +245,7 @@ shinyUI(
           hr(),
           ##br(),
           fluidRow(column(6
-                        , fluidRow(column(8, div(class='subheader', "Scores across number of sites")),
+                        , fluidRow(column(8, div(class='subheader', "Scores across number of site visits")),
                                    column(4, style = "text-align: right;", mydownloadbutton('plotdl', 'Download plot')))
                         , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                  , column(6

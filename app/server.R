@@ -280,13 +280,16 @@ shinyServer(function(input, output, session) {
     }
   }, label = 'Enable/disable button to next on page 3')
 
+  
   renamedTable <- reactive({
     req(rv$intable)
+
     tab <- copy(rv$intable)
     setDT(tab)
     req(all(rv$selfields$good == 1))
     debuginfo(sum(rv$selfields$good))
     setnames(tab, rv$fieldsmatching$ori, rv$fieldsmatching$match)
+    
     debuginfo(tab)
     return(copy(tab))
   })
@@ -302,6 +305,7 @@ shinyServer(function(input, output, session) {
     req(tab)
     ## req(all(c('SpeciesCode', 'Date', 'SiteID', 'Penetration', 'Altitude') %in% names(rv$intable)))
     ## debuginfo(head(rv$intable))
+
     debuginfo(tab)
     fm <- rv$fieldsmatching
     debuginfo(rv$fieldsmatching)
@@ -876,7 +880,7 @@ shinyServer(function(input, output, session) {
 
     g <- g +
       geom_histogram(stat = "count", alpha = 0.9) +
-      ylab("Number of sites") +
+      ylab("Number of site visits") +
       scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
       scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
       theme_bw() +
