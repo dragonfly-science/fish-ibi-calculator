@@ -956,8 +956,9 @@ shinyServer(function(input, output, session) {
 
       ibi[is.na(IBIcategory), IBIcategory := 'Unknown']
       ibi[, IBIcategory := factor(as.character(IBIcategory), levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))]
-      factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"),
-                              domain = NULL)
+
+      palcolours <- c('#20a7ad', '#85bb5b', '#ffc316', '#e85129', '#808080', "#6e6e6e")
+      factcols <- colorFactor(palcolours, domain = NULL)
       ibi[, Colour := factcols(IBIcategory)]
 
       ## Raw HTML for the map tooltip/label
@@ -995,13 +996,11 @@ shinyServer(function(input, output, session) {
     , by = 1L:nrow(ibi)]
 
 
-      factcols <- colorFactor(c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"),
-                              domain = NULL)
+      factcols <- colorFactor(palcolours, domain = NULL)
       fc = ~factcols(IBIcategory)
       c = ~factcols(IBIcategory)
 
-      npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown', 'No species'),
-                         color = c('#00C7A8', '#2C9986', '#004A6D', '#BF2F37', '#808080', "#565659"))
+      npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown', 'No species'), color = palcolours)
       npss <- npss[as.character(label) %in% ibi$IBIcategory]
       
       if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
