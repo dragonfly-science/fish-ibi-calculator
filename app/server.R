@@ -866,12 +866,14 @@ shinyServer(function(input, output, session) {
     ibi_scores$NPScategory[is.na(ibi_scores$NPScategory)] <- 'Unknown'
     ibi_scores$NPScategory <- factor(as.character(ibi_scores$NPScategory),
                                       levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))
-    
-    group.colors <- c('No species' = "#565659",
-                      'A'       = "#00C7A8",
-                      'B'       = "#2C9986",
-                      'C'       = "#004A6D",
-                      'D'       = "#BF2F37",
+
+    palcolours <- c('#20a7ad', '#85bb5b', '#ffc316', '#e85129', '#808080', "#6e6e6e")
+      
+    group.colors <- c('No species' = "#6e6e6e",
+                      'A'       = "#20a7ad",
+                      'B'       = "#85bb5b",
+                      'C'       = "#ffc316",
+                      'D'       = "#e85129",
                       'Unknown' = '#d4dde1')
     group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPScategory]
 
