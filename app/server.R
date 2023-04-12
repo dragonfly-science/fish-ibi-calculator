@@ -158,10 +158,17 @@ shinyServer(function(input, output, session) {
     rv[['intable']] <- NULL
     rv[['ignoredrows']] <- 0L
     rv[['finalTable']] <- NULL
-    df <- read.csv(inFile$datapath, header = TRUE, stringsAsFactors = F)
+
+    f <- inFile$datapath
+    tt <- tryCatch({
+      df <- read.csv(f, header = TRUE, stringsAsFactors = FALSE, fileEncoding = 'UTF-8')
+    }, error = function(e) e, warning = function(w) w)
+    if (is(tt, "warning")) {
+      df <- read.csv(f, header = TRUE, stringsAsFactors = FALSE, fileEncoding = 'WINDOWS-1252')
+    }
 
     debuginfo(head(df))
-    
+
     fields <- isolate(rv[['selfields']])
     fields$good <- ifelse(fields$req %in% names(df), 1, 0)
     rv[['selfields']] <- fields
@@ -190,6 +197,10 @@ shinyServer(function(input, output, session) {
     rv[['ignoredrows']] <- 0L
     rv[['finalTable']] <- NULL
     df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
+    ## df <- read.csv('data/example-data.csv', header = TRUE, stringsAsFactors = F)
+    ## if (length(grep('â€tm', df))) {
+    ##   Encoding(df) <- 
+    ## }
     fields <- isolate(rv[['selfields']])
     fields$good <- ifelse(fields$req %in% names(df), 1, 0)
     rv[['selfields']] <- fields
@@ -1251,7 +1262,7 @@ shinyServer(function(input, output, session) {
   output$download <- downloadHandler(
     filename = function() {sprintf("IBI-scores_%s.csv", format(Sys.Date()))},
     content = function(fname) {
-      fwrite(ibiData(), fname)
+      fwrite(ibiData()$ibi_scores, fname)
     })
 
 })
