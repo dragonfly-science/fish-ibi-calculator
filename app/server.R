@@ -7,6 +7,9 @@ library(sf)
 library(reactable)
 library(ggplot2)
 library(qs)
+library(knitr)
+
+options(knitr.table.format='html')
 
 ## load('data/species_ibi_metrics.rda', v=T)
 ## load('data/fish_names.rda', v=T)
@@ -42,6 +45,7 @@ rv <- NULL
 
 input <- list(region = 'Wellington', nz_region = 'Wellington', target_upload = list(datapath='~/Downloads/test-data (copy).csv'))
 input <- list(region = 'Wellington', nz_region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'))
+input <- list(region = 'Bay of Plenty', nz_region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'), aggregate_site_visits = T, view_region_only = T)
 rv <- list(
     reqfields = req_fields,
     selfields = data.frame(req = names(req_fields), good = 0L),
@@ -107,7 +111,7 @@ shinyServer(function(input, output, session) {
   })
 
   observeEvent(input$view_region_only, {
-    if(input$view_region_only) {
+    if (input$view_region_only) {
       addClass(selector = "#toggle-switch-container label.toggle-label-r", class = "bold")
       removeClass(selector = "#toggle-switch-container label.toggle-label-l", class = "bold")
     } else {
@@ -115,6 +119,35 @@ shinyServer(function(input, output, session) {
       removeClass(selector = "#toggle-switch-container label.toggle-label-r", class = "bold")
     }
   })
+  
+  output$aggregate_site_visits <- renderUI({
+    debuginfo("Rendering aggregate_site_visits")
+    span(id = "toggle-switch-container2",
+         tags$label('for' = "aggregate_site_visits", class = 'toggle-label-l',
+                    'Score by site visit'),
+         prettySwitch(
+           inputId = "aggregate_site_visits",
+           label = NULL,
+           value = FALSE,
+           inline = TRUE,
+           fill = TRUE
+           # status = 'primary'
+         ),
+         tags$label('for' = "aggregate_site_visits", class = 'toggle-label-r',
+                    "Score by site")
+         )
+  })
+
+  observeEvent(input$aggregate_site_visits, {
+    if (input$aggregate_site_visits) {
+      addClass(selector = "#toggle-switch-container2 label.toggle-label-r", class = "bold")
+      removeClass(selector = "#toggle-switch-container2 label.toggle-label-l", class = "bold")
+    } else {
+      addClass(selector = "#toggle-switch-container2 label.toggle-label-l", class = "bold")
+      removeClass(selector = "#toggle-switch-container2 label.toggle-label-r", class = "bold")
+    }
+  })
+  
   
   observe({
     debuginfo('In observe file upload')
@@ -148,6 +181,7 @@ shinyServer(function(input, output, session) {
   }, label='File upload')
 
 
+  ## * Load example data
   observeEvent(input$exbtn, {
 
     debuginfo('In observeEvent example load')
@@ -174,6 +208,7 @@ shinyServer(function(input, output, session) {
                       selected = "2. Match headers")
   }, label = 'Demo loading')
 
+  
   ## * List of required fields
   output$mandfields <- renderUI({
     debuginfo('Rendering UI mandfields')
@@ -316,6 +351,8 @@ shinyServer(function(input, output, session) {
     names(d) <- goodcols
     setDT(d)
     d[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
+    d[, Site := paste0(SiteID, '_', Penetration, '_', Altitude)]
+    
     d[, SpeciesCode := tolower(SpeciesCode)]
     
     ## *** Standardise species codes
@@ -556,11 +593,11 @@ shinyServer(function(input, output, session) {
 
   selectedissues <- reactive({
     debuginfo('In selectedissues()')
+    long <- copy(issues_long())
 
     ft <- copy(rv$finalTable)
     setDT(ft)
     req(ft)
-    long <- copy(issues_long())
     if (dataissues() & !is.null(input$issue_type)) {
       if (input$issue_type != 'All issues') {
         iids <- ft[long[issue %in% input$issue_type], on = 'OriginalRow'][, sort(unique(OriginalRow))]
@@ -584,6 +621,8 @@ shinyServer(function(input, output, session) {
     dsel <- selectedissues() #rv$finalTable
     req(dsel)
 
+    ## dsel <- head(dsel) # TODO: REMOVE! JUST FOR DEBUGGING!!!
+    
     cols2hide <- sapply(grep('n_spp$|n_nosp$|_issues$|_warnings$|_txt$|_wtxt$', names(dsel), val=T),
                         function(x) colDef(show = FALSE), simplify = F)
     debuginfo('Rendering UI newTable - done step 1')
@@ -795,14 +834,23 @@ shinyServer(function(input, output, session) {
     ibi_scores <- site_metrics_all |>
       add.fish.metrics(cal = calibrations) |>
       add.fish.metric6() |>
-      add.fish.ibi() |>
-      nps(lq = nz_thresh$q1, med = nz_thresh$median, uq = nz_thresh$q3)
+      add.fish.ibi()
 
+    ibi_scores_agg <- ibi_scores[
+    , .(IBI_score = median(IBI_score), total_sp_richness = median(total_sp_richness),
+        .N, date_min = min(Date), date_max = max(Date))
+    , .(StratumSite, SiteID, Altitude, Penetration)]
+    
+    ibi_scores     <- nps(ibi_scores,     lq = nz_thresh$q1, med = nz_thresh$median, uq = nz_thresh$q3)
+    ibi_scores_agg <- nps(ibi_scores_agg, lq = nz_thresh$q1, med = nz_thresh$median, uq = nz_thresh$q3)
+    
     ## ** Add region NPS category if region is specified
-    reg_thresh <- ibi_thresh[input$region] 
+    reg_thresh <- ibi_thresh[input$region]
     if (input$region != 'No Region') {
-      ibi_scores <- nps(ibi_scores, lq = reg_thresh$q1, med = reg_thresh$median, uq = reg_thresh$q3,
-                        colname = paste0('Regional_IBI_category_', gsub('\'', '', gsub(' ', '_', input$region))))
+      ibi_scores     <- nps(ibi_scores,     lq = reg_thresh$q1, med = reg_thresh$median, uq = reg_thresh$q3,
+                            colname = paste0('Regional_IBI_category_', gsub('\'', '', gsub(' ', '_', input$region))))
+      ibi_scores_agg <- nps(ibi_scores_agg, lq = reg_thresh$q1, med = reg_thresh$median, uq = reg_thresh$q3,
+                            colname = paste0('Regional_IBI_category_', gsub('\'', '', gsub(' ', '_', input$region))))
     }
 
     cols2rem <- c(grep('metric', names(ibi_scores), val = T))
@@ -810,15 +858,18 @@ shinyServer(function(input, output, session) {
 
     setnames(ibi_scores, c('total_sp_richness', 'number_non_native'),
              c('Species_richness', 'Species_non_native'))
-    
-    ibi_scores
+    setnames(ibi_scores_agg, c('total_sp_richness'), c('Species_richness'))
+
+    ibi_scores_both <- list(ibi_scores = ibi_scores, ibi_scores_agg = ibi_scores_agg)
+
+    ibi_scores_both
   })
 
   
   ## * Table of IBI scores
   output$ibiTable <- renderReactable({
     debuginfo('Rendering ibiTable')
-    ibi_scores <- ibiData()
+    ibi_scores <- ibiData()$ibi_scores
     
     req(setDT(ibi_scores))
     ibi_scores_table <- copy(ibi_scores)
@@ -849,40 +900,66 @@ shinyServer(function(input, output, session) {
 
   ## * Scores plot
 
+  output$plot_title <- renderText({
+    if (is.null(input$aggregate_site_visits)) return(NULL)
+    
+    if (input$aggregate_site_visits) {
+      return('Median scores across number of sites')
+    } else {
+      return('Scores across number of sites visits')
+    }
+  })
+
+  
   output$scoresPlot <- renderPlot({
     debuginfo('Rendering scoresPlot')
 
-    ibi_scores <- ibiData()
+    if (is.null(input$aggregate_site_visits)) return(NULL)
+    
+    ibi_scores_both <- ibiData()
 
-    req(ibi_scores)
+    if (input$aggregate_site_visits) {
+      scores <- copy(ibi_scores_both$ibi_scores_agg)
+    } else scores <- copy(ibi_scores_both$ibi_scores)
+    req(scores)
+
+    debuginfo('Passed req(scores)')
+    
     req(input$region)
+
+    debuginfo('Passed req(input$region)')
+    
     if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
-      ibi_scores$NPScategory <- ibi_scores[, get(grep('Regional_IBI_category_', names(ibi_scores), val = T))]
+      scores$NPScategory <- scores[, get(grep('Regional_IBI_category_', names(scores), val = T))]
       xlab <- sprintf('%s region IBI category', input$region)
     } else {
-      ibi_scores$NPScategory <- ibi_scores$NPS_category
+      scores$NPScategory <- scores$NPS_category
       xlab <- "NPS-FM category"
     }
-    ibi_scores$NPScategory[is.na(ibi_scores$NPScategory)] <- 'Unknown'
-    ibi_scores$NPScategory <- factor(as.character(ibi_scores$NPScategory),
+    if (input$aggregate_site_visits) {
+      xlab <- paste0('Median ', xlab)
+    }
+    
+    scores$NPScategory[is.na(scores$NPScategory)] <- 'Unknown'
+    scores$NPScategory <- factor(as.character(scores$NPScategory),
                                       levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))
 
-    palcolours <- c('#20a7ad', '#85bb5b', '#ffc316', '#e85129', '#808080', "#6e6e6e")
-      
     group.colors <- c('No species' = "#6e6e6e",
                       'A'       = "#20a7ad",
                       'B'       = "#85bb5b",
                       'C'       = "#ffc316",
                       'D'       = "#e85129",
                       'Unknown' = '#d4dde1')
-    group.colors <- group.colors[names(group.colors) %in% ibi_scores$NPScategory]
+    group.colors <- group.colors[names(group.colors) %in% scores$NPScategory]
 
-    g <- ggplot(ibi_scores, aes(x = NPScategory, fill = NPScategory)) +
+    debuginfo(scores)
+    
+    g <- ggplot(scores, aes(x = NPScategory, fill = NPScategory)) +
       xlab(xlab)
 
     g <- g +
       geom_histogram(stat = "count", alpha = 0.9) +
-      ylab("Number of site visits") +
+      ylab(fifelse(input$aggregate_site_visits, "Number of sites", "Number of site visits")) +
       scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
       scale_fill_manual(values = group.colors, na.value = '#d4dde1') +
       theme_bw() +
@@ -926,35 +1003,38 @@ shinyServer(function(input, output, session) {
 
   output$map <- renderLeaflet({
     debuginfo('Rendering map')
+    ## if (is.null(input$aggregate_site_visits)) return(NULL)
+    
+    ibi_scores_both <- copy(ibiData())
+    req(ibi_scores_both)
+    req(input$region)
+    req(!is.null(input$view_region_only))
 
-    ibi_scores <- copy(ibiData())
+    scores1 <- copy(ibi_scores_both$ibi_scores)
+    scoresm <- copy(ibi_scores_both$ibi_scores_agg) 
 
-    if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
-      ibi_scores$IBIcategory <- ibi_scores[, get(grep('Regional_IBI_category_', names(ibi_scores), val = T))]
-      leg.title <- sprintf('%s region<br>IBI category', input$region)
-    } else {
-      ibi_scores$IBIcategory <- ibi_scores$NPS_category
-      leg.title <- "NPS-FM category"
-    }
-
-    ibi <- as.data.table(ibi_scores)
-    req(ibi)
     dt <- as.data.table(rv$finalTable)
 
-    req(input$region)
-    if (!(input$region %in% 'No Region'))
-      req(!is.null(input$view_region_only))
-    
     if (all(c('Easting', 'Northing') %in% names(dt))) {
 
-      coords <- dt[, .(x = mean(Easting, na.rm=T), y = mean(Northing, na.rm=T)), .(Stratum)]
-      ibi <- merge(ibi, coords, by = 'Stratum', all = T)
+      coords <- dt[, .(x = median(Easting, na.rm=T), y = median(Northing, na.rm=T))
+                 , .(SiteID, Penetration, Altitude)]
+      scoresm <- merge(scoresm, coords, by = c("SiteID", "Penetration", "Altitude"), all.x = T)
+      ibi <- merge(scoresm, scores1, by = c("StratumSite", "SiteID", "Penetration", "Altitude")
+                 , suff = c('.med', '.vis'))
+
+      if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
+        ibi$IBIcategory <- ibi[, get(grep('Regional_IBI_category_.*\\.med', names(ibi), val = T))]
+        leg.title <- sprintf('%s region<br>IBI category', input$region)
+      } else {
+        ibi$IBIcategory <- ibi$NPS_category.med
+        leg.title <- "NPS-FM category"
+      }
+      
       ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
       ibi <- st_transform(ibi, crs = 4326)
       ibi <- cbind(ibi, st_coordinates(ibi))
       ibi <- as.data.table(ibi)
-      ibi <- ibi[, .(Date, SiteID, Penetration, Altitude, IBI_score, IBIcategory,
-                     Species_richness, Species_non_native, X, Y)]
 
       ibi[is.na(IBIcategory), IBIcategory := 'Unknown']
       ibi[, IBIcategory := factor(as.character(IBIcategory), levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))]
@@ -962,11 +1042,11 @@ shinyServer(function(input, output, session) {
       palcolours <- c('#20a7ad', '#85bb5b', '#ffc316', '#e85129', '#808080', "#6e6e6e")
       factcols <- colorFactor(palcolours, domain = NULL)
       ibi[, Colour := factcols(IBIcategory)]
-
-      ## Raw HTML for the map tooltip/label
-      ibi[, labels := paste0(
-        sprintf(
-          '<div class="maptip">
+      
+      pts.single <- ibi[N == 1]
+      pts.single[, labels := paste0(
+          sprintf(
+            '<div class="maptip">
             <div class="maptip--header">
               <div>
                 Site ID:<br/>
@@ -992,11 +1072,63 @@ shinyServer(function(input, output, session) {
               </div>
             </div>
           </div>',
-          SiteID, Colour, Date, IBI_score, leg.title, IBIcategory, Species_richness, Species_non_native
+          SiteID, Colour, Date, IBI_score.vis, leg.title, IBIcategory, Species_richness.vis, Species_non_native
+          )
+        )
+      , by = 1L:nrow(pts.single)]
+
+      
+      pts.mult <- ibi[N > 1]
+
+      if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
+        pts.mult[, visit_IBIcat := get(grep('Regional_IBI_category_.*\\.vis', names(pts.mult), val = T))]
+
+        tabls <- pts.mult[
+        , .(tabl = knitr::kable(.SD[, .(Date,
+                                        `IBI score`          = IBI_score.vis,
+                                        `Reg. NPS category`  = visit_IBIcat,
+                                        `Total sp. richness` = Species_richness.vis,
+                                        `Non-native spp.`    = Species_non_native)]))
+        , .(StratumSite)]
+      } else {
+        tabls <- pts.mult[
+        , .(tabl = knitr::kable(.SD[, .(Date,
+                                        `IBI score`          = IBI_score.vis,
+                                        `NPS category`       = NPS_category.vis,
+                                        `Total sp. richness` = Species_richness.vis,
+                                        `Non-native spp.`    = Species_non_native)]))
+        , .(StratumSite)]
+      }
+
+      ibim <- pts.mult[rowid(StratumSite) == 1]
+      ibim[tabls, tabl := i.tabl, on = 'StratumSite']
+      ibim[, labels := paste0(
+        sprintf(
+          '<div class="maptip">
+            <div class="maptip--header">
+              <div>
+                Site ID:<br/>
+                <span class="maptip--header__siteID">%s</span><br/>
+                Median score: %s
+              </div>
+              <div class="maptip--header__swatch" style="background-color: %s;"></div>
+            </div>
+            <div class="maptip--main">
+              <div class="maptip--row">
+              %s
+              </div>
+            </div>
+          </div>',
+          SiteID, IBI_score.med, Colour, tabl
         )
       )
-    , by = 1L:nrow(ibi)]
+    , by = 1L:nrow(ibim)]
 
+      pts.single[, type := 'single']
+      ibim[, type := 'multi']
+      ibi <- rbind(ibim, pts.single, fill = T)[
+        , .(type, labels, geometry, IBIcategory, X, Y, Colour)
+      ]
 
       factcols <- colorFactor(palcolours, domain = NULL)
       fc = ~factcols(IBIcategory)
@@ -1008,10 +1140,30 @@ shinyServer(function(input, output, session) {
       if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
         leg.title <- sprintf('%s region<br>IBI category', input$region)
       } else leg.title <- "NPS-FM category"
+      ## if (input$aggregate_site_visits)
+      ##   leg.title <- paste0('Median ', leg.title)
+
+      clopts <- markerClusterOptions()
+      clopts$freezeAtZoom <- T
+      clopts$showCoverageOnHover <- F
+      clopts$removeOutsideVisibleBounds <- F
+      clopts$spiderfyOnMaxZoom <- T
+      clopts$spiderLegPolylineOptions$weight <- 0.5
+      clopts$spiderLegPolylineOptions$opacity <- 0.3
+      ibi[, radius := fifelse(type == 'multi', 8, 4)]
 
       rv$map <- leaflet() |>
         setView(173.6, -41, zoom = 5) |>
-        addProviderTiles(providers$CartoDB.Positron) |>
+        addProviderTiles(providers$CartoDB.Positron, options = providerTileOptions(maxZoom = 20)) |>
+        ## addAwesomeMarkers(lng = ~X, lat = ~Y, data = ibi,
+        ## ## addMarkers(lng = ~X, lat = ~Y, data = ibi,
+        ##                   icon = awesomeIcons(icon = fifelse(ibi$type == 'single', 'fa-circle', 'fa-plus-circle'),
+        ##                                       iconColor = ibi$Colour, markerColor = 'lightgray', library = 'fa',
+        ##                                       squareMarker = TRUE),
+        ##                   popup = ~labels |> lapply(htmltools::HTML),
+        ##                   popupOptions = labelOptions(
+        ##                     direction = "auto", sticky = F,
+        ##                     maxWidth = 700, closeOnClick = T, closeButton = F)) |> 
         addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
                          fillColor = fc, color = c,
                          popup = ~labels |> lapply(htmltools::HTML),
@@ -1020,7 +1172,10 @@ shinyServer(function(input, output, session) {
                            maxWidth = 700, closeOnClick = T, closeButton = F),
                          ## radius = ~radius,
                          fillOpacity = 0.7,
-                         radius = 4,
+                         radius = ~ radius, #fifelse(ibi$type == 'multi', 8, 4),
+                         ## clusterOptions = markerClusterOptions(
+                         ##  showCoverageOnHover = F, removeOutsideVisibleBounds = T),
+                         options = markerOptions(riseOnHover = T, zIndexOffset = 10),
                          opacity = 1,
                          weight = 1
                          ) |>
@@ -1030,12 +1185,207 @@ shinyServer(function(input, output, session) {
           labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
           title = leg.title, opacity = 1) |>
         leaflet.extras::addFullscreenControl()
-
+leaflet::addLegend
       rv$map
 
+      
     }
 
-  })
+})
+
+
+
+
+
+
+    
+  ##   if (input$aggregate_site_visits) {
+  ##     scores <- copy(ibi_scores_both$ibi_scores_agg)
+  ##   } else scores <- copy(ibi_scores_both$ibi_scores)
+
+  ##   if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
+  ##     scores$IBIcategory <- scores[, get(grep('Regional_IBI_category_', names(scores), val = T))]
+  ##     leg.title <- sprintf('%s region<br>IBI category', input$region)
+  ##   } else {
+  ##     scores$IBIcategory <- scores$NPS_category
+  ##     leg.title <- "NPS-FM category"
+  ##   }
+
+  ##   ibi <- as.data.table(scores)
+  ##   req(ibi)
+
+  ##   debuginfo(ibi)
+    
+  ##   req(input$region)
+  ##   if (!(input$region %in% 'No Region'))
+  ##     req(!is.null(input$view_region_only))
+    
+  ##   dt <- as.data.table(rv$finalTable)
+
+  ##   if (all(c('Easting', 'Northing') %in% names(dt))) {
+
+  ##     ## dt[, `:=`(Easting = median(Easting, na.rm=T), Northing = median(Northing, na.rm=T)),
+  ##     ##    .(SiteID, Penetration, Altitude)]
+  ##     ## dt[, ndates := uniqueN(Date), .(SiteID, Penetration, Altitude)]
+      
+  ##     ## if (!input$aggregate_site_visits) {
+  ##     ##   coords <- dt[, .(x = median(Easting, na.rm=T), y = median(Northing, na.rm=T)), .(Stratum)]
+  ##     ##   ibi <- merge(ibi, coords, by = 'Stratum', all = T)
+  ##     ## } else {
+  ##     ##   coords <- dt[, .(x = median(Easting, na.rm=T), y = median(Northing, na.rm=T)), .(StratumSite = Site)]
+  ##     ##   ibi <- merge(ibi, coords, by = 'StratumSite', all = T)
+  ##     ## }
+
+  ##     coords <- dt[, .(x = median(Easting, na.rm=T), y = median(Northing, na.rm=T))
+  ##                , .(SiteID, Penetration, Altitude)]
+  ##     ibi <- merge(ibi, coords, by = c("SiteID", "Penetration", "Altitude"), all = T)
+  ##     ibi[, ndates := uniqueN(Date), .(SiteID, Penetration, Altitude)]
+      
+  ##     ibi <- st_as_sf(ibi, coords = c('x', 'y'), crs = 27200)
+  ##     ibi <- st_transform(ibi, crs = 4326)
+  ##     ibi <- cbind(ibi, st_coordinates(ibi))
+  ##     ibi <- as.data.table(ibi)
+
+  ##     ## if (!input$aggregate_site_visits) {
+  ##     ##   ibi <- ibi[, .(Date, SiteID, Penetration, Altitude, IBI_score, IBIcategory,
+  ##     ##                  Species_richness, Species_non_native, X, Y)]
+  ##     ## } else {
+  ##     ##   ibi <- ibi[, .(StratumSite, SiteID, Penetration, Altitude, IBI_score, IBIcategory, X, Y)]
+        
+  ##     ## }
+
+  ##     ibi[is.na(IBIcategory), IBIcategory := 'Unknown']
+  ##     ibi[, IBIcategory := factor(as.character(IBIcategory), levels = c('A', 'B', 'C', 'D', 'Unknown', 'No species'))]
+
+  ##     palcolours <- c('#20a7ad', '#85bb5b', '#ffc316', '#e85129', '#808080', "#6e6e6e")
+  ##     factcols <- colorFactor(palcolours, domain = NULL)
+  ##     ibi[, Colour := factcols(IBIcategory)]
+
+  ##     ## Raw HTML for the map tooltip/label
+  ##     if (!input$aggregate_site_visits) {
+
+  ##       ibi[, labels := paste0(
+  ##         sprintf(
+  ##           '<div class="maptip">
+  ##           <div class="maptip--header">
+  ##             <div>
+  ##               Site ID:<br/>
+  ##               <span class="maptip--header__siteID">%s</span>
+  ##             </div>
+  ##             <div class="maptip--header__swatch" style="background-color: %s;"></div>
+  ##           </div>
+  ##           <div class="maptip--main">
+  ##             <div class="maptip--row">
+  ##               <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
+  ##             </div>
+  ##             <div class="maptip--row">
+  ##               <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
+  ##             </div>
+  ##             <div class="maptip--row">
+  ##               <span class="maptip--row__left">%s:</span><span class="maptip--row__right">%s</span>
+  ##             </div>
+  ##             <div class="maptip--row">
+  ##               <span class="maptip--row__left">Total sp richness:</span><span class="maptip--row__right">%s</span>
+  ##             </div>
+  ##             <div class="maptip--row">
+  ##               <span class="maptip--row__left">Non-native ssp:</span><span class="maptip--row__right">%s</span>
+  ##             </div>
+  ##           </div>
+  ##         </div>',
+  ##         SiteID, Colour, Date, IBI_score, leg.title, IBIcategory, Species_richness, Species_non_native
+  ##         )
+  ##       )
+  ##     , by = 1L:nrow(ibi)]
+        
+  ##     } else {
+
+  ##       scoresall <- copy(ibi_scores_both$ibi_scores)
+  ##       debuginfo(scoresall)
+
+  ##       if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
+  ##         scoresall[, IBIcategory := get(grep('Regional_IBI_category_', names(scoresall), val = T))]
+  ##         tabls <- scoresall[
+  ##         , .(tabl = knitr::kable(.SD[, .(Date, `IBI score` = IBI_score,
+  ##                                         `Reg. NPS category` = IBIcategory,
+  ##                                         `Total sp. richness` = Species_richness,
+  ##                                         `Non-native spp.` = Species_non_native)]))
+  ##         , .(StratumSite)]
+  ##       } else {
+  ##         tabls <- scoresall[
+  ##         , .(tabl = knitr::kable(.SD[, .(Date, `IBI score` = IBI_score,
+  ##                                         `NPS category` = NPS_category,
+  ##                                         `Total sp. richness` = Species_richness,
+  ##                                         `Non-native spp.` = Species_non_native)]))
+  ##         , .(StratumSite)]
+  ##       }
+  ##       debuginfo(ibi)
+  ##       ibi[tabls, tabl := i.tabl, on = 'StratumSite']
+  ##       ibi[, labels := paste0(
+  ##         sprintf(
+  ##           '<div class="maptip">
+  ##           <div class="maptip--header">
+  ##             <div>
+  ##               Site ID:<br/>
+  ##               <span class="maptip--header__siteID">%s</span><br/>
+  ##               Median score: %s
+  ##             </div>
+  ##             <div class="maptip--header__swatch" style="background-color: %s;"></div>
+  ##           </div>
+  ##           <div class="maptip--main">
+  ##             <div class="maptip--row">
+  ##             %s
+  ##             </div>
+  ##           </div>
+  ##         </div>',
+  ##         SiteID, IBI_score, Colour, tabl
+  ##         )
+  ##       )
+  ##     , by = 1L:nrow(ibi)]
+        
+  ##     }
+
+  ##     debuginfo(ibi)
+      
+  ##     factcols <- colorFactor(palcolours, domain = NULL)
+  ##     fc = ~factcols(IBIcategory)
+  ##     c = ~factcols(IBIcategory)
+
+  ##     npss <- data.table(label = c('A', 'B', 'C', 'D', 'Unknown', 'No species'), color = palcolours)
+  ##     npss <- npss[as.character(label) %in% ibi$IBIcategory]
+      
+  ##     if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
+  ##       leg.title <- sprintf('%s region<br>IBI category', input$region)
+  ##     } else leg.title <- "NPS-FM category"
+  ##     if (input$aggregate_site_visits)
+  ##       leg.title <- paste0('Median ', leg.title)
+      
+  ##     rv$map <- leaflet() |>
+  ##       setView(173.6, -41, zoom = 5) |>
+  ##       addProviderTiles(providers$CartoDB.Positron) |>
+  ##       addCircleMarkers(data = ibi, lng = ~X, lat = ~Y,
+  ##                        fillColor = fc, color = c,
+  ##                        popup = ~labels |> lapply(htmltools::HTML),
+  ##                        popupOptions = labelOptions(
+  ##                          direction = "auto", sticky = F,
+  ##                          maxWidth = 700, closeOnClick = T, closeButton = F),
+  ##                        ## radius = ~radius,
+  ##                        fillOpacity = 0.7,
+  ##                        radius = 4,
+  ##                        opacity = 1,
+  ##                        weight = 1
+  ##                        ) |>
+  ##       addLegend(
+  ##         data = ibi, "bottomright",
+  ##         colors = paste0(npss$color, "; opacity: 0.5; width: 10px; height: 10px; border-radius: 50%"),
+  ##         labels = paste0("<div style='display: inline-block; height: 10px; margin-top: 4px; line-height: 10px;'>", npss$label, "</div>"),
+  ##         title = leg.title, opacity = 1) |>
+  ##       leaflet.extras::addFullscreenControl()
+
+  ##     rv$map
+
+  ##   }
+
+  ## })
 
   mapdown <- reactive({
     debuginfo('in mapdown()')

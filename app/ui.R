@@ -230,8 +230,10 @@ shinyUI(
               8,
               div(style="margin-bottom: 20px;",
                   h2(includeMarkdown('text/page-4-title.md')),
-                  div(style="margin-top: 2.5rem;",
-                      uiOutput('view_region_only'))
+                  fluidRow(column(4, div(style="margin-top: 2.5rem;",
+                      uiOutput('view_region_only'))),
+                  column(7, offset=1, div(style="margin-top: 2.5rem;",
+                      uiOutput('aggregate_site_visits'))))
                   )
             ),
             column(
@@ -245,12 +247,12 @@ shinyUI(
           hr(),
           ##br(),
           fluidRow(column(6
-                        , fluidRow(column(8, div(class='subheader', "Scores across number of site visits")),
-                                   column(4, style = "text-align: right;", mydownloadbutton('plotdl', 'Download plot')))
+                        , fluidRow(column(9, div(class='subheader', textOutput('plot_title'))),
+                                   column(3, style = "text-align: right;", mydownloadbutton('plotdl', 'Download plot')))
                         , div(class="key-line", withspinner(plotOutput("scoresPlot"))))
                  , column(6
-                        , fluidRow(column(8, div(class = 'subheader', "Map of locations")),
-                                   column(4, style = "text-align: right;", mydownloadbutton('mapdl', 'Download map')))
+                        , fluidRow(column(9, div(class = 'subheader', "Map of locations")),
+                                   column(3, style = "text-align: right;", mydownloadbutton('mapdl', 'Download map')))
                         , div(class="key-line", withspinner(leafletOutput('map'))))
                    ),
           br(), br(),

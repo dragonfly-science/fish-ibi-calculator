@@ -1,501 +1,118 @@
-"SiteID","Date","SpeciesCode","Penetration","Altitude","Easting","Northing","card","m","y","catchname","catch","locality","time","org","map","fishmeth","effort","pass","abund","number","minl","maxl","nzreach"
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700333,6484684,115994,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",2,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700333,6484698,115995,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700335,6484792,115996,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",3,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700357,6484719,115997,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700342,6484703,115998,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700330,6484671,115999,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700330,6484671,115999,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700330,6484671,115999,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700330,6484671,115999,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Te Matuku Bay",2019-03-15,"galarg",0,11,2700330,6484671,115999,3,2019,"Te Matuku Bay","084.500","Unnamed stream","","wild","S11","sdn",NA,NA,"",1,NA,NA,2005407
-"Buller River",2019-02-15,"anguil",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","fym",NA,NA,"",1,NA,NA,NA
-"Buller River",2019-02-15,"anguil",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","fym",NA,NA,"",1,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","fym",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"anguil",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","fys",NA,NA,"",2,NA,NA,NA
-"Buller River",2019-02-15,"anguil",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","fys",NA,NA,"",5,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Buller River",2019-02-15,"nospec",NA,NA,2420034,5925500,115571,2,2019,"Buller River","932.290","Pond","1400","docy","L29","tfu",NA,NA,"",NA,NA,NA,NA
-"Ote Makura Stream",2019-01-15,"gobhub",0,28,2553125,5858748,115336,1,2019,"Ote Makura Stream","636.000","Ote Makura Stream","1445","ecan","O32","efp",NA,NA,"",1,NA,NA,13011379
-"Ote Makura Stream",2019-01-15,"angdie",0,28,2553125,5858748,115336,1,2019,"Ote Makura Stream","636.000","Ote Makura Stream","1445","ecan","O32","efp",NA,NA,"",4,NA,NA,13011379
-"Ote Makura Stream",2019-01-15,"chefos",0,28,2553125,5858748,115336,1,2019,"Ote Makura Stream","636.000","Ote Makura Stream","1445","ecan","O32","efp",NA,NA,"",2,NA,NA,13011379
-"Horokiri Stream",2019-01-15,"galbre",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",5,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"galaxi",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",1,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"angaus",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",3,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"angdie",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",2,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"gobhut",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",4,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"galfas",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",1,NA,NA,9008746
-"Horokiri Stream",2019-01-15,"anguil",5,60,2673447,6013874,116079,1,2019,"Horokiri Stream","309.000","Horokiri Stream","","bml","R26","efp",NA,NA,"",5,NA,NA,9008746
-"Hatea River",2018-05-15,"angrei",0,12,2631457,6606593,113795,5,2018,"Hatea River","055.000","Hatea River","1100","ind","Q07","vbd",NA,NA,"",1,NA,NA,1018398
-"Waitaki River",2018-04-15,"galmar",153,499,2303485,5660785,115422,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",61,NA,NA,13511133
-"Waitaki River",2018-04-15,"gobbre",153,499,2303485,5660785,115422,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",2,NA,NA,13511133
-"Waitaki River",2018-04-15,"galmar",160,520,2307378,5663383,115428,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",1,NA,NA,13510742
-"Waitaki River",2018-04-15,"galmar",153,499,2303839,5661045,115436,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",198,NA,NA,13511133
-"Waitaki River",2018-04-15,"gobbre",153,499,2303839,5661045,115436,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",15,NA,NA,13511133
-"Waitaki River",2018-04-15,"galmar",157,520,2305924,5662030,115443,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",4,NA,NA,13510957
-"Waitaki River",2018-04-15,"galmar",160,520,2307034,5663149,115451,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",26,NA,NA,13510742
-"Waitaki River",2018-04-15,"saltru",160,520,2307034,5663149,115451,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",1,NA,NA,13510742
-"Waitaki River",2018-04-15,"gobbre",160,520,2307034,5663149,115451,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",28,NA,NA,13510742
-"Waitaki River",2018-04-15,"gobbre",161,520,2307635,5663547,115458,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",2,NA,NA,13510725
-"Waitaki River",2018-04-15,"galmar",161,520,2307635,5663547,115458,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",72,NA,NA,13510725
-"Waitaki River",2018-04-15,"galmar",153,499,2304033,5661027,115465,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",251,NA,NA,13511133
-"Waitaki River",2018-04-15,"galmar",158,520,2306218,5662215,115472,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",60,NA,NA,13510869
-"Waitaki River",2018-04-15,"galbre",158,520,2306218,5662215,115472,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",1,NA,NA,13510869
-"Waitaki River",2018-04-15,"gobbre",158,520,2306218,5662215,115472,4,2018,"Waitaki River","711.392","Grays River","","crc","I38","sfn",NA,NA,"",4,NA,NA,13510869
-"Waitaki River",2018-04-15,"gobbre",156,513,2305125,5661711,115479,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",7,NA,NA,13511008
-"Waitaki River",2018-04-15,"galmar",156,513,2305125,5661711,115479,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",97,NA,NA,13511008
-"Waitaki River",2018-04-15,"gobbre",160,521,2306953,5663243,115486,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",19,NA,NA,13510752
-"Waitaki River",2018-04-15,"galmar",160,521,2306953,5663243,115486,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",27,NA,NA,13510752
-"Waitaki River",2018-04-15,"gobbre",157,520,2305580,5662269,115495,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",23,NA,NA,13510919
-"Waitaki River",2018-04-15,"galmar",157,520,2305580,5662269,115495,4,2018,"Waitaki River","711.392","Grays River tributary","","crc","I38","sfn",NA,NA,"",32,NA,NA,13510919
-"Drury Creek",2018-01-15,"angaus",NA,NA,2679913,6456104,115563,1,2018,"Drury Creek","438.000","Drury Creek tributary","0900","wild","R12","fys",NA,NA,"",1087,NA,NA,NA
-"Drury Creek",2018-01-15,"angaus",NA,NA,2679913,6456104,115563,1,2018,"Drury Creek","438.000","Drury Creek tributary","0900","wild","R12","tfb",NA,NA,"",128,NA,NA,NA
-"Lake Rotokawau",2018-01-15,"angaus",NA,NA,2540100,6703164,113624,1,2018,"Lake Rotokawau","016.010","Lake Rotokawau East","1830","ind","O03","kbt",NA,NA,"",3,NA,NA,NA
-"Lake Rotokawau",2018-01-15,"angaus",NA,NA,2540100,6703164,113624,1,2018,"Lake Rotokawau","016.010","Lake Rotokawau East","1830","ind","O03","kbt",NA,NA,"",4,NA,NA,NA
-"Lake Rotokawau",2018-01-15,"angaus",NA,NA,2540100,6703164,113624,1,2018,"Lake Rotokawau","016.010","Lake Rotokawau East","1830","ind","O03","kbt",NA,NA,"",3,NA,NA,NA
-"Lake Rotokawau",2018-01-15,"gamaff",NA,NA,2540100,6703164,113624,1,2018,"Lake Rotokawau","016.010","Lake Rotokawau East","1830","ind","O03","kbt",NA,NA,"",18,NA,NA,NA
-"Lake Rotokawau",2018-01-15,"gamaff",NA,NA,2540100,6703164,113624,1,2018,"Lake Rotokawau","016.010","Lake Rotokawau East","1830","ind","O03","kbt",NA,NA,"",10,NA,NA,NA
-"Waipaoa River",2017-12-15,"gobcot",41,182,2925676,6253401,115161,12,2017,"Waipaoa River","197.030","Te Arai River","2200","gdc","Y18","sdn",NA,NA,"",20,NA,NA,5013970
-"Waipaoa River",2017-12-15,"angdie",41,182,2925676,6253401,115161,12,2017,"Waipaoa River","197.030","Te Arai River","2200","gdc","Y18","sdn",NA,NA,"",5,NA,NA,5013970
-"Waipaoa River",2017-12-15,"angdie",41,204,2925330,6253413,115162,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2230","gdc","Y18","sdn",NA,NA,"",3,NA,NA,5013976
-"Waipaoa River",2017-12-15,"gobcot",41,204,2925330,6253413,115162,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2230","gdc","Y18","sdn",NA,NA,"",20,NA,NA,5013976
-"Waipaoa River",2017-12-15,"parane",41,204,2925330,6253413,115162,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2230","gdc","Y18","sdn",NA,NA,"",4,NA,NA,5013976
-"Waipaoa River",2017-12-15,"gobcot",41,204,2925148,6253469,115163,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2300","gdc","Y18","sdn",NA,NA,"",20,NA,NA,5013976
-"Waipaoa River",2017-12-15,"parane",41,204,2925148,6253469,115163,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2300","gdc","Y18","sdn",NA,NA,"",1,NA,NA,5013976
-"Waipaoa River",2017-12-15,"galbre",41,204,2925148,6253469,115163,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2300","gdc","Y18","sdn",NA,NA,"",1,NA,NA,5013976
-"Waipaoa River",2017-12-15,"angdie",41,204,2925148,6253469,115163,12,2017,"Waipaoa River","197.030","Te Arai River tributary","2300","gdc","Y18","sdn",NA,NA,"",2,NA,NA,5013976
-"Flaxbourne River",2017-12-15,"angdie",7,31,2604465,5931098,112989,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",4,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"anguil",7,31,2604465,5931098,112989,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",4,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"galmac",7,31,2604465,5931098,112989,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",25,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"angaus",7,31,2604465,5931098,112989,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",3,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"galmac",7,31,2604520,5931133,113894,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",25,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"anguil",7,31,2604520,5931133,113894,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",4,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"angaus",7,31,2604520,5931133,113894,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",3,NA,NA,11027758
-"Flaxbourne River",2017-12-15,"angdie",7,31,2604520,5931133,113894,12,2017,"Flaxbourne River","609.020","Needles Creek","","bml","P29","efp",NA,NA,"",4,NA,NA,11027758
-"Kakanui R",2017-11-15,"gobbre",27,93,2332460,5564225,113005,11,2017,"Kakanui R","717.040","Kauru River","1100","doco","","efp",10,1,"",1,57,57,14029391
-"Kakanui R",2017-11-15,"galvul",27,93,2332460,5564225,113005,11,2017,"Kakanui R","717.040","Kauru River","1100","doco","","efp",10,1,"",6,62,88,14029391
-"Kakanui R",2017-11-15,"galvul",26,85,2332843,5564620,113006,11,2017,"Kakanui R","717.040","Kauru River","1146","doco","","efp",10,1,"",3,65,70,14029391
-"Kakanui R",2017-11-15,"saltru",26,85,2332843,5564620,113006,11,2017,"Kakanui R","717.040","Kauru River","1146","doco","","efp",10,1,"",1,35,35,14029391
-"Kakanui R",2017-11-15,"galbre",26,85,2332843,5564620,113006,11,2017,"Kakanui R","717.040","Kauru River","1146","doco","","efp",10,1,"",1,55,55,14029391
-"Kakanui R",2017-11-15,"galcob",26,85,2332843,5564620,113006,11,2017,"Kakanui R","717.040","Kauru River","1146","doco","","efp",10,1,"",2,58,63,14029391
-"Kakanui R",2017-11-15,"gobbre",26,85,2332843,5564620,113006,11,2017,"Kakanui R","717.040","Kauru River","1146","doco","","efp",10,1,"",1,40,40,14029391
-"Kakanui R",2017-11-15,"galcob",26,85,2333232,5565145,113007,11,2017,"Kakanui R","717.040","Kauru River","1300","doco","","efp",10,1,"",1,59,59,14029391
-"Kakanui R",2017-11-15,"gobbre",26,85,2333232,5565145,113007,11,2017,"Kakanui R","717.040","Kauru River","1300","doco","","efp",10,1,"",1,42,42,14029391
-"Kakanui R",2017-11-15,"galvul",26,85,2333232,5565145,113007,11,2017,"Kakanui R","717.040","Kauru River","1300","doco","","efp",10,1,"",2,65,68,14029391
-"Kakanui R",2017-11-15,"galvul",26,85,2333516,5565668,113008,11,2017,"Kakanui R","717.040","Kauru River","1345","doco","","efp",10,1,"",3,65,77,14029391
-"Kakanui R",2017-11-15,"gobbre",25,79,2333819,5566045,113009,11,2017,"Kakanui R","717.040","Kauru River","1030","doco","","efp",10,1,"",10,33,52,14029204
-"Kakanui R",2017-11-15,"galcob",25,79,2333819,5566045,113009,11,2017,"Kakanui R","717.040","Kauru River","1030","doco","","efp",10,1,"",1,37,37,14029204
-"Kakanui R",2017-11-15,"galvul",25,79,2333819,5566045,113009,11,2017,"Kakanui R","717.040","Kauru River","1030","doco","","efp",10,1,"",3,59,71,14029204
-"Kakanui R",2017-11-15,"gobhub",25,79,2333819,5566045,113009,11,2017,"Kakanui R","717.040","Kauru River","1030","doco","","efp",10,1,"",1,38,38,14029204
-"Kakanui R",2017-11-15,"gobbre",24,72,2334191,5566528,113010,11,2017,"Kakanui R","717.040","Kauru River","1200","doco","","efp",10,1,"",6,43,69,14028881
-"Kakanui R",2017-11-15,"galcob",24,72,2334191,5566528,113010,11,2017,"Kakanui R","717.040","Kauru River","1200","doco","","efp",10,1,"",3,30,63,14028881
-"Kakanui R",2017-11-15,"saltru",24,72,2334698,5566916,113011,11,2017,"Kakanui R","717.040","Kauru River","1315","doco","","efp",10,1,"",1,42,42,14028881
-"Kakanui R",2017-11-15,"galcob",24,72,2334698,5566916,113011,11,2017,"Kakanui R","717.040","Kauru River","1315","doco","","efp",10,1,"",2,58,66,14028881
-"Kakanui R",2017-11-15,"gobbre",24,72,2334698,5566916,113011,11,2017,"Kakanui R","717.040","Kauru River","1315","doco","","efp",10,1,"",5,35,52,14028881
-"Kakanui R",2017-11-15,"galvul",21,58,2335244,5567205,113012,11,2017,"Kakanui R","717.040","Kauru River","1400","doco","","efp",10,1,"",2,72,78,14028492
-"Kakanui R",2017-11-15,"gobbre",21,58,2335244,5567205,113012,11,2017,"Kakanui R","717.040","Kauru River","1400","doco","","efp",10,1,"",9,35,57,14028492
-"Kakanui R",2017-11-15,"galcob",21,58,2335799,5567360,113013,11,2017,"Kakanui R","717.040","Kauru River","1100","doco","","efp",10,1,"",1,60,60,14028492
-"Kakanui R",2017-11-15,"gobbre",21,58,2335799,5567360,113013,11,2017,"Kakanui R","717.040","Kauru River","1100","doco","","efp",10,1,"",4,43,48,14028492
-"Kakanui R",2017-11-15,"saltru",21,58,2335799,5567360,113013,11,2017,"Kakanui R","717.040","Kauru River","1100","doco","","efp",10,1,"",6,44,55,14028492
-"Kakanui R",2017-11-15,"galcob",21,58,2336401,5567473,113014,11,2017,"Kakanui R","717.040","Kauru River","1200","doco","","efp",10,1,"",1,65,65,14028492
-"Kakanui R",2017-11-15,"saltru",21,58,2336401,5567473,113014,11,2017,"Kakanui R","717.040","Kauru River","1200","doco","","efp",10,1,"",3,49,49,14028492
-"Kakanui R",2017-11-15,"gobbre",21,58,2336401,5567473,113014,11,2017,"Kakanui R","717.040","Kauru River","1200","doco","","efp",10,1,"",1,42,42,14028492
-"Kakanui R",2017-11-15,"gobbre",21,58,2336660,5567509,113015,11,2017,"Kakanui R","717.040","Kauru River","1330","doco","","efp",10,1,"",2,44,44,14028492
-"Kakanui R",2017-11-15,"galaxi",21,58,2336660,5567509,113015,11,2017,"Kakanui R","717.040","Kauru River","1330","doco","","efp",10,1,"",8,37,37,14028492
-"Kakanui R",2017-11-15,"saltru",21,58,2336660,5567509,113015,11,2017,"Kakanui R","717.040","Kauru River","1330","doco","","efp",10,1,"",3,45,45,14028492
-"Kakanui R",2017-11-15,"saltru",30,94,2332981,5572638,113016,11,2017,"Kakanui R","717.000","Kakanui River","1100","doco","","efp",10,1,"",2,46,51,14026079
-"Kakanui R",2017-11-15,"gobbre",30,94,2332981,5572638,113016,11,2017,"Kakanui R","717.000","Kakanui River","1100","doco","","efp",10,1,"",2,36,37,14026079
-"Kakanui R",2017-11-15,"galvul",30,94,2332981,5572638,113016,11,2017,"Kakanui R","717.000","Kakanui River","1100","doco","","efp",10,1,"",1,82,82,14026079
-"Kakanui R",2017-11-15,"gobbre",18,72,2337952,5566623,113017,11,2017,"Kakanui R","717.000","Kakanui River","1330","doco","","efp",10,1,"",1,34,34,14028593
-"Kakanui R",2017-11-15,"galvul",18,72,2337952,5566623,113017,11,2017,"Kakanui R","717.000","Kakanui River","1330","doco","","efp",10,1,"",2,72,84,14028593
-"Kakanui R",2017-11-15,"galcob",18,72,2337952,5566623,113017,11,2017,"Kakanui R","717.000","Kakanui River","1330","doco","","efp",10,1,"",2,40,71,14028593
-"Kakanui R",2017-11-15,"saltru",18,72,2337952,5566623,113017,11,2017,"Kakanui R","717.000","Kakanui River","1330","doco","","efp",10,1,"",2,44,54,14028593
-"Kakanui R",2017-11-15,"gobhub",18,72,2337952,5566623,113017,11,2017,"Kakanui R","717.000","Kakanui River","1330","doco","","efp",10,1,"",1,74,74,14028593
-"Kakanui R",2017-11-15,"geoaus",15,68,2338985,5563201,113018,11,2017,"Kakanui R","717.000","Kakanui River","1430","doco","","efp",10,1,"",1,100,100,14030148
-"Kakanui R",2017-11-15,"galcob",15,68,2338985,5563201,113018,11,2017,"Kakanui R","717.000","Kakanui River","1430","doco","","efp",10,1,"",4,38,64,14030148
-"Kakanui R",2017-11-15,"galvul",15,68,2338985,5563201,113018,11,2017,"Kakanui R","717.000","Kakanui River","1430","doco","","efp",10,1,"",2,68,77,14030148
-"Kakanui R",2017-11-15,"gobbre",15,68,2338985,5563201,113018,11,2017,"Kakanui R","717.000","Kakanui River","1430","doco","","efp",10,1,"",3,28,58,14030148
-"Kakanui R",2017-11-15,"saltru",15,68,2338985,5563201,113018,11,2017,"Kakanui R","717.000","Kakanui River","1430","doco","","efp",10,1,"",1,55,55,14030148
-"Kakanui R",2017-11-15,"gobhut",7,17,2340095,5558391,113019,11,2017,"Kakanui R","717.000","Kakanui River","1515","doco","","efp",10,1,"",4,38,38,14032399
-"Kakanui R",2017-11-15,"gobbre",7,17,2340095,5558391,113019,11,2017,"Kakanui R","717.000","Kakanui River","1515","doco","","efp",10,1,"",1,35,35,14032399
-"Kakanui R",2017-11-15,"gobbre",30,94,2332752,5572688,113020,11,2017,"Kakanui R","717.000","Kakanui River","1145","doco","","efp",11,1,"",4,41,69,14026079
-"Kakanui R",2017-11-15,"anguil",30,94,2332752,5572688,113020,11,2017,"Kakanui R","717.000","Kakanui River","1145","doco","","efp",11,1,"",1,180,180,14026079
-"Kakanui R",2017-11-15,"galvul",30,94,2332752,5572688,113020,11,2017,"Kakanui R","717.000","Kakanui River","1145","doco","","efp",11,1,"",6,64,92,14026079
-"Kakanui R",2017-11-15,"saltru",30,94,2332752,5572688,113020,11,2017,"Kakanui R","717.000","Kakanui River","1145","doco","","efp",11,1,"",4,49,61,14026079
-"Kakanui R",2017-11-15,"gobbre",7,17,2340037,5558431,113021,11,2017,"Kakanui R","717.000","Kakanui River","1530","doco","","efp",15,1,"",7,NA,NA,14032399
-"Kakanui R",2017-11-15,"galbre",7,17,2340037,5558431,113021,11,2017,"Kakanui R","717.000","Kakanui River","1530","doco","","efp",15,1,"",2,47,47,14032399
-"Kakanui R",2017-11-15,"galfas",7,17,2340037,5558431,113021,11,2017,"Kakanui R","717.000","Kakanui River","1530","doco","","efp",15,1,"",1,35,35,14032399
-"Kakanui R",2017-11-15,"gobhub",7,17,2340037,5558431,113021,11,2017,"Kakanui R","717.000","Kakanui River","1530","doco","","efp",15,1,"",2,NA,NA,14032399
-"Kakanui R",2017-11-15,"gobhut",7,17,2340037,5558431,113021,11,2017,"Kakanui R","717.000","Kakanui River","1530","doco","","efp",15,1,"",16,NA,NA,14032399
-"Avon River",2017-11-15,"galmac",11,9,2482100,5743690,115735,11,2017,"Avon River","666.000","St. Albans Creek","0900","eos","M35","fys",NA,NA,"",1,NA,NA,13045783
-"Avon River",2017-11-15,"angaus",11,9,2482100,5743690,115735,11,2017,"Avon River","666.000","St. Albans Creek","0900","eos","M35","fys",NA,NA,"",1,NA,NA,13045783
-"Avon River",2017-11-15,"gobcot",11,9,2482100,5743690,115735,11,2017,"Avon River","666.000","St. Albans Creek","0900","eos","M35","tfb",NA,NA,"",2,NA,NA,13045783
-"Hoteo River",2017-06-15,"angdie",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","fys",NA,NA,"",1,NA,NA,2001195
-"Hoteo River",2017-06-15,"angdie",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","fys",NA,NA,"",2,NA,NA,2001195
-"Hoteo River",2017-06-15,"parcur",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"p",NA,NA,NA,2001195
-"Hoteo River",2017-06-15,"parcur",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"p",NA,NA,NA,2001195
-"Hoteo River",2017-06-15,"gobiom",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"",3,NA,NA,2001195
-"Hoteo River",2017-06-15,"gobiom",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"",1,NA,NA,2001195
-"Hoteo River",2017-06-15,"parcur",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"p",NA,NA,NA,2001195
-"Hoteo River",2017-06-15,"galmac",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"",1,NA,NA,2001195
-"Hoteo River",2017-06-15,"galmac",35,35,2650005,6540979,111569,6,2017,"Hoteo River","457.000","Hoteo River tributary","0119","wild","Q09","tfu",NA,NA,"",3,NA,NA,2001195
-"Hoteo River",2017-06-15,"nospec",37,49,2649283,6542374,111577,6,2017,"Hoteo River","457.000","Hoteo River tributary","1100","wild","Q09","fys",NA,NA,"",NA,NA,NA,2001125
-"Hoteo River",2017-06-15,"nospec",37,49,2649283,6542374,111577,6,2017,"Hoteo River","457.000","Hoteo River tributary","1100","wild","Q09","tfb",NA,NA,"",NA,NA,NA,2001125
-"Hoteo River",2017-06-15,"nospec",37,49,2649283,6542374,111577,6,2017,"Hoteo River","457.000","Hoteo River tributary","1100","wild","Q09","tfb",NA,NA,"",NA,NA,NA,2001125
-"Hoteo River",2017-06-15,"nospec",37,49,2649283,6542374,111577,6,2017,"Hoteo River","457.000","Hoteo River tributary","1100","wild","Q09","tfb",NA,NA,"",NA,NA,NA,2001125
-"Hoteo River",2017-06-15,"galmac",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","efp",NA,NA,"",1,NA,NA,2001036
-"Hoteo River",2017-06-15,"gamaff",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","efp",NA,NA,"p",NA,NA,NA,2001036
-"Hoteo River",2017-06-15,"gamaff",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","efp",NA,NA,"p",NA,NA,NA,2001036
-"Hoteo River",2017-06-15,"gobhut",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","efp",NA,NA,"",1,NA,NA,2001036
-"Hoteo River",2017-06-15,"anguil",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","efp",NA,NA,"",0,NA,NA,2001036
-"Hoteo River",2017-06-15,"nospec",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","fys",NA,NA,"",NA,NA,NA,2001036
-"Hoteo River",2017-06-15,"nospec",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","tfb",NA,NA,"",NA,NA,NA,2001036
-"Hoteo River",2017-06-15,"galmac",38,46,2648746,6542616,111579,6,2017,"Hoteo River","457.000","Hoteo River tributary","1130","wild","Q09","tfb",NA,NA,"",1,NA,NA,2001036
-"Hoteo River",2017-06-15,"anguil",38,44,2648770,6542602,115564,6,2017,"Hoteo River","457.000","Hoteo River tributary","0900","wild","Q09","efp",NA,NA,"",1,NA,NA,2001036
-"Hoteo River",2017-06-15,"gobhut",38,44,2648770,6542602,115564,6,2017,"Hoteo River","457.000","Hoteo River tributary","0900","wild","Q09","tfu",NA,NA,"",1,NA,NA,2001036
-"Hoteo River",2017-06-15,"galmac",38,44,2648770,6542602,115564,6,2017,"Hoteo River","457.000","Hoteo River tributary","0900","wild","Q09","tfu",NA,NA,"",2,NA,NA,2001036
-"Hoteo River",2017-06-15,"angdie",35,38,2649976,6541030,115565,6,2017,"Hoteo River","457.000","Hoteo River","0908","wild","Q09","fys",NA,NA,"",3,NA,NA,2001167
-"Hoteo River",2017-06-15,"galmac",35,38,2649976,6541030,115565,6,2017,"Hoteo River","457.000","Hoteo River","0908","wild","Q09","tfu",NA,NA,"",4,NA,NA,2001167
-"Hoteo River",2017-06-15,"gobiom",35,38,2649976,6541030,115565,6,2017,"Hoteo River","457.000","Hoteo River","0908","wild","Q09","tfu",NA,NA,"",4,NA,NA,2001167
-"McCullochs Creek",2017-05-15,"saltru",27,228,2301078,5768309,110839,5,2017,"McCullochs Creek","893.000","McCullochs Creek","1445","wild","H34","efp",NA,NA,"",2,NA,NA,12042153
-"McCullochs Creek",2017-05-15,"chefos",27,228,2301078,5768309,110839,5,2017,"McCullochs Creek","893.000","McCullochs Creek","1445","wild","H34","efp",NA,NA,"",4,NA,NA,12042153
-"McCullochs Creek",2017-05-15,"galbre",27,228,2301078,5768309,110839,5,2017,"McCullochs Creek","893.000","McCullochs Creek","1445","wild","H34","efp",NA,NA,"",27,NA,NA,12042153
-"Aparima River",2017-03-15,"galgol",66,178,2124051,5460369,115260,3,2017,"Aparima River","789.203","Wairio Stream","0920","fsl","D45","efp",NA,NA,"",4,NA,NA,15044770
-"Aparima River",2017-03-15,"gobbre",66,178,2124051,5460369,115260,3,2017,"Aparima River","789.203","Wairio Stream","0920","fsl","D45","efp",NA,NA,"",3,NA,NA,15044770
-"Aparima River",2017-03-15,"angdie",66,178,2124051,5460369,115260,3,2017,"Aparima River","789.203","Wairio Stream","0920","fsl","D45","efp",NA,NA,"",3,NA,NA,15044770
-"Aparima River",2017-03-15,"parane",66,178,2124051,5460369,115260,3,2017,"Aparima River","789.203","Wairio Stream","0920","fsl","D45","vbd",NA,NA,"",4,NA,NA,15044770
-"Kaeo River",2016-11-15,"gobhut",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",54,NA,NA,1004664
-"Kaeo River",2016-11-15,"galfas",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",6,NA,NA,1004664
-"Kaeo River",2016-11-15,"gobhub",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",12,NA,NA,1004664
-"Kaeo River",2016-11-15,"galmac",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",1,NA,NA,1004664
-"Kaeo River",2016-11-15,"retret",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",4,NA,NA,1004664
-"Kaeo River",2016-11-15,"angdie",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",5,NA,NA,1004664
-"Kaeo River",2016-11-15,"angaus",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",4,NA,NA,1004664
-"Kaeo River",2016-11-15,"chefos",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",11,NA,NA,1004664
-"Kaeo River",2016-11-15,"anguil",18,75,2589018,6673780,110087,11,2016,"Kaeo River","026.000","Kaeo River","1335","mcgl","P04","efp",NA,NA,"",20,NA,NA,1004664
-"Taieri R",2016-11-15,"galpul",44,544,2279742,5476157,109665,11,2016,"Taieri R","743.050","Munros Dam Stream","2345","wwcl","H45","spo",NA,NA,"p",NA,NA,NA,14062122
-"Akaroa Hbr",2016-09-15,"angdie",1,63,2501290,5710924,102653,9,2016,"Akaroa Hbr","674.110","Wainui Stream","1030","niwa","N36","efp",NA,NA,"",2,NA,NA,13055857
-"Akaroa Hbr",2016-09-15,"galbre",1,63,2501290,5710924,102653,9,2016,"Akaroa Hbr","674.110","Wainui Stream","1030","niwa","N36","efp",NA,NA,"n",NA,NA,NA,13055857
-"Akaroa Hbr",2016-09-15,"gobcot",1,63,2501290,5710924,102653,9,2016,"Akaroa Hbr","674.110","Wainui Stream","1030","niwa","N36","efp",NA,NA,"p",NA,NA,NA,13055857
-"Akaroa Hbr",2016-09-15,"gobhut",1,63,2501290,5710924,102653,9,2016,"Akaroa Hbr","674.110","Wainui Stream","1030","niwa","N36","efp",NA,NA,"p",NA,NA,NA,13055857
-"Wairoa River",2016-07-15,"neodiv",NA,NA,2620864,6619895,113395,7,2016,"Wairoa River","466.000","Wairua River Wildlife Management Reserve","","ind","P08","kbt",NA,NA,"",2,NA,NA,NA
-"Wairoa River",2016-07-15,"nospec",NA,NA,2620864,6619895,113395,7,2016,"Wairoa River","466.000","Wairua River Wildlife Management Reserve","","ind","P08","kbt",NA,NA,"",NA,NA,NA,NA
-"Wairoa River",2016-07-15,"angdie",16,94,2695167,6461659,116338,7,2016,"Wairoa River","085.000","Wairoa River tributary","","bml","S11","efp",NA,NA,"",7,NA,NA,2007578
-"Wairoa River",2016-07-15,"galfas",16,94,2695167,6461659,116338,7,2016,"Wairoa River","085.000","Wairoa River tributary","","bml","S11","efp",NA,NA,"",1,NA,NA,2007578
-"Owhiro Stream",2016-05-15,"angdie",1,40,2657101,5984405,116171,5,2016,"Owhiro Stream","301.000","Owhiro Stream","1200","wnrc","R27","efp",NA,NA,"",4,NA,NA,9015242
-"Owhiro Stream",2016-05-15,"angaus",1,40,2657101,5984405,116171,5,2016,"Owhiro Stream","301.000","Owhiro Stream","1200","wnrc","R27","efp",NA,NA,"",4,NA,NA,9015242
-"Owhiro Stream",2016-05-15,"galfas",1,40,2657101,5984405,116171,5,2016,"Owhiro Stream","301.000","Owhiro Stream","1200","wnrc","R27","efp",NA,NA,"",1,NA,NA,9015242
-"Owhiro Stream",2016-05-15,"gobhut",1,40,2657101,5984405,116171,5,2016,"Owhiro Stream","301.000","Owhiro Stream","1200","wnrc","R27","efp",NA,NA,"",3,NA,NA,9015242
-"Waitangi River",2016-02-15,"galfas",20,101,2595647,6658514,113381,2,2016,"Waitangi River","037.000","Waihaua Stream tributary","","ind","P05","kbt",NA,NA,"",2,NA,NA,1007464
-"Waimakariri River",2015-03-15,"angdie",15,19,2478274,5766257,103494,3,2015,"Waimakariri River","664.000","North Brook","1500","docc","M35","fys",NA,NA,"",5,NA,NA,13038704
-"Waimakariri River",2015-03-15,"saltru",15,19,2478274,5766257,103494,3,2015,"Waimakariri River","664.000","North Brook","1500","docc","M35","fys",NA,NA,"",1,NA,NA,13038704
-"Waimakariri River",2015-03-15,"saltru",15,19,2478274,5766257,103494,3,2015,"Waimakariri River","664.000","North Brook","1500","docc","M35","trn",NA,NA,"",3,NA,NA,13038704
-"Woodcock Stream",2015-01-15,"gobgob",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",8,NA,NA,3001044
-"Woodcock Stream",2015-01-15,"angdie",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",5,NA,NA,3001044
-"Woodcock Stream",2015-01-15,"galfas",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",9,NA,NA,3001044
-"Woodcock Stream",2015-01-15,"gobhut",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",9,NA,NA,3001044
-"Woodcock Stream",2015-01-15,"chefos",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",1,NA,NA,3001044
-"Woodcock Stream",2015-01-15,"gobcot",0,23,2755738,6489374,116332,1,2015,"Woodcock Stream","114.000","Woodcock Stream","0827","bml","T10","efp",NA,NA,"",7,NA,NA,3001044
-"Waimea Inlet",2014-08-15,"angaus",NA,NA,2525022,5983993,102364,8,2014,"Waimea Inlet","573","Unnamed Pond","1000","f&ws","N27","efp",2900,NA,"",67,300,690,NA
-"Waimea Inlet",2014-08-15,"angdie",NA,NA,2525022,5983993,102364,8,2014,"Waimea Inlet","573","Unnamed Pond","1000","f&ws","N27","efp",2900,NA,"",4,420,630,NA
-"Waitara R",2014-04-15,"galmac",3,35,2616840,6243183,101958,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",83,NA,NA,6001975
-"Waitara R",2014-04-15,"angaus",3,35,2616840,6243183,101958,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001975
-"Waitara R",2014-04-15,"gobiom",3,35,2616840,6243183,101958,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",5,NA,NA,6001975
-"Waitara R",2014-04-15,"gamaff",3,35,2616840,6243183,101958,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",39,NA,NA,6001975
-"Waitara R",2014-04-15,"galmac",3,34,2616822,6243260,101959,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001961
-"Waitara R",2014-04-15,"gobiom",3,34,2616822,6243260,101959,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",4,NA,NA,6001961
-"Waitara R",2014-04-15,"angaus",3,34,2616822,6243260,101959,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001961
-"Waitara R",2014-04-15,"gamaff",3,34,2616822,6243260,101959,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",4,NA,NA,6001961
-"Waitara R",2014-04-15,"gobiom",3,34,2616821,6243295,101960,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",5,NA,NA,6001961
-"Waitara R",2014-04-15,"gamaff",3,34,2616821,6243295,101960,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",39,NA,NA,6001961
-"Waitara R",2014-04-15,"galmac",3,34,2616821,6243295,101960,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",83,NA,NA,6001961
-"Waitara R",2014-04-15,"angaus",3,34,2616821,6243295,101960,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001961
-"Waitara R",2014-04-15,"galmac",3,34,2616834,6243327,101961,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001961
-"Waitara R",2014-04-15,"angaus",3,34,2616834,6243327,101961,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001961
-"Waitara R",2014-04-15,"gobiom",3,34,2616834,6243327,101961,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",4,NA,NA,6001961
-"Waitara R",2014-04-15,"gamaff",3,34,2616834,6243327,101961,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",4,NA,NA,6001961
-"Waitara R",2014-04-15,"angaus",3,34,2616879,6243357,101962,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",2,NA,NA,6001907
-"Waitara R",2014-04-15,"galmac",3,34,2616879,6243357,101962,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",7,NA,NA,6001907
-"Waitara R",2014-04-15,"gamaff",3,34,2616879,6243357,101962,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",27,NA,NA,6001907
-"Waitara R",2014-04-15,"gobiom",3,34,2616879,6243357,101962,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",7,NA,NA,6001907
-"Waitara R",2014-04-15,"galmac",3,33,2616953,6243385,101963,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",9,NA,NA,6001907
-"Waitara R",2014-04-15,"gobiom",3,33,2616953,6243385,101963,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",5,NA,NA,6001907
-"Waitara R",2014-04-15,"gamaff",3,33,2616953,6243385,101963,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",5,NA,NA,6001907
-"Waitara R",2014-04-15,"gamaff",3,29,2617181,6243523,101964,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",4,NA,NA,6001907
-"Waitara R",2014-04-15,"gobiom",3,29,2617181,6243523,101964,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",1,NA,NA,6001907
-"Waitara R",2014-04-15,"galmac",3,29,2617181,6243523,101964,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",3,NA,NA,6001907
-"Waitara R",2014-04-15,"gobgob",3,29,2617181,6243523,101964,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",1,NA,NA,6001907
-"Waitara R",2014-04-15,"gobcot",3,29,2617181,6243523,101964,4,2014,"Waitara R","395.000","Waitara River tributary","","docz","q19","gmt",2,NA,"",1,NA,NA,6001907
-"Mokau River",2014-03-15,"gobbre",103,165,2686858,6283999,110564,3,2014,"Mokau River","407.580","Mangoparo Stream","1030","wrc","R17","fys",NA,NA,"",348,NA,NA,3041912
-"Mokau River",2014-03-15,"parane",103,165,2686858,6283999,110564,3,2014,"Mokau River","407.580","Mangoparo Stream","1030","wrc","R17","fys",NA,NA,"",27,NA,NA,3041912
-"Mokau River",2014-03-15,"angdie",103,165,2686858,6283999,110564,3,2014,"Mokau River","407.580","Mangoparo Stream","1030","wrc","R17","fys",NA,NA,"",8,NA,NA,3041912
-"Mokau River",2014-03-15,"parane",66,80,2682541,6284411,110565,3,2014,"Mokau River","407.440","Paraheka Stream","1230","wrc","R17","fys",NA,NA,"",8,NA,NA,3041981
-"Mokau River",2014-03-15,"gobhut",66,80,2682541,6284411,110565,3,2014,"Mokau River","407.440","Paraheka Stream","1230","wrc","R17","fys",NA,NA,"",20,NA,NA,3041981
-"Mokau River",2014-03-15,"galmac",66,80,2682541,6284411,110565,3,2014,"Mokau River","407.440","Paraheka Stream","1230","wrc","R17","fys",NA,NA,"",121,NA,NA,3041981
-"Mokau River",2014-03-15,"angdie",66,80,2682541,6284411,110565,3,2014,"Mokau River","407.440","Paraheka Stream","1230","wrc","R17","fys",NA,NA,"",16,NA,NA,3041981
-"Waipapa S",2013-12-15,"galaxi",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",90,NA,NA,15062908
-"Waipapa S",2013-12-15,"angdie",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",13,NA,NA,15062908
-"Waipapa S",2013-12-15,"angaus",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",1,NA,NA,15062908
-"Waipapa S",2013-12-15,"gobhut",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",8,NA,NA,15062908
-"Waipapa S",2013-12-15,"parane",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",2,NA,NA,15062908
-"Waipapa S",2013-12-15,"saltru",2,37,2199567,5388825,108504,12,2013,"Waipapa S","770.000","Waipapa Stream","","envs","F47","efp",NA,NA,"",38,NA,NA,15062908
-"Oreti R",2013-12-15,"angdie",130,329,2157411,5499319,108509,12,2013,"Oreti R","786.900","Irthing Stream tributary","","envs","E44","efp",NA,NA,"",3,NA,NA,15029039
-"Oreti R",2013-12-15,"galsps",130,329,2157411,5499319,108509,12,2013,"Oreti R","786.900","Irthing Stream tributary","","envs","E44","efp",NA,NA,"",104,NA,NA,15029039
-"Oreti R",2013-12-15,"galgol",130,329,2157411,5499319,108509,12,2013,"Oreti R","786.900","Irthing Stream tributary","","envs","E44","efp",NA,NA,"",47,NA,NA,15029039
-"Awakino R",2013-04-15,"chefos",32,130,2665100,6290100,36001,4,2013,"Awakino R","408.000","Rauroa Stream","1945","doc","R17","spo",NA,NA,"r",1,100,NA,3040144
-"Awakino R",2013-04-15,"anguil",32,130,2665100,6290100,36001,4,2013,"Awakino R","408.000","Rauroa Stream","1945","doc","R17","spo",NA,NA,"c",4,100,500,3040144
-"Awakino R",2013-04-15,"angdie",32,130,2665100,6290100,36001,4,2013,"Awakino R","408.000","Rauroa Stream","1945","doc","R17","spo",NA,NA,"o",2,600,600,3040144
-"Awakino R",2013-04-15,"galpos",32,130,2665100,6290100,36002,4,2013,"Awakino R","408.000","Rauroa Stream","","doc","R17","spo",NA,NA,"r",2,215,220,3040144
-"Awakino R",2013-04-15,"anguil",32,130,2665100,6290100,36002,4,2013,"Awakino R","408.000","Rauroa Stream","","doc","R17","spo",NA,NA,"c",7,100,600,3040144
-"Awakino R",2013-04-15,"gobiom",32,130,2665100,6290100,36002,4,2013,"Awakino R","408.000","Rauroa Stream","","doc","R17","spo",NA,NA,"c",20,NA,NA,3040144
-"Jenkins Creek",2013-03-15,"angdie",3,20,2531567,5988633,100851,3,2013,"Jenkins Creek","576.000","Jenkins Creek","","f&ws","O27","efp",NA,NA,"",13,70,400,10011954
-"Jenkins Creek",2013-03-15,"galbre",3,20,2531567,5988633,100851,3,2013,"Jenkins Creek","576.000","Jenkins Creek","","f&ws","O27","efp",NA,NA,"",3,70,80,10011954
-"Jenkins Creek",2013-03-15,"galfas",3,20,2531567,5988633,100851,3,2013,"Jenkins Creek","576.000","Jenkins Creek","","f&ws","O27","efp",NA,NA,"",2,70,80,10011954
-"Purakaunui R",2013-02-15,"galspd",12,130,2243787,5405707,100135,2,2013,"Purakaunui R","757.000","Waikoata S","11.45","doco","G47","efp",NA,1,"",2,NA,NA,14073421
-"Purakaunui R",2013-02-15,"galspd",11,130,2244128,5405741,100136,2,2013,"Purakaunui R","757.000","Waikoata S","1230","doco","G47","efp",NA,1,"",3,NA,NA,14073335
-"Purakaunui R",2013-02-15,"nospec",11,125,2244427,5405958,100137,2,2013,"Purakaunui R","757.000","Waikoata S","1300","doco","G47","efp",8,1,"",1,NA,NA,14073335
-"Purakaunui R",2013-02-15,"nospec",12,140,2243950,5407515,100138,2,2013,"Purakaunui R","757.020","Purakaunui S","1400","doco","G47","efp",NA,1,"",1,NA,NA,14073222
-"Purakaunui R",2013-02-15,"saltru",12,140,2243950,5407515,100138,2,2013,"Purakaunui R","757.020","Purakaunui S","1400","doco","G47","efp",NA,1,"",11,NA,NA,14073222
-"Purakaunui R",2013-02-15,"saltru",11,120,2244590,5406303,100139,2,2013,"Purakaunui R","757.020","Purakaunui S","1500","doco","G47","efp",NA,1,"",1,NA,NA,14073282
-"Purakaunui R",2013-02-15,"galspd",11,120,2244533,5406321,100140,2,2013,"Purakaunui R","757.000","Waikoata S","1600","doco","G47","efp",NA,1,"",2,NA,NA,14073335
-"Purakaunui R",2013-02-15,"galgol",12,267,2242348,5406702,101348,2,2013,"Purakaunui R","757.000","Purakaunui Stream tributary","","doco","g47","efp",NA,1,"",13,NA,NA,14073222
-"Purakaunui R",2013-02-15,"galgol",10,123,2244863,5406023,101359,2,2013,"Purakaunui R","757.000","Purakaunui River tributary","","doco","g47","efp",NA,1,"",1,NA,NA,14073357
-"Purakaunui R",2013-02-15,"galgol",11,140,2244513,5406922,101361,2,2013,"Purakaunui R","757.000","Purakaunui River tributary","","doco","g47","efp",NA,1,"",1,NA,NA,14073277
-"Purakaunui R",2013-02-15,"nospec",11,162,2244360,5407138,101362,2,2013,"Purakaunui R","757.000","Purakaunui River","","doco","g47","efp",NA,1,"n",NA,NA,NA,14073223
-"Nelson H",2013-02-15,"angdie",0,0,2536595,5996811,100873,2,2013,"Nelson H","577.000","Oldham Creek","","f&ws","O27","efp",NA,NA,"",5,150,280,10010123
-"Nelson H",2013-02-15,"angaus",0,0,2536595,5996811,100873,2,2013,"Nelson H","577.000","Oldham Creek","","f&ws","O27","efp",NA,NA,"",60,90,400,10010123
-"Nelson H",2013-02-15,"galmac",0,0,2536595,5996811,100873,2,2013,"Nelson H","577.000","Oldham Creek","","f&ws","O27","efp",NA,NA,"",57,50,95,10010123
-"Nelson H",2013-02-15,"gobhut",0,0,2536595,5996811,100873,2,2013,"Nelson H","577.000","Oldham Creek","","f&ws","O27","efp",NA,NA,"",1,60,NA,10010123
-"Waikato R",2013-01-15,"gamaff",199,90,2724677,6345434,101025,1,2013,"Waikato R","434.222","Mangaohoi Stream","0920","wrc","S15","efm",189,1,"",1,49,49,3024059
-"Waikato R",2013-01-15,"angaus",199,90,2724677,6345434,101025,1,2013,"Waikato R","434.222","Mangaohoi Stream","0920","wrc","S15","efm",189,1,"",8,250,830,3024059
-"Waikato R",2013-01-15,"anguil",199,90,2724677,6345434,101025,1,2013,"Waikato R","434.222","Mangaohoi Stream","0920","wrc","S15","efm",189,1,"",1,NA,NA,3024059
-"Waikato R",2013-01-15,"parane",199,90,2724677,6345434,101025,1,2013,"Waikato R","434.222","Mangaohoi Stream","0920","wrc","S15","efm",189,1,"",105,NA,NA,3024059
-"Waikato R",2013-01-15,"chefos",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",10,98,143,3025785
-"Waikato R",2013-01-15,"angdie",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",37,135,820,3025785
-"Waikato R",2013-01-15,"angaus",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",11,123,495,3025785
-"Waikato R",2013-01-15,"galmac",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",1,80,NA,3025785
-"Waikato R",2013-01-15,"gobbas",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",349,15,79,3025785
-"Waikato R",2013-01-15,"saltru",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",75,39,116,3025785
-"Waikato R",2013-01-15,"oncmyk",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",3,34,82,3025785
-"Waikato R",2013-01-15,"parane",201,100,2689167,6337380,101060,1,2013,"Waikato R","434.224","Oamaru Stream","10.22","wrc","R16","efm",1166,1,"",2,NA,NA,3025785
-"Waikato R",2013-01-15,"parane",184,220,2694293,6347318,101061,1,2013,"Waikato R","434.224","Mangaputa Stream","12.25","wrc","S15","efm",222,1,"",324,NA,NA,3023716
-"Waikato R",2013-01-15,"angdie",184,220,2694293,6347318,101061,1,2013,"Waikato R","434.224","Mangaputa Stream","12.25","wrc","S15","efm",222,1,"",11,235,1005,3023716
-"Waikato R",2013-01-15,"anguil",184,220,2694293,6347318,101061,1,2013,"Waikato R","434.224","Mangaputa Stream","12.25","wrc","S15","efm",222,1,"",3,NA,NA,3023716
-"Waikato R",2013-01-15,"angdie",231,190,2688507,6318378,101068,1,2013,"Waikato R","434.226","Mangawhitikau Stream","10.05","wrc","R16","efm",218,1,"",2,310,910,3031112
-"Waikato R",2013-01-15,"oncmyk",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",17,53,104,3023003
-"Waikato R",2013-01-15,"angdie",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",34,102,950,3023003
-"Waikato R",2013-01-15,"angaus",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",1,107,NA,3023003
-"Waikato R",2013-01-15,"gobbas",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",278,30,86,3023003
-"Waikato R",2013-01-15,"chefos",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",3,106,134,3023003
-"Waikato R",2013-01-15,"saltru",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",18,58,127,3023003
-"Waikato R",2013-01-15,"parane",170,70,2701099,6350396,101079,1,2013,"Waikato R","434.220","Mangauika stream","","wrc","S15","efm",1152,1,"",59,NA,NA,3023003
-"Hokio Stream",2012-10-15,"neoapo",9,20,2700945,6065603,112385,10,2012,"Hokio Stream","323.000","Lake Horowhenua unnamed tributary","1200","mwrc","S25","tfb",NA,NA,"",20,NA,NA,7045787
-"Mataura R",2012-01-15,"angdie",76,100,2188693,5447181,34611,1,2012,"Mataura R","775.320","Waimumu Stream","0000","slfg","F46","efp",NA,NA,"",11,NA,NA,15050013
-"Mataura R",2012-01-15,"gobbre",76,100,2188693,5447181,34611,1,2012,"Mataura R","775.320","Waimumu Stream","0000","slfg","F46","efp",NA,NA,"",40,NA,NA,15050013
-"Mataura R",2012-01-15,"saltru",76,100,2188693,5447181,34611,1,2012,"Mataura R","775.320","Waimumu Stream","0000","slfg","F46","efp",NA,NA,"",18,NA,NA,15050013
-"Mataura R",2012-01-15,"parane",76,100,2188693,5447181,34611,1,2012,"Mataura R","775.320","Waimumu Stream","0000","slfg","F46","efp",NA,NA,"",3,NA,NA,15050013
-"Piako River",2011-12-15,"anguil",27,7,2737967,6422520,114529,12,2011,"Piako River","091.031","Elstow Canal (upper reaches)","1215","kal","T13","fys",NA,NA,"",1,NA,NA,3008799
-"Piako River",2011-12-15,"galmac",27,7,2737967,6422520,114529,12,2011,"Piako River","091.031","Elstow Canal (upper reaches)","1215","kal","T13","fys",NA,NA,"",17,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",27,7,2737967,6422520,114529,12,2011,"Piako River","091.031","Elstow Canal (upper reaches)","1215","kal","T13","fys",NA,NA,"",13,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",27,7,2737967,6422520,114529,12,2011,"Piako River","091.031","Elstow Canal (upper reaches)","1215","kal","T13","tfu",NA,NA,"",1,NA,NA,3008799
-"Piako River",2011-12-15,"galmac",24,7,2737836,6422929,114530,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",3,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",24,7,2737836,6422929,114530,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",4,NA,NA,3008799
-"Piako River",2011-12-15,"nospec",24,7,2737836,6422929,114530,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","tfu",NA,NA,"",NA,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",24,7,2736145,6425350,114531,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",7,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",24,7,2736145,6425350,114531,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","tfu",NA,NA,"",6,NA,NA,3008799
-"Piako River",2011-12-15,"galmac",24,7,2737836,6422929,114532,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",3,NA,NA,3008799
-"Piako River",2011-12-15,"angaus",24,7,2737836,6422929,114532,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",4,NA,NA,3008799
-"Piako River",2011-12-15,"nospec",24,7,2737836,6422929,114532,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","tfu",NA,NA,"",NA,NA,NA,3008799
-"Piako River",2011-12-15,"nospec",20,6,2735380,6425904,114533,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",NA,NA,NA,3008703
-"Piako River",2011-12-15,"angaus",20,6,2735380,6425904,114533,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","tfu",NA,NA,"",5,NA,NA,3008703
-"Piako River",2011-12-15,"angaus",30,6,2738652,6419511,114534,12,2011,"Piako River","091.030","Tee Canal","1215","kal","T12","fys",NA,NA,"",15,NA,NA,3010133
-"Piako River",2011-12-15,"galmac",30,6,2738652,6419511,114534,12,2011,"Piako River","091.030","Tee Canal","1215","kal","T12","tfu",NA,NA,"",4,NA,NA,3010133
-"Piako River",2011-12-15,"angaus",30,6,2738652,6419511,114534,12,2011,"Piako River","091.030","Tee Canal","1215","kal","T12","tfu",NA,NA,"",1,NA,NA,3010133
-"Piako River",2011-12-15,"angaus",28,6,2739899,6419575,114535,12,2011,"Piako River","091.030","Awaiti Canal","1215","kal","T12","fys",NA,NA,"",28,NA,NA,3009905
-"Piako River",2011-12-15,"ameneb",28,6,2739899,6419575,114535,12,2011,"Piako River","091.030","Awaiti Canal","1215","kal","T12","fys",NA,NA,"",11,NA,NA,3009905
-"Piako River",2011-12-15,"angaus",28,6,2739899,6419575,114535,12,2011,"Piako River","091.030","Awaiti Canal","1215","kal","T12","tfu",NA,NA,"",8,NA,NA,3009905
-"Piako River",2011-12-15,"gamaff",28,6,2739899,6419575,114535,12,2011,"Piako River","091.030","Awaiti Canal","1215","kal","T12","tfu",NA,NA,"",1,NA,NA,3009905
-"Piako River",2011-12-15,"galmac",28,6,2739899,6419575,114535,12,2011,"Piako River","091.030","Awaiti Canal","1215","kal","T12","tfu",NA,NA,"",9,NA,NA,3009905
-"Piako River",2011-12-15,"nospec",20,6,2733120,6425928,114536,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","fys",NA,NA,"",NA,NA,NA,3008703
-"Piako River",2011-12-15,"nospec",20,6,2733120,6425928,114536,12,2011,"Piako River","091.050","Elstow Canal (lower reaches)","1215","kal","T13","tfu",NA,NA,"",NA,NA,NA,3008703
-"Longbeach",2011-06-15,"neobur",5,25,2408164,5682155,100503,6,2011,"Longbeach","690.000","Unnamed wetland Waterton","","inic","","gmt",24,NA,"",69,NA,144,13061613
-"Lee R",2011-06-15,"gobiom",1,7,2452406,5704189,34679,6,2011,"Lee R","684.031","Tent Burn","1100","docc","n29","gmt",28,NA,"",3,21,26,13057782
-"Lee R",2011-06-15,"gobbre",1,7,2452406,5704189,34679,6,2011,"Lee R","684.031","Tent Burn","1100","docc","n29","gmt",28,NA,"",4,41,49,13057782
-"Lee R",2011-06-15,"gobbre",0,5,2452779,5703916,100575,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",4,NA,"",12,NA,NA,13057809
-"Lee R",2011-06-15,"gobbre",0,5,2452643,5703603,100576,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",NA,NA,"",26,NA,NA,13058060
-"Lee R",2011-06-15,"gobbre",1,5,2452596,5704140,100577,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",NA,NA,"",3,NA,NA,13057782
-"Lee R",2011-06-15,"gobiom",1,5,2452596,5704140,100577,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",NA,NA,"",1,NA,NA,13057782
-"Lee R",2011-06-15,"nospec",1,5,2452519,5704262,100578,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",NA,NA,"n",NA,NA,NA,13057782
-"Lee R",2011-06-15,"gobbre",1,5,2452406,5704189,100579,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",4,NA,"",1,NA,NA,13057782
-"Lee R",2011-06-15,"gobbre",1,5,2452527,5703906,100580,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",4,NA,"",3,NA,NA,13057782
-"Lee R",2011-06-15,"gobiom",1,5,2452527,5703906,100580,6,2011,"Lee R","684.031","Tent Burn","","docc","","gmt",4,NA,"",3,NA,NA,13057782
-"Taieri River",2011-05-15,"galeld",135,905,2260651,5490723,102695,5,2011,"Taieri River","743.180","Deep Stream Tributary","1000","doco","I44","efp",NA,NA,"",4,NA,NA,14057615
-"Taieri River",2011-05-15,"galeld",133,860,2261611,5490053,102697,5,2011,"Taieri River","743.189","Devils Creek","1445","doco","H44","efp",NA,NA,"",4,NA,NA,14057651
-"Taieri River",2011-05-15,"nospec",NA,NA,2259129,5489624,102698,5,2011,"Taieri River","743.000","Water Race","1204","doco","I45","efp",NA,NA,"",NA,NA,NA,NA
-"Taieri River",2011-05-15,"galeld",136,1010,2259006,5489687,102699,5,2011,"Taieri River","743.180","Deep Stream","1216","doco","I44","efp",NA,NA,"",3,NA,NA,14057916
-"Taieri River",2011-05-15,"galeld",137,948,2259251,5492240,102700,5,2011,"Taieri River","743.180","Deep Stream","1309","doco","I44","efp",NA,NA,"",3,NA,NA,14057227
-"Taieri River",2011-05-15,"galeld",137,933,2259313,5492325,102701,5,2011,"Taieri River","743.180","Deep Stream","1345","doco","I44","efp",NA,NA,"",5,NA,NA,14057038
-"Taieri River",2011-05-15,"galeld",140,1053,2258767,5494327,102702,5,2011,"Taieri River","743.180","Deep Stream","1405","doco","I44","efp",NA,NA,"",5,NA,NA,14056547
-"Taieri River",2011-05-15,"galeld",139,1089,2257425,5495734,102703,5,2011,"Taieri River","743.180","Deep Stream","1423","doco","I44","efp",NA,NA,"",5,NA,NA,14056034
-"Taieri River",2011-05-15,"galeld",137,967,2260014,5492820,102704,5,2011,"Taieri River","743.180","Deep Stream","1450","doco","I44","efp",NA,NA,"",7,NA,NA,14056878
-"Taieri River",2011-05-15,"galeld",134,873,2260764,5490936,102705,5,2011,"Taieri River","743.180","Deep Stream","1310","doco","I44","efp",NA,NA,"",4,NA,NA,14057615
-"Taieri River",2011-05-15,"galeld",136,888,2260553,5489035,102706,5,2011,"Taieri River","743.189","Devils Creek","1443","doco","H44","efp",NA,NA,"",4,NA,NA,14058190
-"Taieri River",2011-05-15,"galeld",136,899,2261798,5488460,102707,5,2011,"Taieri River","743.189","Devils Creek tributary","1500","doco","H44","efp",NA,NA,"",7,NA,NA,14058272
-"Taieri River",2011-05-15,"galeld",136,899,2261761,5488431,102708,5,2011,"Taieri River","743.180","Old Mining Pond","1510","doco","I44","efp",NA,NA,"",1,NA,NA,14058272
-"Taieri River",2011-05-15,"galeld",NA,NA,2262367,5489552,102709,5,2011,"Taieri River","743.189","Fiddlers Creek water race","1530","doco","H44","efp",NA,NA,"",5,NA,NA,NA
-"Taieri River",2011-05-15,"galano",172,444,2293032,5565925,105955,5,2011,"Taieri River","743.645","Spec Gully","1000","doco","i41","efp",162,3,"",38,52,90,14028960
-"Taieri River",2011-05-15,"saltru",172,444,2293032,5565925,105955,5,2011,"Taieri River","743.645","Spec Gully","1000","doco","i41","efp",162,3,"",8,104,213,14028960
-"Taieri River",2011-05-15,"angdie",172,444,2293032,5565925,105955,5,2011,"Taieri River","743.645","Spec Gully","1000","doco","i41","efp",162,3,"",1,300,300,14028960
-"Taieri River",2011-05-15,"galano",179,508,2290332,5570914,105963,5,2011,"Taieri River","743.645","Spec Gully","1115","doco","i41","efp",183,3,"",220,33,87,14026805
-"Taieri River",2011-05-15,"saltru",179,508,2290332,5570914,105963,5,2011,"Taieri River","743.645","Spec Gully","1115","doco","i41","efp",183,3,"",1,135,135,14026805
-"Taieri River",2011-05-15,"galpul",42,552,2279349,5475126,106284,5,2011,"Taieri River","743.050","Shepherd Stream tributary","1100","doco","H44","efp",28,3,"",71,36,131,14062339
-"Taieri River",2011-05-15,"galpul",41,505,2278079,5474640,106285,5,2011,"Taieri River","743.050","Shepherd Stream tributary","1030","doco","H44","efp",116,3,"",93,43,116,14062481
-"Taieri River",2011-05-15,"galpul",40,467,2277104,5474318,106286,5,2011,"Taieri River","743.050","Shepherd Stream tributary","1100","doco","H44","efp",163,4,"",58,49,131,14062481
-"Rangitikei R",2011-04-15,"gamaff",22,35,2712017,6103278,32182,4,2011,"Rangitikei R","327.030","Makowhai Stream","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7037118
-"Rangitikei R",2011-04-15,"gamaff",22,35,2713100,6105600,32183,4,2011,"Rangitikei R","327.030","Makowhai Stream","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7036559
-"Rangitikei R",2011-04-15,"gamaff",16,31,2709365,6102900,32184,4,2011,"Rangitikei R","327.030","Makowhai Stream tributary","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7037212
-"Rangitikei R",2011-04-15,"gamaff",22,36,2713640,6105150,32185,4,2011,"Rangitikei R","327.030","Makowhai Stream","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7036738
-"Rangitikei R",2011-04-15,"gamaff",20,31,2712910,6102825,32186,4,2011,"Rangitikei R","327.030","Makowhai Stream","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7037213
-"Rangitikei R",2011-04-15,"gamaff",17,30,2710190,6104145,32187,4,2011,"Rangitikei R","327.030","Makowhai Stream tributary","day","doct","S23","han",NA,NA,"a",NA,NA,NA,7036897
-"Rangitikei R",2011-04-15,"nospec",179,856,2779194,6159199,36157,4,2011,"Rangitikei R","327.392","Maropea River tributary","1900","hor","u22","spo",NA,NA,"",NA,NA,NA,7025693
-"Rangitikei R",2011-04-15,"galbre",179,847,2779192,6158950,36158,4,2011,"Rangitikei R","327.000","Maropea River tributary","1940","hor","u22","spo",NA,NA,"",2,60,250,7025816
-"Rangitikei R",2011-04-15,"angdie",179,847,2779192,6158950,36158,4,2011,"Rangitikei R","327.000","Maropea River tributary","1940","hor","u22","spo",NA,NA,"",2,600,1000,7025816
-"Rangitikei R",2011-04-15,"oncmyk",172,626,2774945,6162133,36161,4,2011,"Rangitikei R","327.392","Waikamaka River","2248","hor","u21","spo",NA,NA,"",2,120,150,7025145
-"Rangitikei R",2011-04-15,"galbre",172,626,2774945,6162133,36161,4,2011,"Rangitikei R","327.392","Waikamaka River","2248","hor","u21","spo",NA,NA,"",2,190,220,7025145
-"Rangitikei R",2011-04-15,"anguil",172,626,2774945,6162133,36161,4,2011,"Rangitikei R","327.392","Waikamaka River","2248","hor","u21","spo",NA,NA,"",6,300,800,7025145
-"Rangitikei R",2011-04-15,"angdie",172,626,2774945,6162133,36161,4,2011,"Rangitikei R","327.392","Waikamaka River","2248","hor","u21","spo",NA,NA,"",4,500,900,7025145
-"Rangitikei R",2011-04-15,"salmo",172,626,2774945,6162133,36161,4,2011,"Rangitikei R","327.392","Waikamaka River","2248","hor","u21","spo",NA,NA,"",5,100,150,7025145
-"Rangitikei R",2011-04-15,"angdie",178,847,2778787,6158974,36162,4,2011,"Rangitikei R","327.392","Maropea River","2030","hor","s24","spo",NA,NA,"",3,500,700,7025788
-"Rangitikei R",2011-04-15,"salmo",178,847,2778787,6158974,36162,4,2011,"Rangitikei R","327.392","Maropea River","2030","hor","s24","spo",NA,NA,"",3,70,120,7025788
-"Waiau River",2011-04-15,"chefos",27,58,2100800,5451100,104845,4,2011,"Waiau River","797.000","Waiau River","","uoo","d45","efp",NA,NA,"",24,44,92,15048468
-"Waiau River",2011-04-15,"chefos",11,21,2099400,5439300,104848,4,2011,"Waiau River","797.000","Waiau River","","uoo","d46","efp",NA,NA,"",21,41,100,15052505
-"Waiau River",2011-04-15,"chefos",41,73,2098200,5461500,104852,4,2011,"Waiau River","797.000","Waiau River","","uoo","d45","efp",NA,NA,"",17,59,100,15044397
-"Kaituna R",2011-03-15,"parane",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"c",NA,NA,NA,4003416
-"Kaituna R",2011-03-15,"galmac",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"",1,80,NA,4003416
-"Kaituna R",2011-03-15,"gobhut",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"",11,40,55,4003416
-"Kaituna R",2011-03-15,"oncmyk",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"",1,350,NA,4003416
-"Kaituna R",2011-03-15,"galarg",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"",1,200,NA,4003416
-"Kaituna R",2011-03-15,"hyrmen",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"n",NA,NA,NA,4003416
-"Kaituna R",2011-03-15,"parcur",16,21,2803210,6370355,34573,3,2011,"Kaituna R","146.030","Waiari Stream","1120","bior","U14","nte",6,1,"c",NA,NA,NA,4003416
-"Kaituna R",2011-03-15,"angdie",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"",3,400,650,4002905
-"Kaituna R",2011-03-15,"parcur",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"c",NA,NA,NA,4002905
-"Kaituna R",2011-03-15,"oncmyk",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"",3,200,250,4002905
-"Kaituna R",2011-03-15,"galarg",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"",2,220,220,4002905
-"Kaituna R",2011-03-15,"gobhut",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"",3,40,45,4002905
-"Kaituna R",2011-03-15,"parane",16,21,2803351,6370664,34574,3,2011,"Kaituna R","146.030","Waiari Stream","1045","bior","U14","nte",6,1,"o",NA,NA,NA,4002905
-"Kaituna R",2011-03-15,"gobgob",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",1,200,NA,4002596
-"Kaituna R",2011-03-15,"parane",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"o",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"hyrmen",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"n",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"gobhut",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",3,40,60,4002596
-"Kaituna R",2011-03-15,"parcur",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"c",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"gobcot",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",6,40,70,4002596
-"Kaituna R",2011-03-15,"galmac",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",6,70,90,4002596
-"Kaituna R",2011-03-15,"angaus",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",1,350,NA,4002596
-"Kaituna R",2011-03-15,"angdie",11,11,2804336,6374383,34575,3,2011,"Kaituna R","146.030","Waiari Stream","1000","bior","U14","nte",6,1,"",1,400,NA,4002596
-"Kaituna R",2011-03-15,"angdie",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",10,300,600,4002596
-"Kaituna R",2011-03-15,"galmac",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",13,70,100,4002596
-"Kaituna R",2011-03-15,"gobcot",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",1,80,NA,4002596
-"Kaituna R",2011-03-15,"parcur",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"c",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"gobhut",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",1,55,NA,4002596
-"Kaituna R",2011-03-15,"hyrmen",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"n",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"parane",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"o",NA,NA,NA,4002596
-"Kaituna R",2011-03-15,"gobgob",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",1,175,NA,4002596
-"Kaituna R",2011-03-15,"angaus",11,9,2804190,6374762,34576,3,2011,"Kaituna R","146.030","Waiari Stream","0830","bior","U14","nte",6,1,"",2,280,320,4002596
-"Taieri R",2011-02-15,"galeld",119,854,2268161,5508731,109137,2,2011,"Taieri R","743.256","Stony Creek","","doco","H43","efp",NA,NA,"",78,NA,NA,14052274
-"Taieri R",2011-02-15,"galeld",119,854,2268161,5508731,109137,2,2011,"Taieri R","743.256","Stony Creek","","doco","H43","efp",NA,NA,"",44,NA,NA,14052274
-"Taieri R",2011-02-15,"galeld",119,854,2268161,5508731,109137,2,2011,"Taieri R","743.256","Stony Creek","","doco","H43","efp",NA,NA,"",103,NA,NA,14052274
-"Taieri R",2011-02-15,"galeld",119,854,2267965,5508757,109140,2,2011,"Taieri R","743.256","Stony Creek","1030","doco","H43","efp",NA,NA,"",23,NA,NA,14052274
-"Taieri R",2011-02-15,"galeld",119,854,2267965,5508757,109140,2,2011,"Taieri R","743.256","Stony Creek","1030","doco","H43","efp",NA,NA,"",130,NA,NA,14052274
-"Taieri R",2011-02-15,"galeld",119,854,2267965,5508757,109140,2,2011,"Taieri R","743.256","Stony Creek","1030","doco","H43","efp",NA,NA,"",46,NA,NA,14052274
-"Hikimutu Lgn",2010-11-15,"neoapo",17,63,2302648,5782942,24388,11,2010,"Hikimutu Lgn","895.000","Unnamed pool Saltwater forest","0940","docy","I34","gmt",1,NA,"",2,70,75,12039840
-"Hikimutu Lgn",2010-11-15,"galfas",17,70,2302269,5782850,24389,11,2010,"Hikimutu Lgn","895.000","Unnamed pond Saltwater forest","0950","docy","I34","gmt",1,NA,"",1,155,NA,12039845
-"Hikimutu Lgn",2010-11-15,"galfas",16,59,2300479,5783024,24390,11,2010,"Hikimutu Lgn","895.000","Unnamed ditch Saltwater forest","1100","docy","I34","gmt",1,NA,"",1,110,NA,12039933
-"Hikimutu Lgn",2010-11-15,"parane",16,59,2300479,5783024,24390,11,2010,"Hikimutu Lgn","895.000","Unnamed ditch Saltwater forest","1100","docy","I34","gmt",1,NA,"",3,NA,NA,12039933
-"Hikimutu Lgn",2010-11-15,"neoapo",14,63,2299618,5783119,24391,11,2010,"Hikimutu Lgn","895.000","Unnamed pond Saltwater forest","1115","docy","I34","kbt",2,NA,"",4,30,90,12039850
-"Hikimutu Lgn",2010-11-15,"galfas",14,70,2298534,5782256,24392,11,2010,"Hikimutu Lgn","895.000","Unnamed pond Saltwater Lagoon","1135","docy","I34","kbt",1,NA,"",3,160,200,12040099
-"Hikimutu Lgn",2010-11-15,"neoapo",16,59,2298983,5783004,24393,11,2010,"Hikimutu Lgn","895.000","Unnamed pond Saltwater forest","1300","docy","I34","gmt",2,NA,"",5,70,110,12039933
-"Ashburton R",2010-10-15,"nospec",103,679,2366488,5738170,34344,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",NA,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366508,5738120,34345,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",2,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366508,5738164,34346,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",13,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366549,5738037,34347,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",4,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366549,5738080,34348,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",1,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366569,5737979,34349,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",4,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,679,2366585,5737926,34350,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",2,NA,NA,13047330
-"Ashburton R",2010-10-15,"nospec",103,679,2366657,5737870,34351,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",NA,NA,NA,13047330
-"Ashburton R",2010-10-15,"nospec",103,679,2366696,5737875,34352,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",NA,NA,NA,13047330
-"Ashburton R",2010-10-15,"nospec",103,682,2366776,5737835,34354,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",NA,NA,NA,13047330
-"Ashburton R",2010-10-15,"gobbre",103,690,2366893,5738504,34355,10,2010,"Ashburton R","688.090","Lake Emily","day","docc","J36","gmt",NA,NA,"",2,NA,NA,13047330
-"Hoteo R",2010-10-15,"anguil",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"",1,NA,NA,2001597
-"Hoteo R",2010-10-15,"angaus",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"",2,220,220,2001597
-"Hoteo R",2010-10-15,"parcur",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"n",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"parane",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"c",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"hyrmen",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"n",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"gobcot",15,80,2655860,6534699,34554,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","efp",NA,1,"",2,20,55,2001597
-"Hoteo R",2010-10-15,"parcur",15,120,2655418,6534940,34555,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","obs",NA,NA,"n",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"hyrmen",15,120,2655418,6534940,34555,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","obs",NA,NA,"n",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"parane",15,120,2655418,6534940,34555,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","obs",NA,NA,"c",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"galfas",15,120,2655418,6534940,34555,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","obs",NA,NA,"o",NA,NA,NA,2001597
-"Hoteo R",2010-10-15,"angdie",15,120,2655418,6534940,34555,10,2010,"Hoteo R","457.037","Kourawhero Stream","day","bior","R09","obs",NA,NA,"o",NA,NA,NA,2001597
-"Grey R",2010-04-15,"parane",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"",1,NA,NA,12031401
-"Grey R",2010-04-15,"hyrmen",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"n",NA,NA,NA,12031401
-"Grey R",2010-04-15,"angdie",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"",5,400,500,12031401
-"Grey R",2010-04-15,"galarg",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"",9,120,180,12031401
-"Grey R",2010-04-15,"galbre",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"",8,90,100,12031401
-"Grey R",2010-04-15,"parcur",52,132,2386958,5841907,33901,4,2010,"Grey R","914.067","Unnamed stream Iveagh Bay","2000","docy","K32","spo",NA,NA,"n",NA,NA,NA,12031401
-"Kaituna R",2010-03-15,"angaus",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"",1,170,NA,4003416
-"Kaituna R",2010-03-15,"galmac",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"",2,80,80,4003416
-"Kaituna R",2010-03-15,"parcur",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"o",NA,NA,NA,4003416
-"Kaituna R",2010-03-15,"parane",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"r",NA,NA,NA,4003416
-"Kaituna R",2010-03-15,"gobhut",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"",5,45,65,4003416
-"Kaituna R",2010-03-15,"angdie",16,21,2803210,6370355,31932,3,2010,"Kaituna R","146.030","Waiari Stream","1300","bior","U14","etc",NA,1,"",2,200,230,4003416
-"Kaituna R",2010-03-15,"parcur",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"c",NA,NA,NA,4002905
-"Kaituna R",2010-03-15,"anguil",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"",2,350,500,4002905
-"Kaituna R",2010-03-15,"galmac",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"",1,90,NA,4002905
-"Kaituna R",2010-03-15,"gobhut",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"",4,45,70,4002905
-"Kaituna R",2010-03-15,"angdie",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"",2,450,500,4002905
-"Kaituna R",2010-03-15,"angaus",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"",1,75,NA,4002905
-"Kaituna R",2010-03-15,"parane",16,21,2803351,6370664,31933,3,2010,"Kaituna R","146.030","Waiari Stream","1200","bior","U14","etc",NA,1,"r",NA,NA,NA,4002905
-"Kaituna R",2010-03-15,"parcur",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"c",NA,NA,NA,4002596
-"Kaituna R",2010-03-15,"parane",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"r",NA,NA,NA,4002596
-"Kaituna R",2010-03-15,"angdie",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"",1,280,NA,4002596
-"Kaituna R",2010-03-15,"gobhut",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"",4,45,55,4002596
-"Kaituna R",2010-03-15,"retret",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"",1,65,NA,4002596
-"Kaituna R",2010-03-15,"gobcot",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"",8,55,75,4002596
-"Kaituna R",2010-03-15,"galmac",11,11,2804336,6374383,31934,3,2010,"Kaituna R","146.030","Waiari Stream","1100","bior","U14","etc",NA,1,"a",114,72,120,4002596
-"Kaituna R",2010-03-15,"gobcot",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"",21,50,75,4002596
-"Kaituna R",2010-03-15,"parcur",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"c",NA,NA,NA,4002596
-"Kaituna R",2010-03-15,"gobhut",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"",7,40,60,4002596
-"Kaituna R",2010-03-15,"galmac",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"a",15,70,110,4002596
-"Kaituna R",2010-03-15,"anguil",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"",5,50,80,4002596
-"Kaituna R",2010-03-15,"angdie",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"",3,230,310,4002596
-"Kaituna R",2010-03-15,"angaus",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"",2,180,275,4002596
-"Kaituna R",2010-03-15,"parane",11,9,2804190,6374762,31935,3,2010,"Kaituna R","146.030","Waiari Stream","0900","bior","U14","etc",NA,1,"r",NA,NA,NA,4002596
-"Raglan H",2009-12-15,"angaus",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",1,NA,NA,3016963
-"Raglan H",2009-12-15,"angdie",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",18,NA,NA,3016963
-"Raglan H",2009-12-15,"anguil",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",1,NA,NA,3016963
-"Raglan H",2009-12-15,"galfas",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",9,NA,NA,3016963
-"Raglan H",2009-12-15,"galmac",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",1,NA,NA,3016963
-"Raglan H",2009-12-15,"gobhut",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",144,NA,NA,3016963
-"Raglan H",2009-12-15,"saltru",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",1,NA,NA,3016963
-"Raglan H",2009-12-15,"parane",7,45,2686748,6380788,31722,12,2009,"Raglan H","423.000","Maunganui Stream","0928","ew","R14","efm",406,1,"",16,NA,NA,3016963
-"Raglan H",2009-12-15,"galfas",6,55,2686845,6380645,31723,12,2009,"Raglan H","423.000","Maunganui Stream","1350","ew","R14","efm",221,1,"",4,NA,NA,3017107
-"Raglan H",2009-12-15,"anguil",6,55,2686845,6380645,31723,12,2009,"Raglan H","423.000","Maunganui Stream","1350","ew","R14","efm",221,1,"",4,NA,NA,3017107
-"Raglan H",2009-12-15,"angdie",6,55,2686845,6380645,31723,12,2009,"Raglan H","423.000","Maunganui Stream","1350","ew","R14","efm",221,1,"",6,NA,NA,3017107
-"Raglan H",2009-12-15,"parane",6,55,2686845,6380645,31723,12,2009,"Raglan H","423.000","Maunganui Stream","1350","ew","R14","efm",221,1,"",38,NA,NA,3017107
-"Otuwhero R",2009-08-15,"galfas",2,60,2508562,6022762,32268,8,2009,"Otuwhero R","566.000","Otuwhero River tributary","2000","docn","N26","gmt",1,NA,"",1,110,NA,10005199
-"Otuwhero R",2009-08-15,"hyrmen",2,60,2508562,6022762,32268,8,2009,"Otuwhero R","566.000","Otuwhero River tributary","2000","docn","N26","gmt",1,NA,"n",NA,NA,NA,10005199
-"Otuwhero R",2009-08-15,"parcur",2,60,2508562,6022762,32268,8,2009,"Otuwhero R","566.000","Otuwhero River tributary","2000","docn","N26","gmt",1,NA,"n",NA,NA,NA,10005199
-"Waikato R",2009-05-15,"galmac",80,20,2700314,6403847,102024,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",8,NA,NA,3012631
-"Waikato R",2009-05-15,"galmac",80,20,2700314,6403847,102025,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",9,NA,NA,3012631
-"Waikato R",2009-05-15,"galmac",80,20,2700314,6403847,102026,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",16,NA,NA,3012631
-"Waikato R",2009-05-15,"galmac",80,20,2700314,6403847,102027,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",6,NA,NA,3012631
-"Waikato R",2009-05-15,"nospec",80,20,2700314,6403847,102028,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",NA,NA,NA,3012631
-"Waikato R",2009-05-15,"galmac",80,20,2700314,6403847,102029,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",2,NA,NA,3012631
-"Waikato R",2009-05-15,"nospec",80,20,2700314,6403847,102030,5,2009,"Waikato R","434.190","Waahi Stream","","niwa","S13","sfn",NA,NA,"",NA,NA,NA,3012631
-"Waikato River",2009-01-15,"perflu",NA,NA,2710600,6375723,111304,1,2009,"Waikato River","434.001","Lake Rotoroa","day","uow","","efb",NA,1,"",57,NA,NA,NA
+SiteID,Date,SpeciesCode,Penetration,Altitude,Easting,Northing,card,m,y,catchname,catch,locality,time,org,map,fishmeth,effort,pass,abund,number,minl,maxl,nzreach,PointRegion,N,row
+Wairoa River,2016-07-15,angdie,16,94,2695167,6461659,116338,7,2016,Wairoa River,85,Wairoa River tributary,,bml,S11,efp,,,,7,,,2007578,Auckland,52,188
+Wairoa River,2016-07-15,galfas,16,94,2695167,6461659,116338,7,2016,Wairoa River,85,Wairoa River tributary,,bml,S11,efp,,,,1,,,2007578,Auckland,52,189
+Hoteo River,2017-06-15,angdie,35,38,2649976,6541030,115565,6,2017,Hoteo River,457,Hoteo River,908,wild,Q09,fys,,,,3,,,2001167,Auckland,52,162
+Hoteo River,2017-06-15,galmac,35,38,2649976,6541030,115565,6,2017,Hoteo River,457,Hoteo River,908,wild,Q09,tfu,,,,4,,,2001167,Auckland,52,163
+Hoteo River,2017-06-15,gobiom,35,38,2649976,6541030,115565,6,2017,Hoteo River,457,Hoteo River,908,wild,Q09,tfu,,,,4,,,2001167,Auckland,52,164
+Drury Creek,2018-01-15,angaus,,,2679913,6456104,115563,1,2018,Drury Creek,438,Drury Creek tributary,900,wild,R12,fys,,,,1087,,,,Auckland,52,56
+Drury Creek,2018-01-15,angaus,,,2679913,6456104,115563,1,2018,Drury Creek,438,Drury Creek tributary,900,wild,R12,tfb,,,,128,,,,Auckland,52,57
+Te Matuku Bay,2019-03-15,galarg,0,11,2700333,6484684,115994,3,2019,Te Matuku Bay,84.5,Unnamed stream,,wild,S11,sdn,,,,2,,,2005407,Auckland,52,1
+Kaituna R,2010-03-15,angaus,16,21,2803210,6370355,31932,3,2010,Kaituna R,146.03,Waiari Stream,1300,bior,U14,etc,,1,,1,170,,4003416,Bay of Plenty,59,450
+Kaituna R,2010-03-15,angdie,16,21,2803210,6370355,31932,3,2010,Kaituna R,146.03,Waiari Stream,1300,bior,U14,etc,,1,,2,200,230,4003416,Bay of Plenty,59,455
+Kaituna R,2010-03-15,angdie,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,,1,280,,4002596,Bay of Plenty,59,465
+Kaituna R,2010-03-15,anguil,16,21,2803351,6370664,31933,3,2010,Kaituna R,146.03,Waiari Stream,1200,bior,U14,etc,,1,,2,350,500,4002905,Bay of Plenty,59,457
+Kaituna R,2010-03-15,galmac,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,a,114,72,120,4002596,Bay of Plenty,59,469
+Kaituna R,2010-03-15,gobcot,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,,8,55,75,4002596,Bay of Plenty,59,468
+Kaituna R,2010-03-15,gobhut,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,,4,45,55,4002596,Bay of Plenty,59,466
+Kaituna R,2010-03-15,parane,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,r,,,,4002596,Bay of Plenty,59,464
+Kaituna R,2010-03-15,parcur,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,c,,,,4002596,Bay of Plenty,59,463
+Kaituna R,2010-03-15,retret,11,11,2804336,6374383,31934,3,2010,Kaituna R,146.03,Waiari Stream,1100,bior,U14,etc,,1,,1,65,,4002596,Bay of Plenty,59,467
+Kaituna R,2011-03-15,angaus,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,2,280,320,4002596,Bay of Plenty,59,408
+Kaituna R,2011-03-15,angdie,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,10,300,600,4002596,Bay of Plenty,59,400
+Kaituna R,2011-03-15,galarg,16,21,2803351,6370664,34574,3,2011,Kaituna R,146.03,Waiari Stream,1045,bior,U14,nte,6,1,,2,220,220,4002905,Bay of Plenty,59,388
+Kaituna R,2011-03-15,galmac,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,13,70,100,4002596,Bay of Plenty,59,401
+Kaituna R,2011-03-15,gobcot,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,1,80,,4002596,Bay of Plenty,59,402
+Kaituna R,2011-03-15,gobgob,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,1,175,,4002596,Bay of Plenty,59,407
+Kaituna R,2011-03-15,gobhut,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,,1,55,,4002596,Bay of Plenty,59,404
+Kaituna R,2011-03-15,hyrmen,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,n,,,,4002596,Bay of Plenty,59,405
+Kaituna R,2011-03-15,oncmyk,16,21,2803351,6370664,34574,3,2011,Kaituna R,146.03,Waiari Stream,1045,bior,U14,nte,6,1,,3,200,250,4002905,Bay of Plenty,59,387
+Kaituna R,2011-03-15,parane,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,o,,,,4002596,Bay of Plenty,59,406
+Kaituna R,2011-03-15,parcur,11,9,2804190,6374762,34576,3,2011,Kaituna R,146.03,Waiari Stream,830,bior,U14,nte,6,1,c,,,,4002596,Bay of Plenty,59,403
+Ashburton R,2010-10-15,gobbre,103,690,2366893,5738504,34355,10,2010,Ashburton R,688.09,Lake Emily,day,docc,J36,gmt,,,,2,,,13047330,Canterbury,56,432
+Ashburton R,2010-10-15,nospec,103,682,2366776,5737835,34354,10,2010,Ashburton R,688.09,Lake Emily,day,docc,J36,gmt,,,,,,,13047330,Canterbury,56,431
+Akaroa Hbr,2016-09-15,angdie,1,63,2501290,5710924,102653,9,2016,Akaroa Hbr,674.11,Wainui Stream,1030,niwa,N36,efp,,,,2,,,13055857,Canterbury,56,182
+Akaroa Hbr,2016-09-15,galbre,1,63,2501290,5710924,102653,9,2016,Akaroa Hbr,674.11,Wainui Stream,1030,niwa,N36,efp,,,n,,,,13055857,Canterbury,56,183
+Akaroa Hbr,2016-09-15,gobcot,1,63,2501290,5710924,102653,9,2016,Akaroa Hbr,674.11,Wainui Stream,1030,niwa,N36,efp,,,p,,,,13055857,Canterbury,56,184
+Akaroa Hbr,2016-09-15,gobhut,1,63,2501290,5710924,102653,9,2016,Akaroa Hbr,674.11,Wainui Stream,1030,niwa,N36,efp,,,p,,,,13055857,Canterbury,56,185
+Ote Makura Stream,2019-01-15,angdie,0,28,2553125,5858748,115336,1,2019,Ote Makura Stream,636,Ote Makura Stream,1445,ecan,O32,efp,,,,4,,,13011379,Canterbury,56,25
+Ote Makura Stream,2019-01-15,chefos,0,28,2553125,5858748,115336,1,2019,Ote Makura Stream,636,Ote Makura Stream,1445,ecan,O32,efp,,,,2,,,13011379,Canterbury,56,26
+Ote Makura Stream,2019-01-15,gobhub,0,28,2553125,5858748,115336,1,2019,Ote Makura Stream,636,Ote Makura Stream,1445,ecan,O32,efp,,,,1,,,13011379,Canterbury,56,24
+Waipaoa River,2017-12-15,angdie,41,204,2925148,6253469,115163,12,2017,Waipaoa River,197.03,Te Arai River tributary,2300,gdc,Y18,sdn,,,,2,,,5013976,Gisborne,9,71
+Waipaoa River,2017-12-15,galbre,41,204,2925148,6253469,115163,12,2017,Waipaoa River,197.03,Te Arai River tributary,2300,gdc,Y18,sdn,,,,1,,,5013976,Gisborne,9,70
+Rangitikei R,2011-04-15,angdie,178,847,2778787,6158974,36162,4,2011,Rangitikei R,327.392,Maropea River,2030,hor,s24,spo,,,,3,500,700,7025788,Manawatū-Whanganui,17,373
+Rangitikei R,2011-04-15,salmo,178,847,2778787,6158974,36162,4,2011,Rangitikei R,327.392,Maropea River,2030,hor,s24,spo,,,,3,70,120,7025788,Manawatū-Whanganui,17,374
+Hokio Stream,2012-10-15,neoapo,9,20,2700945,6065603,112385,10,2012,Hokio Stream,323,Lake Horowhenua unnamed tributary,1200,mwrc,S25,tfb,,,,20,,,7045787,Manawatū-Whanganui,17,297
+Flaxbourne River,2017-12-15,angaus,7,31,2604520,5931133,113894,12,2017,Flaxbourne River,609.02,Needles Creek,,bml,P29,efp,,,,3,,,11027758,Marlborough,8,78
+Flaxbourne River,2017-12-15,angdie,7,31,2604520,5931133,113894,12,2017,Flaxbourne River,609.02,Needles Creek,,bml,P29,efp,,,,4,,,11027758,Marlborough,8,79
+Flaxbourne River,2017-12-15,anguil,7,31,2604520,5931133,113894,12,2017,Flaxbourne River,609.02,Needles Creek,,bml,P29,efp,,,,4,,,11027758,Marlborough,8,77
+Nelson H,2013-02-15,angaus,0,0,2536595,5996811,100873,2,2013,Nelson H,577,Oldham Creek,,f&ws,O27,efp,,,,60,90,400,10010123,Nelson,7,271
+Nelson H,2013-02-15,angdie,0,0,2536595,5996811,100873,2,2013,Nelson H,577,Oldham Creek,,f&ws,O27,efp,,,,5,150,280,10010123,Nelson,7,270
+Nelson H,2013-02-15,galmac,0,0,2536595,5996811,100873,2,2013,Nelson H,577,Oldham Creek,,f&ws,O27,efp,,,,57,50,95,10010123,Nelson,7,272
+Nelson H,2013-02-15,gobhut,0,0,2536595,5996811,100873,2,2013,Nelson H,577,Oldham Creek,,f&ws,O27,efp,,,,1,60,,10010123,Nelson,7,273
+Jenkins Creek,2013-03-15,angdie,3,20,2531567,5988633,100851,3,2013,Jenkins Creek,576,Jenkins Creek,,f&ws,O27,efp,,,,13,70,400,10011954,Nelson,7,256
+Jenkins Creek,2013-03-15,galbre,3,20,2531567,5988633,100851,3,2013,Jenkins Creek,576,Jenkins Creek,,f&ws,O27,efp,,,,3,70,80,10011954,Nelson,7,257
+Jenkins Creek,2013-03-15,galfas,3,20,2531567,5988633,100851,3,2013,Jenkins Creek,576,Jenkins Creek,,f&ws,O27,efp,,,,2,70,80,10011954,Nelson,7,258
+Kaeo River,2016-11-15,angaus,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,4,,,1004664,Northland,18,178
+Kaeo River,2016-11-15,angdie,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,5,,,1004664,Northland,18,177
+Kaeo River,2016-11-15,anguil,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,20,,,1004664,Northland,18,180
+Kaeo River,2016-11-15,chefos,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,11,,,1004664,Northland,18,179
+Kaeo River,2016-11-15,galfas,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,6,,,1004664,Northland,18,173
+Kaeo River,2016-11-15,galmac,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,1,,,1004664,Northland,18,175
+Kaeo River,2016-11-15,gobhub,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,12,,,1004664,Northland,18,174
+Kaeo River,2016-11-15,gobhut,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,54,,,1004664,Northland,18,172
+Kaeo River,2016-11-15,retret,18,75,2589018,6673780,110087,11,2016,Kaeo River,26,Kaeo River,1335,mcgl,P04,efp,,,,4,,,1004664,Northland,18,176
+Hatea River,2018-05-15,angrei,0,12,2631457,6606593,113795,5,2018,Hatea River,55,Hatea River,1100,ind,Q07,vbd,,,,1,,,1018398,Northland,18,34
+Taieri River,2011-05-15,angdie,172,444,2293032,5565925,105955,5,2011,Taieri River,743.645,Spec Gully,1000,doco,i41,efp,162,3,,1,300,300,14028960,Otago,95,353
+Taieri River,2011-05-15,galano,179,508,2290332,5570914,105963,5,2011,Taieri River,743.645,Spec Gully,1115,doco,i41,efp,183,3,,220,33,87,14026805,Otago,95,354
+Taieri River,2011-05-15,galeld,135,905,2260651,5490723,102695,5,2011,Taieri River,743.18,Deep Stream Tributary,1000,doco,I44,efp,,,,4,,,14057615,Otago,95,337
+Taieri River,2011-05-15,galpul,40,467,2277104,5474318,106286,5,2011,Taieri River,743.05,Shepherd Stream tributary,1100,doco,H44,efp,163,4,,58,49,131,14062481,Otago,95,358
+Taieri River,2011-05-15,saltru,172,444,2293032,5565925,105955,5,2011,Taieri River,743.645,Spec Gully,1000,doco,i41,efp,162,3,,8,104,213,14028960,Otago,95,352
+Taieri River,2011-05-15,saltru,179,508,2290332,5570914,105963,5,2011,Taieri River,743.645,Spec Gully,1115,doco,i41,efp,183,3,,1,135,135,14026805,Otago,95,355
+Waiau River,2011-04-15,chefos,27,58,2100800,5451100,104845,4,2011,Waiau River,797,Waiau River,,uoo,d45,efp,,,,24,44,92,15048468,Southland,20,375
+Waiau River,2011-04-15,chefos,11,21,2099400,5439300,104848,4,2011,Waiau River,797,Waiau River,,uoo,d46,efp,,,,21,41,100,15052505,Southland,20,376
+Waiau River,2011-04-15,chefos,41,73,2098200,5461500,104852,4,2011,Waiau River,797,Waiau River,,uoo,d45,efp,,,,17,59,100,15044397,Southland,20,377
+Oreti R,2013-12-15,angdie,130,329,2157411,5499319,108509,12,2013,Oreti R,786.9,Irthing Stream tributary,,envs,E44,efp,,,,3,,,15029039,Southland,20,247
+Oreti R,2013-12-15,galgol,130,329,2157411,5499319,108509,12,2013,Oreti R,786.9,Irthing Stream tributary,,envs,E44,efp,,,,47,,,15029039,Southland,20,249
+Oreti R,2013-12-15,galsps,130,329,2157411,5499319,108509,12,2013,Oreti R,786.9,Irthing Stream tributary,,envs,E44,efp,,,,104,,,15029039,Southland,20,248
+Aparima River,2017-03-15,angdie,66,178,2124051,5460369,115260,3,2017,Aparima River,789.203,Wairio Stream,920,fsl,D45,efp,,,,3,,,15044770,Southland,20,170
+Aparima River,2017-03-15,galgol,66,178,2124051,5460369,115260,3,2017,Aparima River,789.203,Wairio Stream,920,fsl,D45,efp,,,,4,,,15044770,Southland,20,168
+Aparima River,2017-03-15,gobbre,66,178,2124051,5460369,115260,3,2017,Aparima River,789.203,Wairio Stream,920,fsl,D45,efp,,,,3,,,15044770,Southland,20,169
+Aparima River,2017-03-15,parane,66,178,2124051,5460369,115260,3,2017,Aparima River,789.203,Wairio Stream,920,fsl,D45,vbd,,,,4,,,15044770,Southland,20,171
+Waitara R,2014-04-15,angaus,3,35,2616840,6243183,101958,4,2014,Waitara R,395,Waitara River tributary,,docz,q19,gmt,2,,,2,,,6001975,Taranaki,28,207
+Waitara R,2014-04-15,galmac,3,35,2616840,6243183,101958,4,2014,Waitara R,395,Waitara River tributary,,docz,q19,gmt,2,,,83,,,6001975,Taranaki,28,206
+Waitara R,2014-04-15,gobcot,3,29,2617181,6243523,101964,4,2014,Waitara R,395,Waitara River tributary,,docz,q19,gmt,2,,,1,,,6001907,Taranaki,28,233
+Waitara R,2014-04-15,gobiom,3,35,2616840,6243183,101958,4,2014,Waitara R,395,Waitara River tributary,,docz,q19,gmt,2,,,5,,,6001975,Taranaki,28,208
+Otuwhero R,2009-08-15,galfas,2,60,2508562,6022762,32268,8,2009,Otuwhero R,566,Otuwhero River tributary,2000,docn,N26,gmt,1,,,1,110,,10005199,Tasman,5,490
+Otuwhero R,2009-08-15,hyrmen,2,60,2508562,6022762,32268,8,2009,Otuwhero R,566,Otuwhero River tributary,2000,docn,N26,gmt,1,,n,,,,10005199,Tasman,5,491
+Otuwhero R,2009-08-15,parcur,2,60,2508562,6022762,32268,8,2009,Otuwhero R,566,Otuwhero River tributary,2000,docn,N26,gmt,1,,n,,,,10005199,Tasman,5,492
+Waimea Inlet,2014-08-15,angaus,,,2525022,5983993,102364,8,2014,Waimea Inlet,573,Unnamed Pond,1000,f&ws,N27,efp,2900,,,67,300,690,,Tasman,5,204
+Waimea Inlet,2014-08-15,angdie,,,2525022,5983993,102364,8,2014,Waimea Inlet,573,Unnamed Pond,1000,f&ws,N27,efp,2900,,,4,420,630,,Tasman,5,205
+Piako River,2011-12-15,angaus,27,7,2737967,6422520,114529,12,2011,Piako River,91.031,Elstow Canal (upper reaches),1215,kal,T13,fys,,,,13,,,3008799,Waikato,86,304
+Piako River,2011-12-15,angaus,27,7,2737967,6422520,114529,12,2011,Piako River,91.031,Elstow Canal (upper reaches),1215,kal,T13,tfu,,,,1,,,3008799,Waikato,86,305
+Piako River,2011-12-15,angaus,24,7,2737836,6422929,114530,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,fys,,,,4,,,3008799,Waikato,86,307
+Piako River,2011-12-15,angaus,24,7,2736145,6425350,114531,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,fys,,,,7,,,3008799,Waikato,86,309
+Piako River,2011-12-15,angaus,24,7,2736145,6425350,114531,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,tfu,,,,6,,,3008799,Waikato,86,310
+Piako River,2011-12-15,angaus,24,7,2737836,6422929,114532,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,fys,,,,4,,,3008799,Waikato,86,312
+Piako River,2011-12-15,anguil,27,7,2737967,6422520,114529,12,2011,Piako River,91.031,Elstow Canal (upper reaches),1215,kal,T13,fys,,,,1,,,3008799,Waikato,86,302
+Piako River,2011-12-15,galmac,27,7,2737967,6422520,114529,12,2011,Piako River,91.031,Elstow Canal (upper reaches),1215,kal,T13,fys,,,,17,,,3008799,Waikato,86,303
+Piako River,2011-12-15,galmac,24,7,2737836,6422929,114530,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,fys,,,,3,,,3008799,Waikato,86,306
+Piako River,2011-12-15,galmac,24,7,2737836,6422929,114532,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,fys,,,,3,,,3008799,Waikato,86,311
+Piako River,2011-12-15,nospec,24,7,2737836,6422929,114530,12,2011,Piako River,91.05,Elstow Canal (lower reaches),1215,kal,T13,tfu,,,,,,,3008799,Waikato,86,308
+Owhiro Stream,2016-05-15,angaus,1,40,2657101,5984405,116171,5,2016,Owhiro Stream,301,Owhiro Stream,1200,wnrc,R27,efp,,,,4,,,9015242,Wellington,11,191
+Owhiro Stream,2016-05-15,angdie,1,40,2657101,5984405,116171,5,2016,Owhiro Stream,301,Owhiro Stream,1200,wnrc,R27,efp,,,,4,,,9015242,Wellington,11,190
+Owhiro Stream,2016-05-15,galfas,1,40,2657101,5984405,116171,5,2016,Owhiro Stream,301,Owhiro Stream,1200,wnrc,R27,efp,,,,1,,,9015242,Wellington,11,192
+Owhiro Stream,2016-05-15,gobhut,1,40,2657101,5984405,116171,5,2016,Owhiro Stream,301,Owhiro Stream,1200,wnrc,R27,efp,,,,3,,,9015242,Wellington,11,193
+Horokiri Stream,2019-01-15,angaus,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,3,,,9008746,Wellington,11,29
+Horokiri Stream,2019-01-15,angdie,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,2,,,9008746,Wellington,11,30
+Horokiri Stream,2019-01-15,anguil,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,5,,,9008746,Wellington,11,33
+Horokiri Stream,2019-01-15,galaxi,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,1,,,9008746,Wellington,11,28
+Horokiri Stream,2019-01-15,galbre,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,5,,,9008746,Wellington,11,27
+Horokiri Stream,2019-01-15,galfas,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,1,,,9008746,Wellington,11,32
+Horokiri Stream,2019-01-15,gobhut,5,60,2673447,6013874,116079,1,2019,Horokiri Stream,309,Horokiri Stream,,bml,R26,efp,,,,4,,,9008746,Wellington,11,31
+Hikimutu Lgn,2010-11-15,galfas,17,70,2302269,5782850,24389,11,2010,Hikimutu Lgn,895,Unnamed pond Saltwater forest,950,docy,I34,gmt,1,,,1,155,,12039845,West Coast,29,416
+Hikimutu Lgn,2010-11-15,galfas,16,59,2300479,5783024,24390,11,2010,Hikimutu Lgn,895,Unnamed ditch Saltwater forest,1100,docy,I34,gmt,1,,,1,110,,12039933,West Coast,29,417
+Hikimutu Lgn,2010-11-15,galfas,14,70,2298534,5782256,24392,11,2010,Hikimutu Lgn,895,Unnamed pond Saltwater Lagoon,1135,docy,I34,kbt,1,,,3,160,200,12040099,West Coast,29,420
+Hikimutu Lgn,2010-11-15,neoapo,17,63,2302648,5782942,24388,11,2010,Hikimutu Lgn,895,Unnamed pool Saltwater forest,940,docy,I34,gmt,1,,,2,70,75,12039840,West Coast,29,415
+Hikimutu Lgn,2010-11-15,neoapo,14,63,2299618,5783119,24391,11,2010,Hikimutu Lgn,895,Unnamed pond Saltwater forest,1115,docy,I34,kbt,2,,,4,30,90,12039850,West Coast,29,419
+Hikimutu Lgn,2010-11-15,neoapo,16,59,2298983,5783004,24393,11,2010,Hikimutu Lgn,895,Unnamed pond Saltwater forest,1300,docy,I34,gmt,2,,,5,70,110,12039933,West Coast,29,421
+Hikimutu Lgn,2010-11-15,parane,16,59,2300479,5783024,24390,11,2010,Hikimutu Lgn,895,Unnamed ditch Saltwater forest,1100,docy,I34,gmt,1,,,3,,,12039933,West Coast,29,418

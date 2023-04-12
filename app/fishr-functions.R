@@ -41,8 +41,10 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics, 
   setDT(.data)
   if (stratum.incl.alt.penet == T) {
     .data[, Stratum := paste0(Date, '_', SiteID, '_', Penetration, '_', Altitude)]
+    .data[, StratumSite := paste0(SiteID, '_', Penetration, '_', Altitude)]
   } else {
     .data[, Stratum := paste0(Date, '_', SiteID)]
+    .data[, StratumSite := SiteID]
   }
     
   .data <- .data[rowid(Stratum, SpeciesCode) == 1]
@@ -58,6 +60,7 @@ prep.site.metrics <- function(.data, species.ibi.metrics = species_ibi_metrics, 
   ms <- m[
   , .(Date              = first(Date),
       SiteID            = first(SiteID),
+      StratumSite       = first(StratumSite),
       Altitude          = first(Altitude),
       Penetration       = first(Penetration),
       total_sp_richness = .SD[SpeciesCode != 'nospec', .N],
