@@ -46,6 +46,7 @@ rv <- NULL
 input <- list(region = 'Wellington', nz_region = 'Wellington', target_upload = list(datapath='~/Downloads/test-data (copy).csv'))
 input <- list(region = 'Wellington', nz_region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'))
 input <- list(region = 'Bay of Plenty', nz_region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'), aggregate_site_visits = T, view_region_only = T)
+input <- list(region = 'No Region', target_upload = list(datapath='~/Downloads/empty-test-data.csv'), aggregate_site_visits = T, view_region_only = T)
 rv <- list(
     reqfields = req_fields,
     selfields = data.frame(req = names(req_fields), good = 0L),
@@ -1022,9 +1023,13 @@ shinyServer(function(input, output, session) {
     debuginfo('Rendering map')
     
     ibi_scores_both <- copy(ibiData())
+    debuginfo(ibi_scores_both)
+
+    debuginfo(input$region)
+    
     req(ibi_scores_both)
     req(input$region)
-    req(!is.null(input$view_region_only))
+    req(input$region %in% 'No Region' || !is.null(input$view_region_only))
 
     scores1 <- copy(ibi_scores_both$ibi_scores)
     scoresm <- copy(ibi_scores_both$ibi_scores_agg) 
@@ -1145,6 +1150,8 @@ shinyServer(function(input, output, session) {
       ibi <- rbind(ibim, pts.single, fill = T)[
       , .(type, labels, geometry, IBIcategory, X, Y, Colour)
       ]
+
+      debuginfo(ibi[, -'labels'])
 
       factcols <- colorFactor(palcolours, domain = NULL)
       fc = ~factcols(IBIcategory)
