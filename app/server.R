@@ -903,10 +903,8 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  
-  output$scoresPlot <- renderPlot({
-    debuginfo('Rendering scoresPlot')
 
+  plotdata <- reactive({
     if (is.null(input$aggregate_site_visits)) return(NULL)
     
     ibi_scores_both <- ibiData()
@@ -971,23 +969,38 @@ shinyServer(function(input, output, session) {
       theme(axis.title.x = element_text(size = 12, margin = margin(t = 20)))+
       theme(axis.title.y = element_text(size = 12, margin = margin(r = 14)))
 
-    rv$scoredistplot <- g
     g
   })
   
-  output$plotdl <- downloadHandler(
-    ## filename = rv$plot_filename,
-    filename = function() {
+  output$scoresPlot <- renderPlot({
+    debuginfo('Rendering scoresPlot')
+
+    g <- plotdata()
+    rv$scoredistplot <- g
+    g
+  })
+
+  observe({
       if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
         fn <- sprintf('IBI-category-distribution_%s-region.png', gsub('\'', '', gsub(' ', '-', input$region)))
       } else {
         fn <- 'IBI-category-distribution_national.png'
       }
-      fn 
+      debuginfo(fn)
+      rv$plotfilename <- fn
+  })
+  
+  output$plotdl <- downloadHandler(
+    filename = function() {
+      ## 'test.png'
+      if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
+        sprintf('IBI-category-distribution_%s-region.png', gsub('\'', '', gsub(' ', '-', input$region)))
+      } else {
+        'IBI-category-distribution_national.png'
+      }
     },
     content = function(file) {
-      req(rv$scoredistplot)
-      ggsave(file, plot = rv$scoredistplot, device = "png", width = 7.5, height = 5)
+      ggsave(filename = file, plot = plotdata(), device = 'png', width = 7.5, height = 5, units = "in")
     }
   )
 
@@ -1185,7 +1198,7 @@ shinyServer(function(input, output, session) {
 
   output$mapdl <- downloadHandler(
     filename = function() {
-      if (!is.null(input$nview_region_only) && input$view_region_only != FALSE) {
+      if (!is.null(input$view_region_only) && input$view_region_only != FALSE) {
         fn <- sprintf('IBI-category-map_%s-region.png', gsub('\'', '', gsub(' ', '-', input$region)))
       } else {
         fn <- 'IBI-category-map_national.png'

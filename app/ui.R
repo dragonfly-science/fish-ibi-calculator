@@ -22,8 +22,8 @@ fileInputOnlyButton <- function(..., label="") {
 
 mydownloadbutton <- function(outputId, label = "Download", class = NULL, ...,
                              icon = shiny::icon("arrow-down")) {
-  aTag <- tags$a(id = outputId, class = paste("my-dl-btn", class),
-                 href = "", target = "_blank", download = NA, span(label), shiny:::validateIcon(icon), ...)
+  aTag <- tags$a(id = outputId, class = paste("my-dl-btn shiny-download-link", class),
+                 href = "", target = "_blank", download = NA, shiny:::validateIcon(icon), span(label), ...)
 }
 
 withspinner <- function(...)  withSpinner(..., type = 5, color="#003547")
