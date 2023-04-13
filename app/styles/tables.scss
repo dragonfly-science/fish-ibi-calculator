@@ -8,10 +8,12 @@ table td + td,
 table tr + tr {
   border-left: 1px solid #d4dde1;
 }
-table td {
+
+.Reactable table td {
   border-bottom: 1px solid #d4dde1;
   padding: 2px !important;
 }
+
 table thead th + th,
 table thead td + td {
   border-left: 1px solid #607781;

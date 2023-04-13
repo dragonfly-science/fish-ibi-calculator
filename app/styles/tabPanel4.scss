@@ -50,4 +50,40 @@
       color: $mfe-blue;
     }
   }
+  /* talbe cells in map tooltip */
+  &--table { 
+    max-width: 370px;
+    & thead tr th {
+      color: #607781;
+      border: none;
+      max-width: 60px;
+      font-size: 0.75rem;
+      font-weight: 400;
+      padding-left: 2px;
+      padding-right: 20px;
+      padding-bottom: 4px;
+      &:first-child {
+        width: 88px;
+        max-width: 100px;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+    & tbody {
+      & tr {
+        margin: 2px 0;
+        border: none;
+      }
+      & tr td {
+        padding: 4px 2px;
+        border: none;
+        color: $mfe-blue;
+        font-weight: 600;
+      }
+      & tr:nth-child(odd) {
+        background-color: #ECEFF0;
+      }
+    }
+  }
 }

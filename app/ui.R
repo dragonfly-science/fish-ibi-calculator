@@ -199,7 +199,7 @@ shinyUI(
             )
           ),
           fluidRow(
-            column(6, 
+            column(6,
               htmlOutput('issuesSubTxt')
             ),
             column(3,
@@ -309,6 +309,6 @@ shinyUI(
                              )
                     )
       ),
-    )   
+    )
   )
 )

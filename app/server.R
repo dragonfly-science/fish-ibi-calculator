@@ -1113,7 +1113,7 @@ shinyServer(function(input, output, session) {
                                           `IBI score`          = IBI_score.vis,
                                           `Reg. NPS category`  = visit_IBIcat,
                                           `Total sp. richness` = Species_richness.vis,
-                                          `Non-native spp.`    = Species_non_native)]))
+                                          `Non-native spp.`    = Species_non_native)], align = 'lllll'))
           , .(StratumSite)]
         } else {
           tabls <- pts.mult[
@@ -1121,7 +1121,7 @@ shinyServer(function(input, output, session) {
                                           `IBI score`          = IBI_score.vis,
                                           `NPS category`       = NPS_category.vis,
                                           `Total sp. richness` = Species_richness.vis,
-                                          `Non-native spp.`    = Species_non_native)]))
+                                          `Non-native spp.`    = Species_non_native)], align = 'lllll'))
           , .(StratumSite)]
         }
 
@@ -1140,7 +1140,7 @@ shinyServer(function(input, output, session) {
               <div class="maptip--header__swatch" style="background-color: %s;"></div>
             </div>
             <div class="maptip--main">
-              <div class="maptip--row">
+              <div class="maptip--table">
               %s
               </div>
             </div>
