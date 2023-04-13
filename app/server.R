@@ -1098,34 +1098,39 @@ shinyServer(function(input, output, session) {
       )
     , by = 1L:nrow(pts.single)]
 
+      pts.single[, type := 'single']
+      
       
       pts.mult <- ibi[N > 1]
 
-      if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
-        pts.mult[, visit_IBIcat := get(grep('Regional_IBI_category_.*\\.vis', names(pts.mult), val = T))]
+      if (nrow(pts.mult)) {
+        
+        if (!(input$region %in% 'No Region') && !(input$view_region_only %in% FALSE)) {
+          pts.mult[, visit_IBIcat := get(grep('Regional_IBI_category_.*\\.vis', names(pts.mult), val = T))]
 
-        tabls <- pts.mult[
-        , .(tabl = knitr::kable(.SD[, .(Date,
-                                        `IBI score`          = IBI_score.vis,
-                                        `Reg. NPS category`  = visit_IBIcat,
-                                        `Total sp. richness` = Species_richness.vis,
-                                        `Non-native spp.`    = Species_non_native)]))
-        , .(StratumSite)]
-      } else {
-        tabls <- pts.mult[
-        , .(tabl = knitr::kable(.SD[, .(Date,
-                                        `IBI score`          = IBI_score.vis,
-                                        `NPS category`       = NPS_category.vis,
-                                        `Total sp. richness` = Species_richness.vis,
-                                        `Non-native spp.`    = Species_non_native)]))
-        , .(StratumSite)]
-      }
+          tabls <- pts.mult[
+          , .(tabl = knitr::kable(.SD[, .(Date,
+                                          `IBI score`          = IBI_score.vis,
+                                          `Reg. NPS category`  = visit_IBIcat,
+                                          `Total sp. richness` = Species_richness.vis,
+                                          `Non-native spp.`    = Species_non_native)]))
+          , .(StratumSite)]
+        } else {
+          tabls <- pts.mult[
+          , .(tabl = knitr::kable(.SD[, .(Date,
+                                          `IBI score`          = IBI_score.vis,
+                                          `NPS category`       = NPS_category.vis,
+                                          `Total sp. richness` = Species_richness.vis,
+                                          `Non-native spp.`    = Species_non_native)]))
+          , .(StratumSite)]
+        }
 
-      ibim <- pts.mult[rowid(StratumSite) == 1]
-      ibim[tabls, tabl := i.tabl, on = 'StratumSite']
-      ibim[, labels := paste0(
-        sprintf(
-          '<div class="maptip">
+        ibim <- pts.mult[rowid(StratumSite) == 1]
+
+        ibim[tabls, tabl := i.tabl, on = 'StratumSite']
+        ibim[, labels := paste0(
+          sprintf(
+            '<div class="maptip">
             <div class="maptip--header">
               <div>
                 Site ID:<br/>
@@ -1141,16 +1146,22 @@ shinyServer(function(input, output, session) {
             </div>
           </div>',
           SiteID, IBI_score.med, Colour, tabl
+          )
         )
-      )
-    , by = 1L:nrow(ibim)]
+      , by = 1L:nrow(ibim)]
 
-      pts.single[, type := 'single']
-      ibim[, type := 'multi']
-      ibi <- rbind(ibim, pts.single, fill = T)[
-      , .(type, labels, geometry, IBIcategory, X, Y, Colour)
-      ]
+        ibim[, type := 'multi']
+        ibi <- rbind(ibim, pts.single, fill = T)[
+        , .(type, labels, geometry, IBIcategory, X, Y, Colour)
+        ]
 
+      } else {
+
+        ibi <- pts.single[, .(type, labels, geometry, IBIcategory, X, Y, Colour)]
+        
+      }
+
+      
       debuginfo(ibi[, -'labels'])
 
       factcols <- colorFactor(palcolours, domain = NULL)
