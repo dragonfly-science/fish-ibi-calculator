@@ -1134,10 +1134,15 @@ shinyServer(function(input, output, session) {
             <div class="maptip--header">
               <div>
                 Site ID:<br/>
-                <span class="maptip--header__siteID">%s</span><br/>
-                Median score: %s
+                <span class="maptip--header__bold">%s</span><br/>
               </div>
-              <div class="maptip--header__swatch" style="background-color: %s;"></div>
+              <div style="display: flex; align-items: center;">
+                <div class="maptip--header__swatch" style="background-color: %s;"></div>
+                <div style="margin-left: 10px;">
+                  Median score: 
+                  <div class="maptip--header__bold">%s</div>
+                </div>
+              </div>
             </div>
             <div class="maptip--main">
               <div class="maptip--table">
@@ -1145,7 +1150,7 @@ shinyServer(function(input, output, session) {
               </div>
             </div>
           </div>',
-          SiteID, IBI_score.med, Colour, tabl
+          SiteID, Colour, IBI_score.med, tabl
           )
         )
       , by = 1L:nrow(ibim)]
