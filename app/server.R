@@ -1073,14 +1073,17 @@ shinyServer(function(input, output, session) {
                 Site ID:<br/>
                 <span class="maptip--header__siteID">%s</span>
               </div>
-              <div class="maptip--header__swatch" style="background-color: %s;"></div>
+              <div style="display: flex; align-items: center;">
+                <div class="maptip--header__swatch" style="background-color: %s;"></div>
+                <div style="margin-left: 10px;">
+                  Score: 
+                  <div class="maptip--header__bold">%s</div>
+                </div>
+              </div>
             </div>
             <div class="maptip--main">
               <div class="maptip--row">
                 <span class="maptip--row__left">Date:</span><span class="maptip--row__right">%s</span>
-              </div>
-              <div class="maptip--row">
-                <span class="maptip--row__left">IBI score:</span><span class="maptip--row__right">%s</span>
               </div>
               <div class="maptip--row">
                 <span class="maptip--row__left">%s:</span><span class="maptip--row__right">%s</span>
@@ -1093,7 +1096,7 @@ shinyServer(function(input, output, session) {
               </div>
             </div>
           </div>',
-          SiteID, Colour, Date, IBI_score.vis, leg.title, IBIcategory, Species_richness.vis, Species_non_native
+          SiteID, Colour, IBI_score.vis, Date, leg.title, IBIcategory, Species_richness.vis, Species_non_native
         )
       )
     , by = 1L:nrow(pts.single)]
