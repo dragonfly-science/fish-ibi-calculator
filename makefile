@@ -26,6 +26,7 @@ docker: Dockerfile
 	docker push $(image) && \
 	touch .push
 
+data: app/data/app-data.qs
 app/data/app-data.qs: app/prepare-data.r \
 		app/data/regional-council-2022-generalised.gpkg \
 		app/data/joy-calibration.csv \
